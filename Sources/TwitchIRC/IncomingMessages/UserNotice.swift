@@ -218,11 +218,13 @@ public struct UserNotice {
         self.color = get(for: "color")
         self.displayName = get(for: "display-name")
         self.emotes = asArray(get(for: "emotes"))
+        self.flags = asArray(get(for: "flags"))
         self.id = get(for: "id")
+        self.login = get(for: "login")
         self.roomId = get(for: "room-id")
+        self.systemMessage = get(for: "system-message")
         self.tmiSentTs = UInt(get(for: "tmi-sent-ts")) ?? 0
         self.userId = get(for: "user-id")
-        #warning("a bunch of stuff are not initialized")
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
         self.unknownStorage = container.enumerated().filter({
