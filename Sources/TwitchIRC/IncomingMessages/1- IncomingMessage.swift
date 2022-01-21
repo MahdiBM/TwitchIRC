@@ -1,0 +1,114 @@
+
+/// A Twitch Message.
+public enum Message {
+    
+    case globalUserState(GlobalUserState)
+    case privateMessage(PrivateMessage)
+    case join(Join)
+    case part(Part)
+    case clearChat(ClearChat)
+    case clearMessage(ClearMessage)
+    case hostTarget(HostTarget)
+    case notice(Notice)
+    case reconnect
+    case roomState(RoomState)
+    case userNotice(UserNotice)
+    case userState(UserState)
+    case unknown(message: String)
+    
+    /// Parses all messages included.
+    public static func parse(ircOutput: String) -> [Self] {
+        ircOutput.components(separatedBy: "\r\n").map(parseMessage)
+    }
+    
+    private static func parseMessage(message: String) -> Self {
+        
+        func unknown() -> Self { .unknown(message: message) }
+        
+        guard let (contentLhs, messageRhs) = message.componentsOneSplit(
+            separatedBy: "tmi.twitch.tv "
+        ) else {
+            return unknown()
+        }
+        
+        let messageIdentifier: String
+        let contentRhs: String
+        if let split = messageRhs.componentsOneSplit(separatedBy: " ") {
+            (messageIdentifier, contentRhs) = split
+        } else {
+            messageIdentifier = messageRhs
+            contentRhs = ""
+        }
+        
+        switch messageIdentifier {
+        case "GLOBALUSERSTATE":
+            let message = GlobalUserState(contentLhs: contentLhs, contentRhs: contentRhs)
+            return .globalUserState(message)
+        case "PRIVMSG":
+            if let message = PrivateMessage(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .privateMessage(message)
+            } else {
+                return unknown()
+            }
+        case "JOIN":
+            if let message = Join(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .join(message)
+            } else {
+                return unknown()
+            }
+        case "PART":
+            if let message = Part(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .part(message)
+            } else {
+                return unknown()
+            }
+        case "CLEARCHAT":
+            if let message = ClearChat(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .clearChat(message)
+            } else {
+                return unknown()
+            }
+        case "CLEARMSG":
+            if let message = ClearMessage(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .clearMessage(message)
+            } else {
+                return unknown()
+            }
+        case "HOSTTARGET":
+            if let message = HostTarget(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .hostTarget(message)
+            } else {
+                return unknown()
+            }
+        case "NOTICE":
+            if let message = Notice(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .notice(message)
+            } else {
+                return unknown()
+            }
+        case "RECONNECT":
+            return .reconnect
+        case "ROOMSTATE":
+            if let message = RoomState(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .roomState(message)
+            } else {
+                return unknown()
+            }
+        case "USERNOTICE":
+            if let message = UserNotice(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .userNotice(message)
+            } else {
+                return unknown()
+            }
+        case "USERSTATE":
+            if let message = UserState(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .userState(message)
+            } else {
+                return unknown()
+            }
+        default:
+            return unknown()
+        }
+    }
+    
+}
