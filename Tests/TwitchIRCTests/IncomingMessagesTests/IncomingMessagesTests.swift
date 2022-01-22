@@ -18,7 +18,7 @@ final class IncomingMessagesTests: XCTestCase {
             }
         }
         
-        // channelEnterance
+        // channelEntrance
         do {
             let string = ":royalealchemist.tmi.twitch.tv 353 royalealchemist = #fxyen :royalealchemist\r\n:royalealchemist.tmi.twitch.tv 366 royalealchemist #fxyen :End of /NAMES list"
             let messages = Message.parse(ircOutput: string)
@@ -268,6 +268,39 @@ final class IncomingMessagesTests: XCTestCase {
             let messages = Message.parse(ircOutput: string)
             switch messages.first {
             case .userState: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
+        // ping
+        do {
+            let string = "PING :tmi.twitch.tv"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .ping: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
+        // pong
+        do {
+            let string = "PONG :tmi.twitch.tv"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .pong: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
+        // unknown
+        do {
+            let string = "efnoiewnfoanfoas dna na faonfa"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .unknown: break
             default:
                 XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
             }

@@ -23,18 +23,26 @@ public struct PrivateMessage {
     public var badgeInfo = [String]()
     /// User's badges.
     public var badges = [String]()
+    /// The bits that were donated, if any.
+    public var bits = String()
     /// User's in-chat name color.
     public var color = String()
     /// User's display name with upper/lower-case letters.
     public var displayName = String()
     /// User's emotes.
     public var emotes = [String]()
+    /// Whether or not the message only contains emotes.
+    public var emoteOnly = Bool()
     /// Flags of this message.
     public var flags = [String]()
     /// Whether it's the first time the user is sending a message.
     public var firstMessage = Bool()
+    /// Not sure exactly what is this? usually empty.
+    public var msgId = String()
     /// Message's id.
     public var id = String()
+    /// The id of the custom reward, if any.
+    public var customRewardId = String()
     /// Broadcaster's Twitch identifier.
     public var roomId = String()
     /// The timestamp of the message.
@@ -112,12 +120,16 @@ public struct PrivateMessage {
         
         self.badgeInfo = asArray(get(for: "@badge-info"))
         self.badges = asArray(get(for: "badges"))
+        self.bits = get(for: "bits")
         self.color = get(for: "color")
         self.displayName = get(for: "display-name")
         self.emotes = asArray(get(for: "emotes"))
+        self.emoteOnly = asBool(get(for: "emote-only"))
         self.flags = asArray(get(for: "flags"))
         self.firstMessage = asBool(get(for: "first-msg"))
+        self.msgId = get(for: "msg-id")
         self.id = get(for: "id")
+        self.customRewardId = get(for: "custom-reward-id")
         self.roomId = get(for: "room-id")
         self.tmiSentTs = UInt(get(for: "tmi-sent-ts")) ?? 0
         self.clientNonce = get(for: "client-nonce")

@@ -16,6 +16,8 @@ public enum Message {
     case roomState(RoomState)
     case userNotice(UserNotice)
     case userState(UserState)
+    case ping
+    case pong
     case unknown(message: String)
     
     /// Parses all messages included.
@@ -28,17 +30,18 @@ public enum Message {
         func unknown() -> Self { .unknown(message: message) }
         
         guard let (contentLhs, messageRhs) = message.componentsOneSplit(
-            separatedBy: "tmi.twitch.tv "
+            separatedBy: "tmi.twitch.tv"
         ) else {
             return unknown()
         }
         
         let messageIdentifier: String
         let contentRhs: String
-        if let split = messageRhs.componentsOneSplit(separatedBy: " ") {
+        let rhsWithoutPossibleLeadingSpace = String(messageRhs.dropFirst())
+        if let split = rhsWithoutPossibleLeadingSpace.componentsOneSplit(separatedBy: " ") {
             (messageIdentifier, contentRhs) = split
         } else {
-            messageIdentifier = messageRhs
+            messageIdentifier = rhsWithoutPossibleLeadingSpace
             contentRhs = ""
         }
         
@@ -117,6 +120,14 @@ public enum Message {
         case "USERSTATE":
             if let message = UserState(contentLhs: contentLhs, contentRhs: contentRhs) {
                 return .userState(message)
+            } else {
+                return unknown()
+            }
+        case "":
+            if contentLhs == "PING :" {
+                return .ping
+            } else if contentLhs == "PONG :" {
+                return .pong
             } else {
                 return unknown()
             }
