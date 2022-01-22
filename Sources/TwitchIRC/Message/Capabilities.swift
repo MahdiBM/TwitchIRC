@@ -17,6 +17,8 @@ public struct Capabilities {
     
     public var capabilities: [Capability] = []
     
+    public init() { }
+    
     init? (contentRhs: String) {
         guard contentRhs.hasPrefix("* ACK :")
         else { return nil }

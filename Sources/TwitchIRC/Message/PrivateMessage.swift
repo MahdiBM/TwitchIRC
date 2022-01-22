@@ -54,7 +54,7 @@ public struct PrivateMessage {
     /// Info about the replied message, if any.
     public var replyParent = ReplyParent()
     /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(lhs: String, rhs: String)]()
+    public var unknownStorage = [(key: String, value: String)]()
     
     // MARK: Convenience stuff
     
@@ -94,62 +94,34 @@ public struct PrivateMessage {
             return nil
         } /// separates " :senderName!senderName@senderName." from what is behind it.
         
-        let container = infoPart.components(separatedBy: ";")
-            .compactMap({ $0.componentsOneSplit(separatedBy: "=") })
+        var parser = ParameterParser(infoPart)
         
-        var usedIndices = [Int]()
-        
-        func optionalGet(for key: String) -> String? {
-            if let idx = container.firstIndex(where: { $0.lhs == key }) {
-                usedIndices.append(idx)
-                return container[idx].rhs
-            } else {
-                return nil
-            }
-        }
-        
-        func get(for key: String) -> String {
-            optionalGet(for: key) ?? ""
-        }
-        
-        func asArray(_ string: String) -> [String] {
-            string.components(separatedBy: ",").filter({ !$0.isEmpty })
-        }
-        
-        func asBool(_ string: String) -> Bool {
-            string == "1"
-        }
-        
-        self.badgeInfo = asArray(get(for: "@badge-info"))
-        self.badges = asArray(get(for: "badges"))
-        self.bits = get(for: "bits")
-        self.color = get(for: "color")
-        self.displayName = get(for: "display-name")
-        self.emotes = asArray(get(for: "emotes"))
-        self.emoteOnly = asBool(get(for: "emote-only"))
-        self.flags = asArray(get(for: "flags"))
-        self.firstMessage = asBool(get(for: "first-msg"))
-        self.msgId = get(for: "msg-id")
-        self.id = get(for: "id")
-        self.customRewardId = get(for: "custom-reward-id")
-        self.roomId = get(for: "room-id")
-        self.tmiSentTs = UInt(get(for: "tmi-sent-ts")) ?? 0
-        self.clientNonce = get(for: "client-nonce")
-        self.userId = get(for: "user-id")
+        self.badgeInfo = parser.array(for: "@badge-info")
+        self.badges = parser.array(for: "badges")
+        self.bits = parser.string(for: "bits")
+        self.color = parser.string(for: "color")
+        self.displayName = parser.string(for: "display-name")
+        self.emotes = parser.array(for: "emotes")
+        self.emoteOnly = parser.bool(for: "emote-only")
+        self.flags = parser.array(for: "flags")
+        self.firstMessage = parser.bool(for: "first-msg")
+        self.msgId = parser.string(for: "msg-id")
+        self.id = parser.string(for: "id")
+        self.customRewardId = parser.string(for: "custom-reward-id")
+        self.roomId = parser.string(for: "room-id")
+        self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
+        self.clientNonce = parser.string(for: "client-nonce")
+        self.userId = parser.string(for: "user-id")
         self.replyParent = .init(
-            displayName: optionalGet(for: "reply-parent-display-name"),
-            userLogin: optionalGet(for: "reply-parent-user-login"),
-            message: optionalGet(for: "reply-parent-msg-body"),
-            id: optionalGet(for: "reply-parent-msg-id"),
-            userId: optionalGet(for: "reply-parent-user-id")
+            displayName: parser.optionalString(for: "reply-parent-display-name"),
+            userLogin: parser.optionalString(for: "reply-parent-user-login"),
+            message: parser.optionalString(for: "reply-parent-msg-body"),
+            id: parser.optionalString(for: "reply-parent-msg-id"),
+            userId: parser.optionalString(for: "reply-parent-user-id")
         )
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        self.unknownStorage = container.enumerated().filter({
-            offset, element in
-            !usedIndices.contains(offset) &&
-            !deprecatedKeys.contains(element.lhs)
-        }).map(\.element)
+        self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
     }
     
 }

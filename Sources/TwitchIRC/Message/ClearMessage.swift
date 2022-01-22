@@ -15,7 +15,7 @@ public struct ClearMessage {
     /// The timestamp of this message.
     public var tmiSentTs = UInt()
     /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(lhs: String, rhs: String)]()
+    public var unknownStorage = [(key: String, value: String)]()
     
     public init() { }
     
@@ -35,28 +35,13 @@ public struct ClearMessage {
             return nil
         } /// check for ":" at the end
         
-        let container = String(contentLhs.dropLast(2))
-            .components(separatedBy: ";")
-            .compactMap({ $0.componentsOneSplit(separatedBy: "=") })
+        var parser = ParameterParser(String(contentLhs.dropLast(2)))
         
-        var usedIndices = [Int]()
-        
-        func get(for key: String) -> String {
-            if let idx = container.firstIndex(where: { $0.lhs == key }) {
-                usedIndices.append(idx)
-                return container[idx].rhs
-            } else {
-                return ""
-            }
-        }
-        
-        self.userLogin = get(for: "@login")
-        self.targetMessageId = get(for: "target-msg-id")
-        self.roomId = get(for: "room-id")
-        self.tmiSentTs = UInt(get(for: "tmi-sent-ts")) ?? 0
-        self.unknownStorage = container.enumerated().filter({
-            offset, _ in !usedIndices.contains(offset)
-        }).map(\.element)
+        self.userLogin = parser.string(for: "@login")
+        self.targetMessageId = parser.string(for: "target-msg-id")
+        self.roomId = parser.string(for: "room-id")
+        self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
+        self.unknownStorage = parser.getUnknownElements()
     }
     
 }
