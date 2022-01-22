@@ -21,12 +21,12 @@ public struct Whisper {
     public var userId = String()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(key: String, value: String)]()
+    /// Keys that were tried to be retrieved but were unavailable.
+    public var unavailableKeys = [String]()
     
     public init() { }
     
     init? (contentLhs: String, contentRhs: String) {
-//        @badges=;color=;display-name=drizzlepickles;emotes=;message-id=1;thread-id=684111155_699948886;turbo=0;user-id=699948886;user-type= :drizzlepickles!drizzlepickles@drizzlepickles.tmi.twitch.tv WHISPER royalealchemist :stop sir
-        
         guard let (receiver, message) = contentRhs.componentsOneSplit(separatedBy: " ") else {
             return nil
         } /// separating with " ", then lhs is the receiver and rhs is the actual message
@@ -48,6 +48,7 @@ public struct Whisper {
         
         let deprecatedKeys = ["turbo", "user-type"]
         self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
+        self.unavailableKeys = parser.getUnavailableKeys()
     }
     
 }

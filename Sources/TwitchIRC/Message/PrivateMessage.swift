@@ -55,6 +55,8 @@ public struct PrivateMessage {
     public var replyParent = ReplyParent()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(key: String, value: String)]()
+    /// Keys that were tried to be retrieved but were unavailable.
+    public var unavailableKeys = [String]()
     
     // MARK: Convenience stuff
     
@@ -122,6 +124,7 @@ public struct PrivateMessage {
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
         self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
+        self.unavailableKeys = parser.getUnavailableKeys()
     }
     
 }

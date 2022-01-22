@@ -16,6 +16,8 @@ public struct ClearMessage {
     public var tmiSentTs = UInt()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(key: String, value: String)]()
+    /// Keys that were tried to be retrieved but were unavailable.
+    public var unavailableKeys = [String]()
     
     public init() { }
     
@@ -41,7 +43,9 @@ public struct ClearMessage {
         self.targetMessageId = parser.string(for: "target-msg-id")
         self.roomId = parser.string(for: "room-id")
         self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
+        
         self.unknownStorage = parser.getUnknownElements()
+        self.unavailableKeys = parser.getUnavailableKeys()
     }
     
 }

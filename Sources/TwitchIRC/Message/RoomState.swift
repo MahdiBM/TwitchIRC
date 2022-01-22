@@ -20,6 +20,8 @@ public struct RoomState {
     public var rituals = Bool()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(key: String, value: String)]()
+    /// Keys that were tried to be retrieved but were unavailable.
+    public var unavailableKeys = [String]()
     
     public init() { }
     
@@ -38,7 +40,9 @@ public struct RoomState {
         self.slow = parser.uint(for: "slow")
         self.subsOnly = parser.bool(for: "subs-only")
         self.rituals = parser.bool(for: "rituals")
+        
         self.unknownStorage = parser.getUnknownElements()
+        self.unavailableKeys = parser.getUnavailableKeys()
     }
     
 }
