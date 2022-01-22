@@ -7,6 +7,8 @@ public struct Part {
     /// The user's lowercased name.
     public var userLogin = String()
     
+    public init() { }
+    
     init? (contentLhs: String, contentRhs: String) {
         guard contentRhs.first == "#" else {
             return nil

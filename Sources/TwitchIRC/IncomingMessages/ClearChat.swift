@@ -16,6 +16,8 @@ public struct ClearChat {
         banDuration == nil && userLogin != nil
     }
     
+    public init() { }
+    
     init? (contentLhs: String, contentRhs: String) {
         guard contentRhs.first == "#" else {
             return nil

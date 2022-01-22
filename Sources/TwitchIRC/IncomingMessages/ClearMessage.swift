@@ -13,6 +13,8 @@ public struct ClearMessage {
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(lhs: String, rhs: String)]()
     
+    public init() { }
+    
     init? (contentLhs: String, contentRhs: String) {
         guard contentRhs.first == "#" else {
             return nil

@@ -10,14 +10,18 @@ public struct RoomState {
     public var followersOnly = Bool()
     /// Whether or not messages of normal viewers with more than 9 characters must be unique.
     public var r9k = Bool()
-    /// Broadcaster's twitch identifier.
+    /// Broadcaster's Twitch identifier.
     public var roomId = String()
     /// Number of seconds normal chatters need to wait between each sent message.
     public var slow = UInt()
     /// Whether or not normal viewers need to be a sub to chat.
     public var subsOnly = Bool()
+    /// A flag for when you enter a channel and Twitch encourages you to send an emote.
+    public var rituals = Bool()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(lhs: String, rhs: String)]()
+    
+    public init() { }
     
     init? (contentLhs: String, contentRhs: String) {
         guard contentLhs.count > 2,
@@ -45,12 +49,13 @@ public struct RoomState {
             string == "1"
         }
         
-        self.emoteOnly = asBool(get(for: "emote-only"))
+        self.emoteOnly = asBool(get(for: "@emote-only"))
         self.followersOnly = asBool(get(for: "followers-only"))
         self.r9k = asBool(get(for: "r9k"))
         self.roomId = get(for: "room-id")
         self.slow = UInt(get(for: "slow")) ?? 0
         self.subsOnly = asBool(get(for: "subs-only"))
+        self.rituals = asBool(get(for: "rituals"))
         self.unknownStorage = container.enumerated().filter({
             offset, _ in !usedIndices.contains(offset)
         }).map(\.element)

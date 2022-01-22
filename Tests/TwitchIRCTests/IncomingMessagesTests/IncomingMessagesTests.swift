@@ -5,6 +5,32 @@ final class IncomingMessagesTests: XCTestCase {
     
     func testFindingCorrectMessageCase() throws {
         
+        // connectionNotice
+        do {
+            let string = ":tmi.twitch.tv 001 royalealchemist :Welcome, GLHF!\r\n:tmi.twitch.tv 002 royalealchemist :Your host is tmi.twitch.tv\r\n:tmi.twitch.tv 003 royalealchemist :This server is rather new\r\n:tmi.twitch.tv 004 royalealchemist :-\r\n:tmi.twitch.tv 375 royalealchemist :-\r\n:tmi.twitch.tv 372 royalealchemist :You are in a maze of twisty passages, all alike.\r\n:tmi.twitch.tv 376 royalealchemist :>"
+            let messages = Message.parse(ircOutput: string)
+            for message in messages {
+                switch message {
+                case .connectionNotice: break
+                default:
+                    XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+                }
+            }
+        }
+        
+        // channelEnterance
+        do {
+            let string = ":royalealchemist.tmi.twitch.tv 353 royalealchemist = #fxyen :royalealchemist\r\n:royalealchemist.tmi.twitch.tv 366 royalealchemist #fxyen :End of /NAMES list"
+            let messages = Message.parse(ircOutput: string)
+            for message in messages {
+                switch message {
+                case .channelEntrance: break
+                default:
+                    XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+                }
+            }
+        }
+        
         // globalUserState
         do {
             let string = "@badge-info=subscriber/8;badges=subscriber/6;color=#0D4200;display-name=dallas;emote-sets=0,33,50,237,793,2126,3517,4578,5569,9400,10337,12239;turbo=0;user-id=1337;user-type=admin :tmi.twitch.tv GLOBALUSERSTATE"

@@ -157,6 +157,8 @@ public struct Notice {
     /// The notice's identifier.
     public var messageId: MessageID!
     
+    public init() { }
+    
     init? (contentLhs: String, contentRhs: String) {
         guard contentLhs.count > 10,
               contentRhs.first == "#",

@@ -11,7 +11,7 @@ public struct PrivateMessage {
         public var message: String?
         /// Replied message's id.
         public var id: String?
-        /// Replied user's twitch identifier.
+        /// Replied user's Twitch identifier.
         public var userId: String?
     }
     
@@ -31,13 +31,17 @@ public struct PrivateMessage {
     public var emotes = [String]()
     /// Flags of this message.
     public var flags = [String]()
+    /// Whether it's the first time the user is sending a message.
+    public var firstMessage = Bool()
     /// Message's id.
     public var id = String()
-    /// Broadcaster's twitch identifier.
+    /// Broadcaster's Twitch identifier.
     public var roomId = String()
     /// The timestamp of the message.
     public var tmiSentTs = UInt()
-    /// User's twitch identifier.
+    /// Not sure exactly but some kind of identifier?!
+    public var clientNonce = String()
+    /// User's Twitch identifier.
     public var userId = String()
     /// Info about the replied message, if any.
     public var replyParent = ReplyParent()
@@ -62,15 +66,19 @@ public struct PrivateMessage {
         self.badges.contains(where: { $0.hasPrefix("turbo") })
     }
     
+    public init() { }
+    
     init? (contentLhs: String, contentRhs: String) {
         guard contentRhs.count > 3, contentRhs.first == "#" else {
             return nil
         } /// check existence of " #" before the channel name
-        guard let split = contentRhs.componentsOneSplit(separatedBy: " :") else {
+        guard let (channel, message) = String(contentRhs.dropFirst()).componentsOneSplit(
+            separatedBy: " :"
+        ) else {
             return nil
         } /// separating with " :", then lhs contains channel name and rhs is the actual message
-        self.channel = String([Character](split.lhs)[2...])
-        self.message = split.rhs
+        self.channel = channel
+        self.message = message
         
         guard let (infoPart, _) = contentLhs.componentsOneSplit(separatedBy: " :") else {
             return nil
@@ -81,17 +89,25 @@ public struct PrivateMessage {
         
         var usedIndices = [Int]()
         
-        func get(for key: String) -> String {
+        func optionalGet(for key: String) -> String? {
             if let idx = container.firstIndex(where: { $0.lhs == key }) {
                 usedIndices.append(idx)
                 return container[idx].rhs
             } else {
-                return ""
+                return nil
             }
         }
         
+        func get(for key: String) -> String {
+            optionalGet(for: key) ?? ""
+        }
+        
         func asArray(_ string: String) -> [String] {
-            string.components(separatedBy: ",")
+            string.components(separatedBy: ",").filter({ !$0.isEmpty })
+        }
+        
+        func asBool(_ string: String) -> Bool {
+            string == "1"
         }
         
         self.badgeInfo = asArray(get(for: "@badge-info"))
@@ -100,16 +116,18 @@ public struct PrivateMessage {
         self.displayName = get(for: "display-name")
         self.emotes = asArray(get(for: "emotes"))
         self.flags = asArray(get(for: "flags"))
+        self.firstMessage = asBool(get(for: "first-msg"))
         self.id = get(for: "id")
         self.roomId = get(for: "room-id")
         self.tmiSentTs = UInt(get(for: "tmi-sent-ts")) ?? 0
+        self.clientNonce = get(for: "client-nonce")
         self.userId = get(for: "user-id")
         self.replyParent = .init(
-            displayName: get(for: "reply-parent-display-name"),
-            userLogin: get(for: "reply-parent-user-login"),
-            message: get(for: "reply-parent-msg-body"),
-            id: get(for: "reply-parent-msg-id"),
-            userId: get(for: "reply-parent-user-id")
+            displayName: optionalGet(for: "reply-parent-display-name"),
+            userLogin: optionalGet(for: "reply-parent-user-login"),
+            message: optionalGet(for: "reply-parent-msg-body"),
+            id: optionalGet(for: "reply-parent-msg-id"),
+            userId: optionalGet(for: "reply-parent-user-id")
         )
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]

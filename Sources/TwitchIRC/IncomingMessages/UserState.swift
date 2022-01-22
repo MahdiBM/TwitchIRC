@@ -17,6 +17,8 @@ public struct UserState {
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(lhs: String, rhs: String)]()
     
+    public init() { }
+    
     init? (contentLhs: String, contentRhs: String) {
         guard contentRhs.first == "#", contentLhs.count > 2 else {
             return nil
@@ -39,7 +41,7 @@ public struct UserState {
         }
         
         func asArray(_ string: String) -> [String] {
-            string.components(separatedBy: ",")
+            string.components(separatedBy: ",").filter({ !$0.isEmpty })
         }
         
         self.badgeInfo = asArray(get(for: "@badge-info"))

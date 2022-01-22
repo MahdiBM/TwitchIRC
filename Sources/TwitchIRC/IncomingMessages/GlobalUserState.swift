@@ -12,12 +12,14 @@ public struct GlobalUserState {
     public var displayName = String()
     /// User's emote sets.
     public var emoteSets = [String]()
-    /// User's twitch identifier.
+    /// User's Twitch identifier.
     public var userId = String()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(lhs: String, rhs: String)]()
     
-    init (contentLhs: String, contentRhs: String) {
+    public init() { }
+    
+    init (contentLhs: String) {
         let container = contentLhs.components(separatedBy: ";")
             .compactMap({ $0.componentsOneSplit(separatedBy: "=") })
         
@@ -33,7 +35,7 @@ public struct GlobalUserState {
         }
         
         func asArray(_ string: String) -> [String] {
-            string.components(separatedBy: ",")
+            string.components(separatedBy: ",").filter({ !$0.isEmpty })
         }
         
         self.badgeInfo = asArray(get(for: "@badge-info"))

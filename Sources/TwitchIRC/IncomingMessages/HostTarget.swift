@@ -17,7 +17,9 @@ public struct HostTarget {
     /// The action being taken. Currently either starting a host or stopping it.
     public var action: Action = .start
     
-    init? (contentLhs: String, contentRhs: String) {
+    public init() { }
+    
+    init? (contentRhs: String) {
         guard contentRhs.first == "#" else {
             return nil
         } /// check for "#" behind channel name

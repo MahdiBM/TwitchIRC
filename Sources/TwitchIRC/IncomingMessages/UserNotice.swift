@@ -84,16 +84,18 @@ public struct UserNotice {
     public var login = String()
     /// More-precise info about this user notice.
     public var msgId: Action!
-    /// Broadcaster's twitch identifier.
+    /// Broadcaster's Twitch identifier.
     public var roomId = String()
     /// System's description of this message.
     public var systemMessage = String()
     /// The timestamp of the message.
     public var tmiSentTs = UInt()
-    /// User's twitch identifier.
+    /// User's Twitch identifier.
     public var userId = String()
     /// Remaining unhandled info in the message. Optimally empty.
     public var unknownStorage = [(lhs: String, rhs: String)]()
+    
+    public init() { }
     
     init? (contentLhs: String, contentRhs: String) {
         guard contentRhs.first == "#", contentLhs.count > 2 else {
@@ -125,7 +127,7 @@ public struct UserNotice {
         }
         
         func asArray(_ string: String) -> [String] {
-            string.components(separatedBy: ",")
+            string.components(separatedBy: ",").filter({ !$0.isEmpty })
         }
         
         func asBool(_ string: String) -> Bool {

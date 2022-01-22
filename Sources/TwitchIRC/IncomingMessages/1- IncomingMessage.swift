@@ -2,6 +2,8 @@
 /// A Twitch Message.
 public enum Message {
     
+    case connectionNotice(ConnectionNotice)
+    case channelEntrance(ChannelEntrance)
     case globalUserState(GlobalUserState)
     case privateMessage(PrivateMessage)
     case join(Join)
@@ -18,7 +20,7 @@ public enum Message {
     
     /// Parses all messages included.
     public static func parse(ircOutput: String) -> [Self] {
-        ircOutput.components(separatedBy: "\r\n").map(parseMessage)
+        ircOutput.components(separatedBy: "\r\n").filter({ !$0.isEmpty }).map(parseMessage)
     }
     
     private static func parseMessage(message: String) -> Self {
@@ -41,8 +43,20 @@ public enum Message {
         }
         
         switch messageIdentifier {
+        case "001", "002", "003", "004", "372", "375", "376":
+            if let message = ConnectionNotice(id: messageIdentifier, contentRhs: contentRhs) {
+                return .connectionNotice(message)
+            } else {
+                return unknown()
+            }
+        case "353", "366":
+            if let message = ChannelEntrance(id: messageIdentifier, contentRhs: contentRhs) {
+                return .channelEntrance(message)
+            } else {
+                return unknown()
+            }
         case "GLOBALUSERSTATE":
-            let message = GlobalUserState(contentLhs: contentLhs, contentRhs: contentRhs)
+            let message = GlobalUserState(contentLhs: contentLhs)
             return .globalUserState(message)
         case "PRIVMSG":
             if let message = PrivateMessage(contentLhs: contentLhs, contentRhs: contentRhs) {
@@ -75,7 +89,7 @@ public enum Message {
                 return unknown()
             }
         case "HOSTTARGET":
-            if let message = HostTarget(contentLhs: contentLhs, contentRhs: contentRhs) {
+            if let message = HostTarget(contentRhs: contentRhs) {
                 return .hostTarget(message)
             } else {
                 return unknown()
