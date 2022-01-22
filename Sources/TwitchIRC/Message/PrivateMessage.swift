@@ -125,7 +125,7 @@ public struct PrivateMessage {
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
         self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
         let occasionalKeys: [String]
-        if !(self.replyParent.message?.isEmpty == false) { /// replied message is available
+        if self.replyParent.message?.isEmpty == false { /// replied message is available
             occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce"]
         } else {
             occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce", "reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]
