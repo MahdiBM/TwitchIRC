@@ -64,6 +64,18 @@ final class IncomingMessagesTests: XCTestCase {
             }
         }
         
+        // privateMessage 3
+        do {
+            // has a weird character at the end.
+            let string = "@badge-info=;badges=;client-nonce=3dc1eef952878c31098361ebfc5017d7;color=;display-name=littlesnakysnake;emotes=;first-msg=0;flags=;id=9a323937-80fe-442a-b3a9-8c32e37cfb4f;mod=0;room-id=180980116;subscriber=0;tmi-sent-ts=1642848914241;turbo=0;user-id=478769067;user-type= :littlesnakysnake!littlesnakysnake@littlesnakysnake.tmi.twitch.tv PRIVMSG #carl_the_legend :ّ"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .privateMessage: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
         // join
         do {
             let string = ":ronni!ronni@ronni.tmi.twitch.tv JOIN #dallas"
@@ -121,7 +133,7 @@ final class IncomingMessagesTests: XCTestCase {
         
         // clearMessage
         do {
-            let string = "@login=ronni;target-msg-id=abc-123-def :tmi.twitch.tv CLEARMSG #dallas :HeyGuys"
+            let string = "@login=ronni;target-msg-id=abc-123-def;room-id=;tmi-sent-ts=1642860513538 :tmi.twitch.tv CLEARMSG #dallas :HeyGuys"
             let messages = Message.parse(ircOutput: string)
             switch messages.first {
             case .clearMessage: break
@@ -262,12 +274,45 @@ final class IncomingMessagesTests: XCTestCase {
             }
         }
         
+        // userNotice 6
+        do {
+            let string = #"@badge-info=subscriber/1;badges=vip/1,subscriber/0,bits/100;color=#8A2BE2;display-name=pazza_cr4;emotes=;flags=;id=41ab23ee-4728-4f8b-9d72-8fa92300cc94;login=pazza_cr4;mod=0;msg-id=communitypayforward;msg-param-prior-gifter-anonymous=false;msg-param-prior-gifter-display-name=dillydilby;msg-param-prior-gifter-id=629935431;msg-param-prior-gifter-user-name=dillydilby;room-id=629935431;subscriber=1;system-msg=pazza_cr4\sis\spaying\sforward\sthe\sGift\sthey\sgot\sfrom\sdillydilby\sto\sthe\scommunity!;tmi-sent-ts=1642853857868;user-id=757980712;user-type= :tmi.twitch.tv USERNOTICE #dillydilby"#
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .userNotice: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
+        // userNotice 7
+        do {
+            let string = #"@badge-info=subscriber/13;badges=subscriber/12,glitchcon2020/1;color=#1E90FF;display-name=GissihatHunger;emotes=;flags=;id=4417af02-11f7-4da8-8118-8fc2913b841c;login=gissihathunger;mod=0;msg-id=standardpayforward;msg-param-prior-gifter-anonymous=false;msg-param-prior-gifter-display-name=Benenator_007;msg-param-prior-gifter-id=609956744;msg-param-prior-gifter-user-name=benenator_007;msg-param-recipient-display-name=cuteMaggi;msg-param-recipient-id=693345558;msg-param-recipient-user-name=cutemaggi;room-id=180980116;subscriber=1;system-msg=GissihatHunger\sis\spaying\sforward\sthe\sGift\sthey\sgot\sfrom\sBenenator_007\sto\scuteMaggi!;tmi-sent-ts=1642857017198;user-id=449423975;user-type= :tmi.twitch.tv USERNOTICE #carl_the_legend"#
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .userNotice: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
         // userState
         do {
             let string = "@badge-info=;badges=staff/1;color=#0D4200;display-name=ronni;emote-sets=0,33,50,237,793,2126,3517,4578,5569,9400,10337,12239;mod=1;subscriber=1;turbo=1;user-type=staff :tmi.twitch.tv USERSTATE #dallas"
             let messages = Message.parse(ircOutput: string)
             switch messages.first {
             case .userState: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
+        // capabilities
+        do {
+            let string = ":tmi.twitch.tv CAP * ACK :twitch.tv/tags twitch.tv/commands"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .capabilities: break
             default:
                 XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
             }

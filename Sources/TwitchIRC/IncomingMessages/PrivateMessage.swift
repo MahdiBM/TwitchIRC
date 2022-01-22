@@ -81,12 +81,14 @@ public struct PrivateMessage {
             return nil
         } /// check existence of " #" before the channel name
         guard let (channel, message) = String(contentRhs.dropFirst()).componentsOneSplit(
-            separatedBy: " :"
+            separatedBy: " "
         ) else {
             return nil
-        } /// separating with " :", then lhs contains channel name and rhs is the actual message
+        } /// separating with " ", then lhs contains channel name and rhs is the actual message
         self.channel = channel
-        self.message = message
+        /// `dropFirst` to remove ":", `componentsOneSplit(separatedBy: " :")` fails in rare cases
+        /// where user inputs weird chars. One case is included in tests of `privateMessage`.
+        self.message = String(message.dropFirst())
         
         guard let (infoPart, _) = contentLhs.componentsOneSplit(separatedBy: " :") else {
             return nil

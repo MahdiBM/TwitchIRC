@@ -18,6 +18,10 @@ public struct UserNotice {
             public var streakMonths: UInt
             public var subPlan: SubPlan?
             public var subPlanName: String
+            public var months: UInt
+            public var multimonthDuration: UInt
+            public var multimonthTenure: Bool
+            public var wasGifted: Bool
         }
         
         public struct SubGiftInfo {
@@ -28,6 +32,8 @@ public struct UserNotice {
             public var subPlan: SubPlan?
             public var subPlanName: String
             public var giftMonths: UInt
+            public var originId: String
+            public var senderCount: UInt
         }
         
         public struct GiftPaidUpgradeInfo {
@@ -48,6 +54,23 @@ public struct UserNotice {
             public var viewerCount: UInt
         }
         
+        public struct CommunityPayForwardInfo {
+            public var priorGifterAnonymous: Bool
+            public var priorGifterDisplayName: String
+            public var priorGifterId: String
+            public var priorGifterUserName: String
+        }
+        
+        public struct StandardPayForwardInfo {
+            public var priorGifterAnonymous: Bool
+            public var priorGifterDisplayName: String
+            public var priorGifterId: String
+            public var priorGifterUserName: String
+            public var recipientDisplayName: String
+            public var recipientId: String
+            public var recipientUserName: String
+        }
+        
         case sub(SubInfo)
         case resub(SubInfo)
         case subGift(SubGiftInfo)
@@ -60,6 +83,8 @@ public struct UserNotice {
         case unraid
         case ritual(name: String)
         case bitsBadgeTier(threshold: String)
+        case communityPayForward(CommunityPayForwardInfo)
+        case standardPayForward(StandardPayForwardInfo)
     }
     
     /// Channel lowercased name.
@@ -103,10 +128,13 @@ public struct UserNotice {
         }
         
         if let (channel, message) = String(contentRhs.dropFirst()).componentsOneSplit(
-            separatedBy: " :"
+            separatedBy: " "
         ) {
             self.channel = channel
-            self.message = message
+            /// `dropFirst` to remove ":", `componentsOneSplit(separatedBy: " :")` fails in
+            /// rare cases where user inputs weird chars. One case is included in
+            /// tests of `privateMessage`.
+            self.message = String(message.dropFirst())
         } else {
             self.channel = String(contentRhs.dropFirst())
         }
@@ -150,7 +178,11 @@ public struct UserNotice {
                 shouldShareStreak: asBool(get(for: "msg-param-should-share-streak")),
                 streakMonths: asUInt(get(for: "msg-param-streak-months")),
                 subPlan: asRepresentable(get(for: "msg-param-sub-plan")),
-                subPlanName: get(for: "msg-param-sub-plan-name")
+                subPlanName: get(for: "msg-param-sub-plan-name"),
+                months: asUInt(get(for: "msg-param-months")),
+                multimonthDuration: asUInt(get(for: "msg-param-multimonth-duration")),
+                multimonthTenure: asBool(get(for: "msg-param-multimonth-tenure")),
+                wasGifted: asBool(get(for: "msg-param-was-gifted"))
             ))
         case "resub":
             self.msgId = .resub(.init(
@@ -158,7 +190,11 @@ public struct UserNotice {
                 shouldShareStreak: asBool(get(for: "msg-param-should-share-streak")),
                 streakMonths: asUInt(get(for: "msg-param-streak-months")),
                 subPlan: asRepresentable(get(for: "msg-param-sub-plan")),
-                subPlanName: get(for: "msg-param-sub-plan-name")
+                subPlanName: get(for: "msg-param-sub-plan-name"),
+                months: asUInt(get(for: "msg-param-months")),
+                multimonthDuration: asUInt(get(for: "msg-param-multimonth-duration")),
+                multimonthTenure: asBool(get(for: "msg-param-multimonth-tenure")),
+                wasGifted: asBool(get(for: "msg-param-was-gifted"))
             ))
         case "subgift":
             self.msgId = .subGift(.init(
@@ -168,7 +204,9 @@ public struct UserNotice {
                 recipientUserName: get(for: "msg-param-recipient-user-name"),
                 subPlan: asRepresentable(get(for: "msg-param-sub-plan")),
                 subPlanName: get(for: "msg-param-sub-plan-name"),
-                giftMonths: asUInt(get(for: "msg-param-gift-months"))
+                giftMonths: asUInt(get(for: "msg-param-gift-months")),
+                originId: get(for: "msg-param-origin-id"),
+                senderCount: asUInt(get(for: "msg-param-sender-count"))
             ))
         case "anonsubgift":
             self.msgId = .anonSubGift(.init(
@@ -178,7 +216,9 @@ public struct UserNotice {
                 recipientUserName: get(for: "msg-param-recipient-user-name"),
                 subPlan: asRepresentable(get(for: "msg-param-sub-plan")),
                 subPlanName: get(for: "msg-param-sub-plan-name"),
-                giftMonths: asUInt(get(for: "msg-param-gift-months"))
+                giftMonths: asUInt(get(for: "msg-param-gift-months")),
+                originId: get(for: "msg-param-origin-id"),
+                senderCount: asUInt(get(for: "msg-param-sender-count"))
             ))
         case "submysterygift":
             self.msgId = .subMysteryGift
@@ -212,6 +252,23 @@ public struct UserNotice {
             self.msgId = .bitsBadgeTier(
                 threshold: get(for: "msg-param-threshold")
             )
+        case "communitypayforward":
+            self.msgId = .communityPayForward(.init(
+                priorGifterAnonymous: asBool(get(for: "msg-param-prior-gifter-anonymous")),
+                priorGifterDisplayName: get(for: "msg-param-prior-gifter-display-name"),
+                priorGifterId: get(for: "msg-param-prior-gifter-id"),
+                priorGifterUserName: get(for: "msg-param-prior-gifter-user-name")
+            ))
+        case "standardpayforward":
+            self.msgId = .standardPayForward(.init(
+                priorGifterAnonymous: asBool(get(for: "msg-param-prior-gifter-anonymous")),
+                priorGifterDisplayName: get(for: "msg-param-prior-gifter-display-name"),
+                priorGifterId: get(for: "msg-param-prior-gifter-id"),
+                priorGifterUserName: get(for: "msg-param-prior-gifter-user-name"),
+                recipientDisplayName: get(for: "msg-param-recipient-display-name"),
+                recipientId: get(for: "msg-param-recipient-id"),
+                recipientUserName: get(for: "msg-param-recipient-user-name")
+            ))
         default: return nil
         }
         
@@ -224,7 +281,7 @@ public struct UserNotice {
         self.id = get(for: "id")
         self.login = get(for: "login")
         self.roomId = get(for: "room-id")
-        self.systemMessage = get(for: "system-message")
+        self.systemMessage = get(for: "system-msg")
         self.tmiSentTs = UInt(get(for: "tmi-sent-ts")) ?? 0
         self.userId = get(for: "user-id")
         

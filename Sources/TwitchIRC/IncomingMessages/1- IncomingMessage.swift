@@ -16,6 +16,7 @@ public enum Message {
     case roomState(RoomState)
     case userNotice(UserNotice)
     case userState(UserState)
+    case capabilities(Capabilities)
     case ping
     case pong
     case unknown(message: String)
@@ -120,6 +121,12 @@ public enum Message {
         case "USERSTATE":
             if let message = UserState(contentLhs: contentLhs, contentRhs: contentRhs) {
                 return .userState(message)
+            } else {
+                return unknown()
+            }
+        case "CAP":
+            if let message = Capabilities(contentRhs: contentRhs) {
+                return .capabilities(message)
             } else {
                 return unknown()
             }
