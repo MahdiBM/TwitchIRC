@@ -73,13 +73,27 @@ struct ParameterParser {
         self.optionalUInt(for: key) ?? 0
     }
     
+    mutating func optionalInt(for key: String) -> Int? {
+        if let stored = self.get(for: key),
+           let int = Int(stored.element.value) {
+            self.usedIndices.append(stored.offset)
+            return int
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func int(for key: String) -> Int {
+        self.optionalInt(for: key) ?? -1
+    }
+    
     mutating func optionalBool(for key: String) -> Bool? {
         if let stored = self.get(for: key) {
             let value = stored.element.value
-            if value == "1" {
+            if value == "1" || value == "true" {
                 self.usedIndices.append(stored.offset)
                 return true
-            } else if value == "0" {
+            } else if value == "0" || value == "false" {
                 self.usedIndices.append(stored.offset)
                 return false
             } else {

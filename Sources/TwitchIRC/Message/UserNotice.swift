@@ -31,6 +31,10 @@ public struct UserNotice {
             public var subPlan: SubPlan?
             public var subPlanName: String
             public var anonGift: Bool
+            public var months: UInt
+            public var multimonthDuration: UInt
+            public var multimonthTenure: Bool
+            public var wasGifted: Bool
             public var giftMonthBeingRedeemed: UInt
             public var giftMonths: UInt
             public var gifterId: String
@@ -62,6 +66,11 @@ public struct UserNotice {
             public var originId: String
             public var senderCount: UInt
             public var subPlan: SubPlan?
+            public var goalContributionType: String
+            public var goalCurrentContributions: String
+            public var goalDescription: String
+            public var goalTargetContributions: String
+            public var goalUserContributions: String
         }
         
         public struct AnonGiftPaidUpgradeInfo {
@@ -165,6 +174,8 @@ public struct UserNotice {
         
         var parser = ParameterParser(String(contentLhs.dropLast(2)))
         
+        let occasionalSubDependentKeys: [String]
+        
         switch parser.optionalString(for: "msg-id") {
         case "sub":
             self.msgId = .sub(.init(
@@ -178,6 +189,7 @@ public struct UserNotice {
                 multimonthTenure: parser.bool(for: "msg-param-multimonth-tenure"),
                 wasGifted: parser.bool(for: "msg-param-was-gifted")
             ))
+            occasionalSubDependentKeys = ["msg-param-streak-months"]
         case "resub":
             self.msgId = .resub(.init(
                 cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
@@ -186,12 +198,17 @@ public struct UserNotice {
                 subPlan: parser.representable(for: "msg-param-sub-plan"),
                 subPlanName: parser.string(for: "msg-param-sub-plan-name"),
                 anonGift: parser.bool(for: "msg-param-anon-gift"),
+                months: parser.uint(for: "msg-param-months"),
+                multimonthDuration: parser.uint(for: "msg-param-multimonth-duration"),
+                multimonthTenure: parser.bool(for: "msg-param-multimonth-tenure"),
+                wasGifted: parser.bool(for: "msg-param-was-gifted"),
                 giftMonthBeingRedeemed: parser.uint(for: "msg-param-gift-month-being-redeemed"),
                 giftMonths: parser.uint(for: "msg-param-gift-months"),
                 gifterId: parser.string(for: "msg-param-gifter-id"),
                 gifterLogin: parser.string(for: "msg-param-gifter-login"),
                 gifterName: parser.string(for: "msg-param-gifter-name")
             ))
+            occasionalSubDependentKeys = ["msg-param-streak-months", "msg-param-anon-gift", "msg-param-gift-month-being-redeemed", "msg-param-gift-months", "msg-param-gifter-id", "msg-param-gifter-login", "msg-param-gifter-name"]
         case "subgift":
             self.msgId = .subGift(.init(
                 months: parser.uint(for: "msg-param-months"),
@@ -204,6 +221,7 @@ public struct UserNotice {
                 originId: parser.string(for: "msg-param-origin-id"),
                 senderCount: parser.uint(for: "msg-param-sender-count")
             ))
+            occasionalSubDependentKeys = []
         case "anonsubgift":
             self.msgId = .anonSubGift(.init(
                 months: parser.uint(for: "msg-param-months"),
@@ -216,13 +234,20 @@ public struct UserNotice {
                 originId: parser.string(for: "msg-param-origin-id"),
                 senderCount: parser.uint(for: "msg-param-sender-count")
             ))
+            occasionalSubDependentKeys = []
         case "submysterygift":
             self.msgId = .subMysteryGift(.init(
                 massGiftCount: parser.uint(for: "msg-param-mass-gift-count"),
                 originId: parser.string(for: "msg-param-origin-id"),
                 senderCount: parser.uint(for: "msg-param-sender-count"),
-                subPlan: parser.representable(for: "msg-param-sub-plan")
+                subPlan: parser.representable(for: "msg-param-sub-plan"),
+                goalContributionType: parser.string(for: "msg-param-goal-contribution-type"),
+                goalCurrentContributions: parser.string(for: "msg-param-goal-current-contributions"),
+                goalDescription: parser.string(for: "msg-param-goal-description"),
+                goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
+                goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
             ))
+            occasionalSubDependentKeys = ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]
         case "giftpaidupgrade":
             self.msgId = .giftPaidUpgrade(.init(
                 promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
@@ -230,13 +255,16 @@ public struct UserNotice {
                 senderLogin: parser.string(for: "msg-param-sender-login"),
                 senderName: parser.string(for: "msg-param-sender-name")
             ))
+            occasionalSubDependentKeys = []
         case "rewardgift":
             self.msgId = .rewardGift
+            occasionalSubDependentKeys = []
         case "anongiftpaidupgrade":
             self.msgId = .anonGiftPaidUpgrade(.init(
                 promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
                 promoName: parser.string(for: "msg-param-promo-name")
             ))
+            occasionalSubDependentKeys = []
         case "raid":
             self.msgId = .raid(.init(
                 displayName: parser.string(for: "msg-param-displayName"),
@@ -244,16 +272,20 @@ public struct UserNotice {
                 viewerCount: parser.uint(for: "msg-param-viewerCount"),
                 profileImageURL: parser.string(for: "msg-param-profileImageURL")
             ))
+            occasionalSubDependentKeys = []
         case "unraid":
             self.msgId = .unraid
+            occasionalSubDependentKeys = []
         case "ritual":
             self.msgId = .ritual(
                 name: parser.string(for: "msg-param-ritual-name")
             )
-        case "bitsbadparser.stringier":
+            occasionalSubDependentKeys = []
+        case "bitsbadgetier":
             self.msgId = .bitsBadgeTier(
                 threshold: parser.string(for: "msg-param-threshold")
             )
+            occasionalSubDependentKeys = []
         case "communitypayforward":
             self.msgId = .communityPayForward(.init(
                 priorGifterAnonymous: parser.bool(for: "msg-param-prior-gifter-anonymous"),
@@ -261,6 +293,7 @@ public struct UserNotice {
                 priorGifterId: parser.string(for: "msg-param-prior-gifter-id"),
                 priorGifterUserName: parser.string(for: "msg-param-prior-gifter-user-name")
             ))
+            occasionalSubDependentKeys = []
         case "standardpayforward":
             self.msgId = .standardPayForward(.init(
                 priorGifterAnonymous: parser.bool(for: "msg-param-prior-gifter-anonymous"),
@@ -271,6 +304,7 @@ public struct UserNotice {
                 recipientId: parser.string(for: "msg-param-recipient-id"),
                 recipientUserName: parser.string(for: "msg-param-recipient-user-name")
             ))
+            occasionalSubDependentKeys = []
         default: return nil
         }
         
@@ -289,7 +323,7 @@ public struct UserNotice {
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
         self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
-        self.unavailableKeys = parser.getUnavailableKeys()
+        self.unavailableKeys = parser.getUnavailableKeys(excludedKeys: occasionalSubDependentKeys)
     }
     
 }
