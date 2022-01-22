@@ -17,6 +17,7 @@ public enum Message {
     case userNotice(UserNotice)
     case userState(UserState)
     case capabilities(Capabilities)
+    case whisper(Whisper)
     case ping
     case pong
     case unknown(message: String)
@@ -127,6 +128,12 @@ public enum Message {
         case "CAP":
             if let message = Capabilities(contentRhs: contentRhs) {
                 return .capabilities(message)
+            } else {
+                return unknown()
+            }
+        case "WHISPER":
+            if let message = Whisper(contentLhs: contentLhs, contentRhs: contentRhs) {
+                return .whisper(message)
             } else {
                 return unknown()
             }

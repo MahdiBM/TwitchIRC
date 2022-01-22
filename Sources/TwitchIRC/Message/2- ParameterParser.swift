@@ -53,7 +53,7 @@ struct ParameterParser {
     
     mutating func array(for key: String) -> [String] {
         if let value = self.optionalString(for: key) {
-            return value.components(separatedBy: ",")
+            return value.components(separatedBy: ",").filter({ !$0.isEmpty })
         } else {
             return []
         }

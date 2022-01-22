@@ -318,6 +318,28 @@ final class IncomingMessagesTests: XCTestCase {
             }
         }
         
+        // whisper
+        do {
+            let string = "@badges=;color=;display-name=drizzlepickles;emotes=;message-id=1;thread-id=684111155_699948886;turbo=0;user-id=699948886;user-type= :drizzlepickles!drizzlepickles@drizzlepickles.tmi.twitch.tv WHISPER royalealchemist :stop sir"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .whisper: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
+        // whisper 2
+        do {
+            let string = "@badges=;color=#1E90FF;display-name=MahdiMMBM;emotes=30259:0-6,8-14;message-id=3;thread-id=519827148_684111155;turbo=0;user-id=519827148;user-type= :mahdimmbm!mahdimmbm@mahdimmbm.tmi.twitch.tv WHISPER royalealchemist :HeyGuys HeyGuys"
+            let messages = Message.parse(ircOutput: string)
+            switch messages.first {
+            case .whisper: break
+            default:
+                XCTFail("Wrong message case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
+            }
+        }
+        
         // ping
         do {
             let string = "PING :tmi.twitch.tv"
