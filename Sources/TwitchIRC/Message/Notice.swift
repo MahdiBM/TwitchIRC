@@ -4,332 +4,330 @@ public struct Notice {
     
     public enum MessageID: String, CaseIterable {
         /// <user> is already banned in this channel.
-        case already_banned
+        case alreadyBanned = "alreadybanned"
         /// This room is not in emote-only mode.
-        case already_emote_only_off
+        case alreadyEmoteOnlyOff = "alreadyemoteonlyoff"
         /// This room is already in emote-only mode.
-        case already_emote_only_on
+        case alreadyEmoteOnlyOn = "alreadyemoteonlyon"
         /// This room is not in r9k mode.
-        case already_r9k_off
+        case alreadyR9kOff = "alreadyr9koff"
         /// This room is already in r9k mode.
-        case already_r9k_on
+        case alreadyR9kOn = "alreadyr9kon"
         /// This room is not in subscribers-only mode.
-        case already_subs_off
+        case alreadySubsOff = "alreadysubsoff"
         /// This room is already in subscribers-only mode.
-        case already_subs_on
+        case alreadySubsOn = "alreadysubson"
         /// You cannot ban admin <user>. Please email support@twitch.tv if an admin is being abusive.
-        case bad_ban_admin
+        case badBanAdmin = "badbanadmin"
         /// You cannot ban anonymous users.
-        case bad_ban_anon
+        case badBanAnon = "badbananon"
         /// You cannot ban the broadcaster.
-        case bad_ban_broadcaster
+        case badBanBroadcaster = "badbanbroadcaster"
         /// You cannot ban global moderator <user>. Please email support@twitch.tv if a global moderator is being abusive.
-        case bad_ban_global_mod
+        case badBanGlobalMod = "badbanglobalmod"
         /// You cannot ban moderator <user> unless you are the owner of this channel.
-        case bad_ban_mod
+        case badBanMod = "badbanmod"
         /// You cannot ban yourself.
-        case bad_ban_self
+        case badBanSelf = "badbanself"
         /// You cannot ban a staff <user>. Please email support@twitch.tv if a staff member is being abusive.
-        case bad_ban_staff
+        case badBanStaff = "badbanstaff"
         /// Failed to start commercial.
-        case bad_commercial_error
+        case badCommercialError = "badcommercialerror"
         /// You cannot delete the broadcaster's messages.
-        case bad_delete_message_broadcaster
+        case badDeleteMessageBroadcaster = "baddeletemessagebroadcaster"
         /// Failed to delete message.
-        case bad_delete_message_error
+        case badDeleteMessageError = "baddeletemessageerror"
         /// You cannot delete messages from another moderator <user>.
-        case bad_delete_message_mod
+        case badDeleteMessageMod = "baddeletemessagemod"
         /// There was a problem hosting <channel>. Please try again in a minute.
-        case bad_host_error
+        case badHostError = "badhosterror"
         /// This channel is already hosting <channel>.
-        case bad_host_hosting
+        case badHostHosting = "badhosthosting"
         /// Host target cannot be changed more than <number> times every half hour.
-        case bad_host_rate_exceeded
+        case badHostRateExceeded = "badhostrateexceeded"
         /// This channel is unable to be hosted.
-        case bad_host_rejected
+        case badHostRejected = "badhostrejected"
         /// A channel cannot host itself.
-        case bad_host_self
+        case badHostSelf = "badhostself"
         /// Sorry, /marker is not available through this client.
-        case bad_marker_client
+        case badMarkerClient = "badmarkerclient"
         /// <user> is banned in this channel. You must unban this user before granting mod status.
-        case bad_mod_banned
+        case badModBanned = "badmodbanned"
         /// <user> is already a moderator of this channel.
-        case bad_mod_mod
+        case badModMod = "badmodmod"
         /// You cannot set slow delay to more than <number> seconds.
-        case bad_slow_duration
+        case badSlowDuration = "badslowduration"
         /// You cannot timeout admin <user>. Please email support@twitch.tv if an admin is being abusive.
-        case bad_timeout_admin
+        case badTimeoutAdmin = "badtimeoutadmin"
         /// You cannot timeout anonymous users.
-        case bad_timeout_anon
+        case badTimeoutAnon = "badtimeoutanon"
         /// You cannot timeout the broadcaster.
-        case bad_timeout_broadcaster
+        case badTimeoutBroadcaster = "badtimeoutbroadcaster"
         /// You cannot time a user out for more than <seconds>.
-        case bad_timeout_duration
+        case badTimeoutDuration = "badtimeoutduration"
         /// You cannot timeout global moderator <user>. Please email support@twitch.tv if a global moderator is being abusive.
-        case bad_timeout_global_mod
+        case badTimeoutGlobalMod = "badtimeoutglobalmod"
         /// You cannot timeout moderator <user> unless you are the owner of this channel.
-        case bad_timeout_mod
+        case badTimeoutMod = "badtimeoutmod"
         /// You cannot timeout yourself.
-        case bad_timeout_self
+        case badTimeoutSelf = "badtimeoutself"
         /// You cannot timeout staff <user>. Please email support@twitch.tv if a staff member is being abusive.
-        case bad_timeout_staff
+        case badTimeoutStaff = "badtimeoutstaff"
         /// <user> is not banned from this channel.
-        case bad_unban_no_ban
+        case badUnbanNoBan = "badunbannoban"
         /// There was a problem exiting host mode. Please try again in a minute.
-        case bad_unhost_error
+        case badUnhostError = "badunhosterror"
         /// <user> is not a moderator of this channel.
-        case bad_unmod_mod
+        case badUnmodMod = "badunmodmod"
         /// <user> is not a VIP of this channel.
-        case bad_unvip_grantee_not_vip
+        case badUnvipGranteeNotVip = "badunvipgranteenotvip"
         /// Unable to add VIP. Visit the Achievements page on your dashboard to learn how to unlock this feature.
-        case bad_vip_achievement_incomplete
+        case badVipAchievementIncomplete = "badvipachievementincomplete"
         /// <user> is already a VIP of this channel.
-        case bad_vip_grantee_already_vip
+        case badVipGranteeAlreadyVip = "badvipgranteealreadyvip"
         /// <user> is banned in this channel. You must unban this user before granting VIP status.
-        case bad_vip_grantee_banned
+        case badVipGranteeBanned = "badvipgranteebanned"
         /// Unable to add VIP. Visit the Achievements page on your dashboard to learn how to unlock additional VIP slots.
-        case bad_vip_max_vips_reached
+        case badVipMaxVipsReached = "badvipmaxvipsreached"
         /// <user> is now banned from this channel.
-        case ban_success
+        case banSuccess = "bansuccess"
         /// Commands available to you in this room (use /help <command> for details): <list of commands>
-        case cmds_available
+        case cmdsAvailable = "cmdsavailable"
         /// Your color has been changed.
-        case color_changed
+        case colorChanged = "colorchanged"
         /// Initiating <number> second commercial break. Keep in mind that your stream is still live and not everyone will get a commercial.
-        case commercial_success
+        case commercialSuccess = "commercialsuccess"
         /// The message from <user> is now deleted.
-        case delete_message_success
+        case deleteMessageSuccess = "deletemessagesuccess"
         /// This room is no longer in emote-only mode.
-        case emote_only_off
+        case emoteOnlyOff = "emoteonlyoff"
         /// This room is now in emote-only mode.
-        case emote_only_on
+        case emoteOnlyOn = "emoteonlyon"
         /// This room is no longer in followers-only mode. Note: The followers tags are broadcast to a channel when a moderator makes changes.
-        case followers_off
+        case followersOff = "followersoff"
         /// This room is now in <duration> followers-only mode. Examples: “This room is now in 2 week followers-only mode.” or “This room is now in 1 minute followers-only mode.”
-        case followers_on
+        case followersOn = "followerson"
         /// This room is now in followers-only mode.
-        case followers_onzero
+        case followersOnZero = "followersonzero"
         /// Exited host mode.
-        case host_off
+        case hostOff = "hostoff"
         /// Now hosting <channel>.
-        case host_on
+        case hostOn = "hoston"
         /// <user> is now hosting you.
-        case host_success
+        case hostSuccess = "hostsuccess"
         /// <user> is now hosting you for up to <number> viewers.
-        case host_success_viewers
+        case hostSuccessViewers = "hostsuccessviewers"
         /// <channel> has gone offline. Exiting host mode.
-        case host_target_went_offline
+        case hostTargetWentOffline = "hosttargetwentoffline"
         /// <number> host commands remaining this half hour.
-        case hosts_remaining
+        case hostsRemaining = "hostsremaining"
         /// Invalid username: <user>
-        case invalid_user
+        case invalidUser = "invaliduser"
         /// You have added <user> as a moderator of this channel.
-        case mod_success
+        case modSuccess = "modsuccess"
         /// You are permanently banned from talking in <channel>.
-        case msg_banned
+        case msgBanned = "msgbanned"
         /// Your message was not sent because it contained too many characters that could not be processed. If you believe this is an error, rephrase and try again.
-        case msg_bad_characters
+        case msgBadCharacters = "msgbadcharacters"
         /// Your message was not sent because your email address is banned from this channel.
-        case msg_banned_email_alias
+        case msgBannedEmailAlias = "msgbannedemailalias"
         /// Your message was not sent because your account is not in good standing in this channel.
-        case msg_channel_blocked
+        case msgChannelBlocked = "msgchannelblocked"
         /// This channel has been suspended.
-        case msg_channel_suspended
+        case msgChannelSuspended = "msgchannelsuspended"
         /// Your message was not sent because it is identical to the previous one you sent, less than 30 seconds ago.
-        case msg_duplicate
+        case msgDuplicate = "msgduplicate"
         /// This room is in emote only mode. You can find your currently available emoticons using the smiley in the chat text area.
-        case msg_emoteonly
+        case msgEmoteOnly = "msgemoteonly"
         /// You must use Facebook Connect to send messages to this channel. You can see Facebook Connect in your Twitch settings under the connections tab.
-        case msg_facebook
+        case msgFacebook = "msgfacebook"
         /// This room is in <duration> followers-only mode. Follow <channel> to join the community!Note: These msg_followers tags are kickbacks to a user who does not meet the criteria; that is, does not follow or has not followed long enough.
-        case msg_followersonly
+        case msgFollowersOnly = "msgfollowersonly"
         /// This room is in <duration1> followers-only mode. You have been following for <duration2>. Continue following to chat!
-        case msg_followersonly_followed
+        case msgFollowersOnlyFollowed = "msgfollowersonlyfollowed"
         /// This room is in followers-only mode. Follow <channel> to join the community!
-        case msg_followersonly_zero
+        case msgFollowersOnlyZero = "msgfollowersonlyzero"
         /// This room is in r9k mode and the message you attempted to send is not unique.
-        case msg_r9k
+        case msgR9k = "msgr9k"
         /// Your message was not sent because you are sending messages too quickly.
-        case msg_ratelimit
+        case msgRateLimit = "msgratelimit"
         /// Hey! Your message is being checked by mods and has not been sent.
-        case msg_rejected
+        case msgRejected = "msgrejected"
         /// Your message wasn't posted due to conflicts with the channel's moderation settings.
-        case msg_rejected_mandatory
+        case msgRejectedMandatory = "msgrejectedmandatory"
         /// A verified phone number is required to chat in this channel. Please visit https://www.twitch.tv/settings/security to verify your phone number.
-        case msg_requires_verified_phone_number
+        case msgRequiresVerifiedPhoneNumber = "msgrequiresverifiedphonenumber"
         /// The room was not found.
-        case msg_room_not_found
+        case msgRoomNotFound = "msgroomnotfound"
         /// This room is in slow mode and you are sending messages too quickly. You will be able to talk again in <number> seconds.
-        case msg_slowmode
+        case msgSlowMode = "msgslowmode"
         /// This room is in subscribers only mode. To talk, purchase a channel subscription at https://www.twitch.tv/products/<broadcaster login name>/ticket?ref=subscriber_only_mode_chat.
-        case msg_subsonly
+        case msgSubsOnly = "msgsubsonly"
         /// Your account has been suspended.
-        case msg_suspended
+        case msgSuspended = "msgsuspended"
         /// You are banned from talking in <channel> for <number> more seconds.
-        case msg_timedout
+        case msgTimedOut = "msgtimedout"
         /// This room requires a verified email address to chat. Please verify your email at https://www.twitch.tv/settings/profile.
-        case msg_verified_email
+        case msgVerifiedEmail = "msgverifiedemail"
         /// No help available.
-        case no_help
+        case noHelp = "nohelp"
         /// There are no moderators of this channel.
-        case no_mods
+        case noMods = "nomods"
         /// No channel is currently being hosted.
-        case not_hosting
+        case notHosting = "nothosting"
         /// You don’t have permission to perform that action.
-        case no_permission
+        case noPermission = "nopermission"
         /// This channel does not have any VIPs.
-        case no_vips
+        case noVips = "novips"
         /// This room is no longer in r9k mode.
-        case r9k_off
+        case r9kOff = "r9koff"
         /// This room is now in r9k mode.
-        case r9k_on
+        case r9kOn = "r9kon"
         /// You already have a raid in progress.
-        case raid_error_already_raiding
+        case raidErrorAlreadyRaiding = "raiderroralreadyraiding"
         /// You cannot raid this channel.
-        case raid_error_forbidden
+        case raidErrorForbidden = "raiderrorforbidden"
         /// A channel cannot raid itself.
-        case raid_error_self
+        case raidErrorSelf = "raiderrorself"
         /// Sorry, you have more viewers than the maximum currently supported by raids right now.
-        case raid_error_too_many_viewers
+        case raidErrorTooManyViewers = "raiderrortoomanyviewers"
         /// There was a problem raiding <channel>. Please try again in a minute.
-        case raid_error_unexpected
+        case raidErrorUnexpected = "raiderrorunexpected"
         /// This channel is intended for mature audiences.
-        case raid_notice_mature
+        case raidNoticeMature = "raidnoticemature"
         /// This channel has follower or subscriber only chat.
-        case raid_notice_restricted_chat
+        case raidNoticeRestrictedChat = "raidnoticerestrictedchat"
         /// The moderators of this channel are: <list of users>
-        case room_mods
+        case roomMods = "roommods"
         /// This room is no longer in slow mode.
-        case slow_off
+        case slowOff = "slowoff"
         /// This room is now in slow mode. You may send messages every <number> seconds.
-        case slow_on
+        case slowOn = "slowon"
         /// This room is no longer in subscribers-only mode.
-        case subs_off
+        case subsOff = "subsoff"
         /// This room is now in subscribers-only mode.
-        case subs_on
+        case subsOn = "subson"
         /// <user> is not timed out from this channel.
-        case timeout_no_timeout
+        case timeoutNoTimeout = "timeoutnotimeout"
         /// <user> has been timed out for <duration> seconds.
-        case timeout_success
+        case timeoutSuccess = "timeoutsuccess"
         /// The community has closed channel <channel> due to Terms of Service violations.
-        case tos_ban
+        case tosBan = "tosban"
         /// Only turbo users can specify an arbitrary hex color. Use one of the following instead: <list of colors>.
-        case turbo_only_color
+        case turboOnlyColor = "turboonlycolor"
         /// <user> is no longer banned from this channel.
-        case unban_success
+        case unbanSuccess = "unbansuccess"
         /// You have removed <user> as a moderator of this channel.
-        case unmod_success
+        case unmodSuccess = "unmodsuccess"
         /// You do not have an active raid.
-        case unraid_error_no_active_raid
+        case unraidErrorNoActiveRaid = "unraiderrornoactiveraid"
         /// There was a problem stopping the raid. Please try again in a minute.
-        case unraid_error_unexpected
+        case unraidErrorUnexpected = "unraiderrorunexpected"
         /// The raid has been cancelled.
-        case unraid_success
+        case unraidSuccess = "unraidsuccess"
         /// Unrecognized command: <command>
-        case unrecognized_cmd
+        case unrecognizedCmd = "unrecognizedcmd"
         /// The command <command> cannot be used in a chatroom.
-        case unsupported_chatrooms_cmd
+        case unsupportedChatroomsCmd = "unsupportedchatroomscmd"
         /// <user> is permanently banned. Use "/unban" to remove a ban.
-        case untimeout_banned
+        case untimeoutBanned = "untimeoutbanned"
         /// <user> is no longer timed out in this channel.
-        case untimeout_success
+        case untimeoutSuccess = "untimeoutsuccess"
         /// You have removed <user> as a VIP of this channel.
-        case unvip_success
+        case unvipSuccess = "unvipsuccess"
         /// Usage: “/ban <username> [reason]” Permanently prevent a user from chatting. Reason is optional and will be shown to the target and other moderators. Use “/unban” to remove a ban.
-        case usage_ban
+        case usageBan = "usageban"
         /// Usage: “/clear” Clear chat history for all users in this room.
-        case usage_clear
+        case usageClear = "usageclear"
         /// Usage: “/color <color>” Change your username color. Color must be in hex (#000000) or one of the following: Blue, BlueViolet, CadetBlue, Chocolate, Coral, DodgerBlue, Firebrick, GoldenRod, Green, HotPink, OrangeRed, Red, SeaGreen, SpringGreen, YellowGreen.
-        case usage_color
+        case usageColor = "usagecolor"
         /// Usage: “/commercial [length]” Triggers a commercial. Length (optional) must be a positive number of seconds.
-        case usage_commercial
+        case usageCommercial = "usagecommercial"
         /// Usage: “/disconnect” Reconnects to chat.
-        case usage_disconnect
+        case usageDisconnect = "usagedisconnect"
         /// Usage: “/emoteonlyoff” Disables emote-only mode.
-        case usage_emote_only_off
+        case usageEmoteOnlyOff = "usageemoteonlyoff"
         /// Usage: “/emoteonly” Enables emote-only mode (only emoticons may be used in chat). Use /emoteonlyoff to disable.
-        case usage_emote_only_on
+        case usageEmoteOnlyOn = "usageemoteonlyon"
         /// Usage: “/followersoff” Disables followers-only mode.
-        case usage_followers_off
+        case usageFollowersOff = "usagefollowersoff"
         /// Usage: “/followers” Enables followers-only mode (only users who have followed for “duration” may chat). Examples: “30m”, “1 week”, “5 days 12 hours”. Must be less than 3 months.
-        case usage_followers_on
+        case usageFollowersOn = "usagefollowerson"
         /// Usage: “/help” Lists the commands available to you in this room.
-        case usage_help
+        case usageHelp = "usagehelp"
         /// Usage: “/host <channel>” Host another channel. Use “/unhost” to unset host mode.
-        case usage_host
+        case usageHost = "usagehost"
         /// Usage: “/marker <optional comment>” Adds a stream marker (with an optional comment, max 140 characters) at the current timestamp. You can use markers in the Highlighter for easier editing.
-        case usage_marker
+        case usageMarker = "usagemarker"
         /// Usage: “/me <message>” Send an “emote” message in the third person.
-        case usage_me
+        case usageMe = "usageme"
         /// Usage: “/mod <username>” Grant mod status to a user. Use “/mods” to list the moderators of this channel.
-        case usage_mod
+        case usageMod = "usagemod"
         /// Usage: “/mods” Lists the moderators of this channel.
-        case usage_mods
+        case usageMods = "usagemods"
         /// Usage: “/r9kbetaoff” Disables r9k mode.
-        case usage_r9k_off
+        case usageR9kOff = "usager9koff"
         /// Usage: “/r9kbeta” Enables r9k mode. Use “/r9kbetaoff“ to disable.
-        case usage_r9k_on
+        case usageR9kOn = "usager9kon"
         /// Usage: “/raid <channel>” Raid another channel. Use “/unraid” to cancel the Raid.
-        case usage_raid
+        case usageRaid = "usageraid"
         /// Usage: “/slowoff” Disables slow mode.
-        case usage_slow_off
+        case usageSlowOff = "usageslowoff"
         /// Usage: “/slow [duration]” Enables slow mode (limit how often users may send messages). Duration (optional, default=<number>) must be a positive integer number of seconds. Use “/slowoff” to disable.
-        case usage_slow_on
+        case usageSlowOn = "usageslowon"
         /// Usage: “/subscribersoff” Disables subscribers-only mode.
-        case usage_subs_off
+        case usageSubsOff = "usagesubsoff"
         /// Usage: “/subscribers” Enables subscribers-only mode (only subscribers may chat in this channel). Use “/subscribersoff” to disable.
-        case usage_subs_on
+        case usageSubsOn = "usagesubson"
         /// Usage: “/timeout <username> [duration][time unit] [reason]"Temporarily prevent a user from chatting. Duration (optional, default=10 minutes) must be a positive integer; time unit (optional, default=s) must be one of s, m, h, d, w
         /// maximum duration is 2 weeks. Combinations like 1d2h are also allowed. Reason is optional and will be shown to the target user and other moderators. Use “untimeout” to remove a timeout.
-        case usage_timeout
+        case usageTimeout = "usagetimeout"
         /// Usage: “/unban <username>” Removes a ban on a user.
-        case usage_unban
+        case usageUnban = "usageunban"
         /// Usage: “/unhost” Stop hosting another channel.
-        case usage_unhost
+        case usageUnhost = "usageunhost"
         /// Usage: “/unmod <username>” Revoke mod status from a user. Use “/mods” to list the moderators of this channel.
-        case usage_unmod
+        case usageUnmod = "usageunmod"
         /// Usage: “/unraid” Cancel the Raid.
-        case usage_unraid
+        case usageUnraid = "usageunraid"
         /// Usage: “/untimeout <username>” Removes a timeout on a user.
-        case usage_untimeout
+        case usageUntimeout = "usageuntimeout"
         /// Usage: “/vip <username>” Grant VIP status to a user. Use “/vips” to list the moderators of this channel.
-        case usage_vip
+        case usageVip = "usagevip"
         /// Usage: “/vips” Lists the VIPs of this channel.
-        case usage_vips
+        case usageVips = "usagevips"
         /// You have added <user> as a VIP of this channel.
-        case vip_success
+        case vipSuccess = "vipsuccess"
         /// The VIPs of this channel are: <list of users>.
-        case vips_success
+        case vipsSuccess = "vipssuccess"
         /// You have been banned from sending whispers.
-        case whisper_banned
+        case whisperBanned = "whisperbanned"
         /// That user has been banned from receiving whispers.
-        case whisper_banned_recipient
+        case whisperBannedRecipient = "whisperbannedrecipient"
         /// Usage: <login> <message>
-        case whisper_invalid_args
+        case whisperInvalidArgs = "whisperinvalidargs"
         /// No user matching that login.
-        case whisper_invalid_login
+        case whisperInvalidLogin = "whisperinvalidlogin"
         /// You cannot whisper to yourself.
-        case whisper_invalid_self
+        case whisperInvalidSelf = "whisperinvalidself"
         /// You are sending whispers too fast. Try again in a minute.
-        case whisper_limit_per_min
+        case whisperLimitPerMin = "whisperlimitpermin"
         /// You are sending whispers too fast. Try again in a second.
-        case whisper_limit_per_sec
+        case whisperLimitPerSec = "whisperlimitpersec"
         /// Your settings prevent you from sending this whisper.
-        case whisper_restricted
+        case whisperRestricted = "whisperrestricted"
         /// That user's settings prevent them from receiving this whisper.
-        case whisper_restricted_recipient
+        case whisperRestrictedRecipient = "whisperrestrictedrecipient"
         
-        private static let casesWithoutDashes: [String: Self] = .init(
-            uniqueKeysWithValues: allCases.map({
-                (key: $0.rawValue.lowercased().filter({ $0 != "_" }), value: $0)
-            })
+        private static let casesStorage: [String: Self] = .init(
+            uniqueKeysWithValues: allCases.map({ (key: $0.rawValue, value: $0) })
         )
         
         /// Tries to initialize a `MessageID` using the `rawValue`.
         /// Doesn't respect dashes.
         public init? (rawValue: String) {
             let rawValueWithoutDashes = rawValue.filter({ $0 != "_" })
-            if let enumCase = Self.casesWithoutDashes[rawValueWithoutDashes] {
+            if let enumCase = Self.casesStorage[rawValueWithoutDashes] {
                 self = enumCase
             } else {
                 return nil

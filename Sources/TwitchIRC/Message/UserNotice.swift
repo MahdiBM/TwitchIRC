@@ -205,7 +205,7 @@ public struct UserNotice {
                 goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
                 goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
             ))
-            occasionalSubDependentKeys = ["msg-param-streak-months", "msg-param-streak-months", "msg-param-anon-gift", "msg-param-gift-month-being-redeemed", "msg-param-gift-months", "msg-param-gifter-id", "msg-param-gifter-login", "msg-param-gifter-name"]
+            occasionalSubDependentKeys = ["msg-param-streak-months", "msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]
         case "resub":
             self.msgId = .resub(.init(
                 cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
