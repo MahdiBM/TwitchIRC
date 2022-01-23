@@ -36,9 +36,9 @@ public struct Whisper {
         /// where user inputs weird chars. One case is included in tests of `privateMessage`.
         self.message = String(message.dropFirst())
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2)))
+        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
         
-        self.badges = parser.array(for: "@badges")
+        self.badges = parser.array(for: "badges")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
         self.emotes = parser.array(for: "emotes")

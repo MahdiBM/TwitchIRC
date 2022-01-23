@@ -186,17 +186,6 @@ final class IncomingMessagesTests: XCTestCase {
             }
         }
         
-        // notice
-        do {
-            let string = "@msg-id=slow_off :tmi.twitch.tv NOTICE #dallas :This room is no longer in slow mode."
-            let messages = Message.parse(ircOutput: string)
-            switch messages.first {
-            case .notice: break
-            default:
-                XCTFail("Wrong messages case parsed. Message: \(string.debugDescription), Parsed: \(messages)")
-            }
-        }
-        
         // reconnect
         do {
             let string = ":tmi.twitch.tv RECONNECT"

@@ -2,7 +2,7 @@
 /// A Twitch `NOTICE` message.
 public struct Notice {
     
-    public enum MessageID: String {
+    public enum MessageID: String, CaseIterable {
         /// <user> is already banned in this channel.
         case already_banned
         /// This room is not in emote-only mode.
@@ -318,6 +318,23 @@ public struct Notice {
         case whisper_restricted
         /// That user's settings prevent them from receiving this whisper.
         case whisper_restricted_recipient
+        
+        private static let casesWithoutDashes: [String: Self] = .init(
+            uniqueKeysWithValues: allCases.map({
+                (key: $0.rawValue.lowercased().filter({ $0 != "_" }), value: $0)
+            })
+        )
+        
+        /// Tries to initialize a `MessageID` using the `rawValue`.
+        /// Doesn't respect dashes.
+        public init? (rawValue: String) {
+            let rawValueWithoutDashes = rawValue.filter({ $0 != "_" })
+            if let enumCase = Self.casesWithoutDashes[rawValueWithoutDashes] {
+                self = enumCase
+            } else {
+                return nil
+            }
+        }
     }
     
     /// The channel's lowercased name.

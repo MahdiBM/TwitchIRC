@@ -96,9 +96,9 @@ public struct PrivateMessage {
             return nil
         } /// separates " :senderName!senderName@senderName." from what is behind it.
         
-        var parser = ParameterParser(infoPart)
+        var parser = ParameterParser(String(infoPart.dropFirst()))
         
-        self.badgeInfo = parser.array(for: "@badge-info")
+        self.badgeInfo = parser.array(for: "badge-info")
         self.badges = parser.array(for: "badges")
         self.bits = parser.string(for: "bits")
         self.color = parser.string(for: "color")

@@ -22,9 +22,9 @@ public struct GlobalUserState {
     public init() { }
     
     init (contentLhs: String) {
-        var parser = ParameterParser(String(contentLhs.dropLast(2)))
+        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
         
-        self.badgeInfo = parser.array(for: "@badge-info")
+        self.badgeInfo = parser.array(for: "badge-info")
         self.badges = parser.array(for: "badges")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")

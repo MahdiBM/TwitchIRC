@@ -31,9 +31,9 @@ public struct RoomState {
         else { return nil }
         self.channel = String(contentRhs.dropFirst())
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2)))
+        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
         
-        self.emoteOnly = parser.bool(for: "@emote-only")
+        self.emoteOnly = parser.bool(for: "emote-only")
         self.followersOnly = parser.int(for: "followers-only")
         self.r9k = parser.bool(for: "r9k")
         self.roomId = parser.string(for: "room-id")
@@ -42,7 +42,8 @@ public struct RoomState {
         self.rituals = parser.bool(for: "rituals")
         
         self.unknownStorage = parser.getUnknownElements()
-        self.unavailableKeys = parser.getUnavailableKeys()
+        let occasionalKeys = ["emote-only", "r9k", "slow", "subs-only", "rituals"]
+        self.unavailableKeys = parser.getUnavailableKeys(excludedKeys: occasionalKeys)
     }
     
 }

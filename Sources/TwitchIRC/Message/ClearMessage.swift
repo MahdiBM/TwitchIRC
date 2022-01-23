@@ -37,9 +37,9 @@ public struct ClearMessage {
             return nil
         } /// check for ":" at the end
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2)))
+        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
         
-        self.userLogin = parser.string(for: "@login")
+        self.userLogin = parser.string(for: "login")
         self.targetMessageId = parser.string(for: "target-msg-id")
         self.roomId = parser.string(for: "room-id")
         self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
