@@ -20,13 +20,24 @@ struct ParametersParser {
         self.storage = .init(values.enumerated())
     }
     
+    /// Returns left-overs of this parser.
+    /// - Parameters:
+    ///   - excludedUnusedKeys: The unused keys that should be excluded
+    ///   since Twitch occasionally doesn't sends them to us.
+    ///   - excludedUnavailableKeys: The keys that should be excluded
+    ///   since Twitch occasionally doesn't sends them to us.
     func getLeftOvers(
         excludedUnusedKeys: [String] = [],
         excludedUnavailableKeys: [String] = []
     ) -> ParsingLeftOvers {
         let unusedPairs = self.storage.filter({
             !(self.usedIndices.contains($0.offset) || excludedUnusedKeys.contains($0.element.key))
-        }).map({ ParsingLeftOvers.UnusedPair(key: $0.element.key, value: $0.element.value) })
+        }).map({
+            ParsingLeftOvers.UnusedPair.init(
+                key: $0.element.key,
+                value: $0.element.value
+            )
+        })
         let unavailableKeys = self.unavailableKeys
             .filter({ !excludedUnavailableKeys.contains($0) })
         let unparsedKeys = unparsedKeys.map {
@@ -36,6 +47,41 @@ struct ParametersParser {
             unusedPairs: unusedPairs,
             unavailableKeys: unavailableKeys,
             unparsedKeys: unparsedKeys
+        )
+    }
+    
+    
+    /// Returns left-overs of this parser.
+    /// - Parameters:
+    ///   - excludedUnusedKeys: The unused keys that should be excluded
+    ///   since Twitch occasionally doesn't sends them to us.
+    ///   - groupsOfExcludedUnavailableKeys: The groups of keys that should be excluded
+    ///   from `ParsingLeftOvers.unavailableKeys`. Each group's members all should be available
+    ///   or all be unavailable, otherwise the group won't take effect.
+    ///   still be included in the `ParsingLeftOvers.unavailableKeys`.
+    func getLeftOvers(
+        excludedUnusedKeys: [String] = [],
+        groupsOfExcludedUnavailableKeys: [[String]]
+    ) -> ParsingLeftOvers {
+        let excludedUnavailableKeys = groupsOfExcludedUnavailableKeys.reduce(
+            into: [String]()
+        ) { current, nextGroup in
+            let groupCount = nextGroup.count
+            guard groupCount > 1 else {
+                current += nextGroup
+                return
+            }
+            let trueCount = nextGroup
+                .map(self.unavailableKeys.contains)
+                .filter({ $0 == true })
+                .count
+            if trueCount == 0 || trueCount == nextGroup.count {
+                current += nextGroup
+            }
+        }
+        return self.getLeftOvers(
+            excludedUnusedKeys: excludedUnusedKeys,
+            excludedUnavailableKeys: excludedUnavailableKeys
         )
     }
     

@@ -122,15 +122,11 @@ public struct PrivateMessage {
         )
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        let occasionalKeys: [String]
-        if !self.replyParent.message.isEmpty { /// replied message is available
-            occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce"]
-        } else {
-            occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce", "flags", "first-msg", "reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]
-        }
+        let occasionalKeys = [["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]]
+        
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
-            excludedUnavailableKeys: occasionalKeys
+            groupsOfExcludedUnavailableKeys: occasionalKeys
         )
     }
 }
