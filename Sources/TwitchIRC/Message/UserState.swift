@@ -14,10 +14,8 @@ public struct UserState {
     public var displayName = String()
     /// User's emote sets.
     public var emoteSets = [String]()
-    /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(key: String, value: String)]()
-    /// Keys that were tried to be retrieved but were unavailable.
-    public var unavailableKeys = [String]()
+    /// Contains info about unused info and parsing problems.
+    public var parsingLeftOvers = ParsingLeftOvers()
     
     public init() { }
     
@@ -36,8 +34,8 @@ public struct UserState {
         self.emoteSets = parser.array(for: "emote-sets")
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
-        self.unavailableKeys = parser.getUnavailableKeys()
+        self.parsingLeftOvers = parser.getLeftOvers(
+            excludedUnusedKeys: deprecatedKeys
+        )
     }
-    
 }

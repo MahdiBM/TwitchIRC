@@ -23,9 +23,9 @@ public struct HostTarget {
         guard contentRhs.first == "#" else {
             return nil
         } /// check for "#" behind channel name
-        guard let (channel, rhsRemaining) = contentRhs.componentsOneSplit(separatedBy: " :") else {
-            return nil
-        }
+        guard let (channel, rhsRemaining) = String(contentRhs.dropFirst())
+                .componentsOneSplit(separatedBy: " :")
+        else { return nil }
         self.channel = channel
         if rhsRemaining.first == "-" {
             self.action = .stop
@@ -47,5 +47,4 @@ public struct HostTarget {
             }
         }
     }
-    
 }

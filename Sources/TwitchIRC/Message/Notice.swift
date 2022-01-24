@@ -360,5 +360,4 @@ public struct Notice {
         }
         self.messageId = messageId
     }
-    
 }

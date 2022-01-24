@@ -1,7 +1,7 @@
 
 public struct ChannelEntrance {
     
-    /// The message Twitch accompanying the notice.
+    /// The Twitch message accompanying the notice.
     public var message = String()
     /// The user that has successfully joined the channel. All lowercased.
     public var userLogin = String()
@@ -33,5 +33,4 @@ public struct ChannelEntrance {
         self.userLogin = userLogin
         self.joinedChannel = joinedChannel
     }
-    
 }

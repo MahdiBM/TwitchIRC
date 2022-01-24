@@ -7,9 +7,11 @@ struct ParameterParser {
     /// The storage of the values.
     private let storage: [StoredElement]
     /// Indices of the used storage elements.
-    private var usedIndices = [Int]()
+    private var usedIndices = Set<Int>()
     /// Keys that were unavailable.
     private var unavailableKeys = [String]()
+    /// Keys that were failed to be parsed into a certain type.
+    private var unparsedKeys = [(key: String, type: String)]()
     
     init(_ input: String) {
         let values = input.components(separatedBy: ";").compactMap {
@@ -18,15 +20,23 @@ struct ParameterParser {
         self.storage = .init(values.enumerated())
     }
     
-    func getUnknownElements(excludedKeys: [String] = []) -> [(key: String, value: String)] {
-        self.storage.filter({
-            !usedIndices.contains($0.offset)
-            && !excludedKeys.contains($0.element.key)
-        }).map(\.element)
-    }
-    
-    func getUnavailableKeys(excludedKeys: [String] = []) -> [String] {
-        self.unavailableKeys.filter({ !excludedKeys.contains($0) })
+    func getLeftOvers(
+        excludedUnusedKeys: [String] = [],
+        excludedUnavailableKeys: [String] = []
+    ) -> ParsingLeftOvers {
+        let unusedPairs = self.storage.filter({
+            !(self.usedIndices.contains($0.offset) || excludedUnusedKeys.contains($0.element.key))
+        }).map({ ParsingLeftOvers.UnusedPair(key: $0.element.key, value: $0.element.value) })
+        let unavailableKeys = self.unavailableKeys
+            .filter({ !excludedUnavailableKeys.contains($0) })
+        let unparsedKeys = unparsedKeys.map {
+            ParsingLeftOvers.UnparsedKey(key: $0.key, type: $0.type)
+        }
+        return ParsingLeftOvers(
+            unusedPairs: unusedPairs,
+            unavailableKeys: unavailableKeys,
+            unparsedKeys: unparsedKeys
+        )
     }
     
     private mutating func get(for key: String) -> StoredElement? {
@@ -38,9 +48,13 @@ struct ParameterParser {
         }
     }
     
+    private mutating func appendUnparsedKey<T>(key: String, type: T.Type) {
+        self.unparsedKeys.append((key: key, type: String(describing: type)))
+    }
+    
     mutating func optionalString(for key: String) -> String? {
         if let stored = self.get(for: key) {
-            self.usedIndices.append(stored.offset)
+            self.usedIndices.insert(stored.offset)
             return stored.element.value
         } else {
             return nil
@@ -60,10 +74,14 @@ struct ParameterParser {
     }
     
     mutating func optionalUInt(for key: String) -> UInt? {
-        if let stored = self.get(for: key),
-           let uint = UInt(stored.element.value) {
-            self.usedIndices.append(stored.offset)
-            return uint
+        if let stored = self.get(for: key) {
+            self.usedIndices.insert(stored.offset)
+            if let uint = UInt(stored.element.value) {
+                return uint
+            } else {
+               self.appendUnparsedKey(key: key, type: UInt.self)
+               return nil
+           }
         } else {
             return nil
         }
@@ -74,10 +92,14 @@ struct ParameterParser {
     }
     
     mutating func optionalInt(for key: String) -> Int? {
-        if let stored = self.get(for: key),
-           let int = Int(stored.element.value) {
-            self.usedIndices.append(stored.offset)
-            return int
+        if let stored = self.get(for: key) {
+            self.usedIndices.insert(stored.offset)
+            if let int = Int(stored.element.value) {
+                return int
+            } else {
+                self.appendUnparsedKey(key: key, type: Int.self)
+                return nil
+            }
         } else {
             return nil
         }
@@ -89,14 +111,14 @@ struct ParameterParser {
     
     mutating func optionalBool(for key: String) -> Bool? {
         if let stored = self.get(for: key) {
+            self.usedIndices.insert(stored.offset)
             let value = stored.element.value
             if value == "1" || value == "true" {
-                self.usedIndices.append(stored.offset)
                 return true
             } else if value == "0" || value == "false" {
-                self.usedIndices.append(stored.offset)
                 return false
             } else {
+                self.appendUnparsedKey(key: key, type: Bool.self)
                 return nil
             }
         } else {
@@ -112,10 +134,14 @@ struct ParameterParser {
         for key: String,
         as type: R.Type = R.self
     ) -> R? where R: RawRepresentable, R.RawValue == String {
-        if let stored = self.get(for: key),
-           let representable = R.init(rawValue: stored.element.value) {
-            self.usedIndices.append(stored.offset)
-            return representable
+        if let stored = self.get(for: key) {
+            self.usedIndices.insert(stored.offset)
+            if let representable = R.init(rawValue: stored.element.value) {
+                return representable
+            } else {
+                self.appendUnparsedKey(key: key, type: R.self)
+                return nil
+           }
         } else {
             return nil
         }

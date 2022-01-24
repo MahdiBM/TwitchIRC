@@ -30,5 +30,4 @@ public struct Part {
         }
         self.userLogin = String(name1)
     }
-    
 }

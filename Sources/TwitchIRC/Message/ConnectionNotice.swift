@@ -1,7 +1,7 @@
 
 public struct ConnectionNotice {
     
-    /// The message Twitch accompanying the notice.
+    /// The Twitch message accompanying the notice.
     public var message = String()
     /// The user that has been successfully connected. All lowercased.
     public var userLogin = String()

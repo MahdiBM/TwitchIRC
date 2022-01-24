@@ -1,7 +1,7 @@
 
 public struct Whisper {
     
-    /// The receiver of this whisper.
+    /// The receiver of this whisper. All lowercased.
     public var receiver = String()
     /// The message sent.
     public var message = String()
@@ -19,10 +19,8 @@ public struct Whisper {
     public var threadId = String()
     /// Sender's Twitch identifier.
     public var userId = String()
-    /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(key: String, value: String)]()
-    /// Keys that were tried to be retrieved but were unavailable.
-    public var unavailableKeys = [String]()
+    /// Contains info about unused info and parsing problems.
+    public var parsingLeftOvers = ParsingLeftOvers()
     
     public init() { }
     
@@ -32,9 +30,10 @@ public struct Whisper {
         } /// separating with " ", then lhs is the receiver and rhs is the actual message
         
         self.receiver = receiver
-        /// `dropFirst` to remove ":", `componentsOneSplit(separatedBy: " :")` fails in rare cases
-        /// where user inputs weird chars. One case is included in tests of `privateMessage`.
-        self.message = String(message.dropFirst())
+        /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
+        /// normal methods like a simple `.dropFirst()` fail in rare cases.
+        /// Remove `.unicodeScalars` in `PrivateMessage`'s `message` and run tests to find out.
+        self.message = String(message.unicodeScalars.dropFirst())
         
         var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
         
@@ -47,8 +46,8 @@ public struct Whisper {
         self.userId = parser.string(for: "user-id")
         
         let deprecatedKeys = ["turbo", "user-type"]
-        self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
-        self.unavailableKeys = parser.getUnavailableKeys()
+        self.parsingLeftOvers = parser.getLeftOvers(
+            excludedUnusedKeys: deprecatedKeys
+        )
     }
-    
 }

@@ -11,13 +11,20 @@ enum TestUtils {
         line: UInt = #line
     ) throws -> T {
         let messages = Message.parse(ircOutput: string)
-        XCTAssertEqual(messages.count, 1, "Message count expected to be 1: \(messages)", file: file, line: line)
-        let value = try XCTUnwrap(messages.first?.anyValue as? T, "Message type not expected. Available value: \(messages.first?.anyValue ?? "NULL"), Expected type: \(T.self)", file: file, line: line)
-        return value
+        XCTAssertEqual(
+            messages.count,
+            1,
+            "Message count expected to be 1: \(messages)", file: file, line: line
+        )
+        return try XCTUnwrap(
+            messages.first?.anyValue as? T,
+            "Message case not expected. Available value: \(messages.first?.anyValue ?? "NULL"), Expected type: \(T.self)", file: file, line: line
+        )
     }
     
 }
 
+// MARK: - Message anyValue
 private extension Message {
     var anyValue: Any {
         switch self {
@@ -42,7 +49,7 @@ private extension Message {
         case .notice(let notice):
             return notice
         case .reconnect:
-            return ()
+            return "reconnect"
         case .roomState(let roomState):
             return roomState
         case .userNotice(let userNotice):
@@ -54,9 +61,9 @@ private extension Message {
         case .whisper(let whisper):
             return whisper
         case .ping:
-            return ()
+            return "ping"
         case .pong:
-            return ()
+            return "pong"
         case .unknown(let message):
             return message
         }

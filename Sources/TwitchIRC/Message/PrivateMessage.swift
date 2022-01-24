@@ -4,15 +4,15 @@ public struct PrivateMessage {
     
     public struct ReplyParent {
         /// Replied user's display name with upper/lower-case letters.
-        public var displayName: String?
+        public var displayName: String = ""
         /// Replied user's lowercased name.
-        public var userLogin: String?
+        public var userLogin: String = ""
         /// The replied message.
-        public var message: String?
+        public var message: String = ""
         /// Replied message's id.
-        public var id: String?
+        public var id: String = ""
         /// Replied user's Twitch identifier.
-        public var userId: String?
+        public var userId: String = ""
     }
     
     /// Channel lowercased name.
@@ -53,10 +53,8 @@ public struct PrivateMessage {
     public var userId = String()
     /// Info about the replied message, if any.
     public var replyParent = ReplyParent()
-    /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(key: String, value: String)]()
-    /// Keys that were tried to be retrieved but were unavailable.
-    public var unavailableKeys = [String]()
+    /// Contains info about unused info and parsing problems.
+    public var parsingLeftOvers = ParsingLeftOvers()
     
     // MARK: Convenience stuff
     
@@ -88,9 +86,10 @@ public struct PrivateMessage {
             return nil
         } /// separating with " ", then lhs contains channel name and rhs is the actual message
         self.channel = channel
-        /// `dropFirst` to remove ":", `componentsOneSplit(separatedBy: " :")` fails in rare cases
-        /// where user inputs weird chars. One case is included in tests of `privateMessage`.
-        self.message = String(message.dropFirst())
+        /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
+        /// normal methods like a simple `.dropFirst()` fail in rare cases.
+        /// Remove `.unicodeScalars` and run tests to find out.
+        self.message = String(message.unicodeScalars.dropFirst())
         
         guard let (infoPart, _) = contentLhs.componentsOneSplit(separatedBy: " :") else {
             return nil
@@ -115,22 +114,23 @@ public struct PrivateMessage {
         self.clientNonce = parser.string(for: "client-nonce")
         self.userId = parser.string(for: "user-id")
         self.replyParent = .init(
-            displayName: parser.optionalString(for: "reply-parent-display-name"),
-            userLogin: parser.optionalString(for: "reply-parent-user-login"),
-            message: parser.optionalString(for: "reply-parent-msg-body"),
-            id: parser.optionalString(for: "reply-parent-msg-id"),
-            userId: parser.optionalString(for: "reply-parent-user-id")
+            displayName: parser.string(for: "reply-parent-display-name"),
+            userLogin: parser.string(for: "reply-parent-user-login"),
+            message: parser.string(for: "reply-parent-msg-body"),
+            id: parser.string(for: "reply-parent-msg-id"),
+            userId: parser.string(for: "reply-parent-user-id")
         )
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
         let occasionalKeys: [String]
-        if self.replyParent.message?.isEmpty == false { /// replied message is available
+        if !self.replyParent.message.isEmpty { /// replied message is available
             occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce"]
         } else {
-            occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce", "reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]
+            occasionalKeys = ["bits", "emote-only", "msg-id", "custom-reward-id", "client-nonce", "flags", "first-msg", "reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]
         }
-        self.unavailableKeys = parser.getUnavailableKeys(excludedKeys: occasionalKeys)
+        self.parsingLeftOvers = parser.getLeftOvers(
+            excludedUnusedKeys: deprecatedKeys,
+            excludedUnavailableKeys: occasionalKeys
+        )
     }
-    
 }

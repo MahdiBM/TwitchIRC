@@ -148,7 +148,7 @@ public struct UserNotice {
     /// Message's id.
     public var id = String()
     /// User's lowercased name.
-    public var login = String()
+    public var userLogin = String()
     /// More-precise info about this user notice.
     public var msgId: Action!
     /// Broadcaster's Twitch identifier.
@@ -159,10 +159,8 @@ public struct UserNotice {
     public var tmiSentTs = UInt()
     /// User's Twitch identifier.
     public var userId = String()
-    /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(key: String, value: String)]()
-    /// Keys that were tried to be retrieved but were unavailable.
-    public var unavailableKeys = [String]()
+    /// Contains info about unused info and parsing problems.
+    public var parsingLeftOvers = ParsingLeftOvers()
     
     public init() { }
     
@@ -175,10 +173,10 @@ public struct UserNotice {
             separatedBy: " "
         ) {
             self.channel = channel
-            /// `dropFirst` to remove ":", `componentsOneSplit(separatedBy: " :")` fails in
-            /// rare cases where user inputs weird chars. One case is included in
-            /// tests of `privateMessage`.
-            self.message = String(message.dropFirst())
+            /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
+            /// normal methods like a simple `.dropFirst()` fail in rare cases.
+            /// Remove `.unicodeScalars` in `PrivateMessage`'s `message` and run tests to find out.
+            self.message = String(message.unicodeScalars.dropFirst())
         } else {
             self.channel = String(contentRhs.dropFirst())
         }
@@ -299,7 +297,7 @@ public struct UserNotice {
                 viewerCount: parser.uint(for: "msg-param-viewerCount"),
                 profileImageURL: parser.string(for: "msg-param-profileImageURL")
             ))
-            occasionalSubDependentKeys = []
+            occasionalSubDependentKeys = ["msg-param-profileImageURL"]
         case "unraid":
             self.msgId = .unraid
             occasionalSubDependentKeys = []
@@ -342,15 +340,17 @@ public struct UserNotice {
         self.emotes = parser.array(for: "emotes")
         self.flags = parser.array(for: "flags")
         self.id = parser.string(for: "id")
-        self.login = parser.string(for: "login")
+        self.userLogin = parser.string(for: "login")
         self.roomId = parser.string(for: "room-id")
         self.systemMessage = parser.string(for: "system-msg")
         self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
         self.userId = parser.string(for: "user-id")
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        self.unknownStorage = parser.getUnknownElements(excludedKeys: deprecatedKeys)
-        self.unavailableKeys = parser.getUnavailableKeys(excludedKeys: occasionalSubDependentKeys)
+        let occasionalKeys = occasionalSubDependentKeys + ["flags"]
+        self.parsingLeftOvers = parser.getLeftOvers(
+            excludedUnusedKeys: deprecatedKeys,
+            excludedUnavailableKeys: occasionalKeys
+        )
     }
-    
 }

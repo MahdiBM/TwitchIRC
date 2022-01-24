@@ -30,5 +30,4 @@ public struct Join {
         }
         self.userLogin = String(name1)
     }
-    
 }

@@ -18,10 +18,8 @@ public struct RoomState {
     public var subsOnly = Bool()
     /// A flag for when you enter a channel and Twitch encourages you to send an emote.
     public var rituals = Bool()
-    /// Remaining unhandled info in the message. Optimally empty.
-    public var unknownStorage = [(key: String, value: String)]()
-    /// Keys that were tried to be retrieved but were unavailable.
-    public var unavailableKeys = [String]()
+    /// Contains info about unused info and parsing problems.
+    public var parsingLeftOvers = ParsingLeftOvers()
     
     public init() { }
     
@@ -41,9 +39,9 @@ public struct RoomState {
         self.subsOnly = parser.bool(for: "subs-only")
         self.rituals = parser.bool(for: "rituals")
         
-        self.unknownStorage = parser.getUnknownElements()
-        let occasionalKeys = ["emote-only", "r9k", "slow", "subs-only", "rituals"]
-        self.unavailableKeys = parser.getUnavailableKeys(excludedKeys: occasionalKeys)
+        let occasionalKeys = ["emote-only", "r9k", "slow", "subs-only", "rituals", "followers-only"]
+        self.parsingLeftOvers = parser.getLeftOvers(
+            excludedUnavailableKeys: occasionalKeys
+        )
     }
-    
 }

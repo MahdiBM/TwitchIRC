@@ -35,5 +35,4 @@ public struct ClearChat {
             self.banDuration = UInt(banDurationString)
         }
     }
-    
 }
