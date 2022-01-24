@@ -35,7 +35,7 @@ public struct Whisper {
         /// Remove `.unicodeScalars` in `PrivateMessage`'s `message` and run tests to find out.
         self.message = String(message.unicodeScalars.dropFirst())
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
+        var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
         
         self.badges = parser.array(for: "badges")
         self.color = parser.string(for: "color")

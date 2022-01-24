@@ -13,7 +13,9 @@ final class UserNoticeTests: XCTestCase {
     ) throws -> T {
         try XCTUnwrap(
             action.anyValue as? T,
-            "Action case not expected. Available value: \(action.anyValue), Expected type: \(T.self)", file: file, line: line
+            "Action case not expected. Available value: \(action.anyValue), Expected type: \(T.self)",
+            file: file,
+            line: line
         )
     }
     

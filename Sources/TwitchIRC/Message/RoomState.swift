@@ -29,7 +29,7 @@ public struct RoomState {
         else { return nil }
         self.channel = String(contentRhs.dropFirst())
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
+        var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
         
         self.emoteOnly = parser.bool(for: "emote-only")
         self.followersOnly = parser.int(for: "followers-only")

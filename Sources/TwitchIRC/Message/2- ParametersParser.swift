@@ -1,6 +1,6 @@
 
 /// Parses parameters from Twitch-sent values.
-struct ParameterParser {
+struct ParametersParser {
     
     private typealias StoredElement = (offset: Int, element: (key: String, value: String))
     
@@ -41,6 +41,7 @@ struct ParameterParser {
     
     private mutating func get(for key: String) -> StoredElement? {
         if let stored = storage.first(where: { $0.element.key == key }) {
+            self.usedIndices.insert(stored.offset)
             return stored
         } else {
             self.unavailableKeys.append(key)
@@ -54,7 +55,6 @@ struct ParameterParser {
     
     mutating func optionalString(for key: String) -> String? {
         if let stored = self.get(for: key) {
-            self.usedIndices.insert(stored.offset)
             return stored.element.value
         } else {
             return nil
@@ -75,7 +75,6 @@ struct ParameterParser {
     
     mutating func optionalUInt(for key: String) -> UInt? {
         if let stored = self.get(for: key) {
-            self.usedIndices.insert(stored.offset)
             if let uint = UInt(stored.element.value) {
                 return uint
             } else {
@@ -93,7 +92,6 @@ struct ParameterParser {
     
     mutating func optionalInt(for key: String) -> Int? {
         if let stored = self.get(for: key) {
-            self.usedIndices.insert(stored.offset)
             if let int = Int(stored.element.value) {
                 return int
             } else {
@@ -111,7 +109,6 @@ struct ParameterParser {
     
     mutating func optionalBool(for key: String) -> Bool? {
         if let stored = self.get(for: key) {
-            self.usedIndices.insert(stored.offset)
             let value = stored.element.value
             if value == "1" || value == "true" {
                 return true
@@ -135,7 +132,6 @@ struct ParameterParser {
         as type: R.Type = R.self
     ) -> R? where R: RawRepresentable, R.RawValue == String {
         if let stored = self.get(for: key) {
-            self.usedIndices.insert(stored.offset)
             if let representable = R.init(rawValue: stored.element.value) {
                 return representable
             } else {
@@ -146,4 +142,23 @@ struct ParameterParser {
             return nil
         }
     }
+    
+#if DEBUG
+    // MARK: - Test-Only stuff
+    func _testOnly_storage() -> [(offset: Int, element: (key: String, value: String))] {
+        self.storage
+    }
+    
+    func _testOnly_usedIndices() -> Set<Int> {
+        self.usedIndices
+    }
+    
+    func _testOnly_unavailableKeys() -> [String] {
+        self.unavailableKeys
+    }
+    
+    func _testOnly_unparsedKeys() -> [(key: String, type: String)] {
+        self.unparsedKeys
+    }
+#endif
 }

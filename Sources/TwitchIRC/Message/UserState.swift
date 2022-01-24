@@ -25,7 +25,7 @@ public struct UserState {
         }
         self.channel = String(contentRhs.dropFirst())
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
+        var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
         
         self.badgeInfo = parser.array(for: "badge-info")
         self.badges = parser.array(for: "badges")

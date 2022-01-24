@@ -36,7 +36,7 @@ public struct ClearMessage {
             return nil
         } /// check for ":" at the end
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
+        var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
         
         self.userLogin = parser.string(for: "login")
         self.targetMessageId = parser.string(for: "target-msg-id")

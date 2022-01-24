@@ -10,22 +10,25 @@ enum TestUtils {
         file: StaticString = #file,
         line: UInt = #line
     ) throws -> T {
-        let messages = Message.parse(ircOutput: string)
+        let messages = IncomingMessage.parse(ircOutput: string)
         XCTAssertEqual(
             messages.count,
             1,
             "Message count expected to be 1: \(messages)", file: file, line: line
         )
+        let first = messages.first?.message
         return try XCTUnwrap(
-            messages.first?.anyValue as? T,
-            "Message case not expected. Available value: \(messages.first?.anyValue ?? "NULL"), Expected type: \(T.self)", file: file, line: line
+            first?.anyValue as? T,
+            "Message case not expected. Available value: \(first?.anyValue ?? "NULL"), Expected type: \(T.self)",
+            file: file,
+            line: line
         )
     }
     
 }
 
 // MARK: - Message anyValue
-private extension Message {
+private extension IncomingMessage {
     var anyValue: Any {
         switch self {
         case .connectionNotice(let connectionNotice):

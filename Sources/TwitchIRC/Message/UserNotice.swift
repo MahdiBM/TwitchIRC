@@ -181,7 +181,7 @@ public struct UserNotice {
             self.channel = String(contentRhs.dropFirst())
         }
         
-        var parser = ParameterParser(String(contentLhs.dropLast(2).dropFirst()))
+        var parser = ParametersParser(String(contentLhs.dropLast(2).dropFirst()))
         
         let occasionalSubDependentKeys: [String]
         

@@ -1,6 +1,6 @@
 
-/// A Twitch Message.
-public enum Message {
+/// A message coming from Twitch.
+public enum IncomingMessage {
     
     case connectionNotice(ConnectionNotice)
     case channelEntrance(ChannelEntrance)
@@ -23,8 +23,10 @@ public enum Message {
     case unknown(message: String)
     
     /// Parses all messages included.
-    public static func parse(ircOutput: String) -> [Self] {
-        ircOutput.components(separatedBy: "\r\n").filter({ !$0.isEmpty }).map(parseMessage)
+    public static func parse(ircOutput: String) -> [(message: Self, text: String)] {
+        ircOutput.components(separatedBy: "\r\n")
+            .filter({ !$0.isEmpty })
+            .map({ (parseMessage(message: $0), $0) })
     }
     
     private static func parseMessage(message: String) -> Self {
