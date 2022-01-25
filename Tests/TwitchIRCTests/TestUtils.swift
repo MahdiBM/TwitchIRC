@@ -14,12 +14,14 @@ enum TestUtils {
         XCTAssertEqual(
             messages.count,
             1,
-            "Message count expected to be 1: \(messages)", file: file, line: line
+            "Message count expected to be 1: \(messages)",
+            file: file,
+            line: line
         )
         let first = messages.first?.message
         return try XCTUnwrap(
             first?.anyValue as? T,
-            "Message case not expected. Available value: \(first?.anyValue ?? "NULL"), Expected type: \(T.self)",
+            "Unexpected IncomingMessage parsed. Available value: \(first?.anyValue ?? "NULL"), Expected type: \(T.self)",
             file: file,
             line: line
         )
@@ -67,8 +69,6 @@ private extension IncomingMessage {
             return "ping"
         case .pong:
             return "pong"
-        case .unknown(let message):
-            return message
         }
     }
 }
