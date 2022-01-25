@@ -252,6 +252,46 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(info.recipientId, "693345558")
         XCTAssertEqual(info.recipientUserName, "cutemaggi")
     }
+    
+    func testParsedValues8() throws {
+        let string = #"@badge-info=;badges=;color=;display-name=AnAnonymousGifter;emotes=;flags=;id=fdfebaac-e54e-44c1-b81c-95fa2f4f6c73;login=ananonymousgifter;mod=0;msg-id=subgift;msg-param-fun-string=FunStringFive;msg-param-gift-months=1;msg-param-goal-contribution-type=SUB_POINTS;msg-param-goal-current-contributions=181;msg-param-goal-description=Kochen\s+\s69;msg-param-goal-target-contributions=299;msg-param-goal-user-contributions=1;msg-param-months=4;msg-param-origin-id=21\sc2\sd1\s0d\sc9\s61\s69\sa0\s2c\s73\sad\s42\sad\s79\s60\s5e\s72\sa5\s33\s6b;msg-param-recipient-display-name=rtg_richy;msg-param-recipient-id=645584945;msg-param-recipient-user-name=rtg_richy;msg-param-sub-plan-name=Channel\sSubscription\s(dennisrlf_);msg-param-sub-plan=1000;room-id=506507314;subscriber=0;system-msg=An\sanonymous\suser\sgifted\sa\sTier\s1\ssub\sto\srtg_richy!\s;tmi-sent-ts=1643135914821;user-id=274598607;user-type= :tmi.twitch.tv USERNOTICE #dennisrlf_"#
+        
+        let un: UserNotice = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(un.channel, "dennisrlf_")
+        XCTAssertEqual(un.message, "")
+        XCTAssertEqual(un.badgeInfo, [])
+        XCTAssertEqual(un.badges, [])
+        XCTAssertEqual(un.color, "")
+        XCTAssertEqual(un.displayName, "AnAnonymousGifter")
+        XCTAssertEqual(un.emotes, [])
+        XCTAssertEqual(un.flags, [])
+        XCTAssertEqual(un.id, "fdfebaac-e54e-44c1-b81c-95fa2f4f6c73")
+        XCTAssertEqual(un.userLogin, "ananonymousgifter")
+        XCTAssertEqual(un.roomId, "506507314")
+        XCTAssertEqual(un.systemMessage, #"An\sanonymous\suser\sgifted\sa\sTier\s1\ssub\sto\srtg_richy!\s"#)
+        XCTAssertEqual(un.tmiSentTs, 1643135914821)
+        XCTAssertEqual(un.userId, "274598607")
+        XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
+        
+        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.msgId)
+        
+        XCTAssertEqual(info.months, 4)
+        XCTAssertEqual(info.recipientDisplayName, "rtg_richy")
+        XCTAssertEqual(info.recipientId, "645584945")
+        XCTAssertEqual(info.recipientUserName, "rtg_richy")
+        XCTAssertEqual(info.subPlan, .tier1)
+        XCTAssertEqual(info.subPlanName, #"Channel\sSubscription\s(dennisrlf_)"#)
+        XCTAssertEqual(info.giftMonths, 1)
+        XCTAssertEqual(info.originId, #"21\sc2\sd1\s0d\sc9\s61\s69\sa0\s2c\s73\sad\s42\sad\s79\s60\s5e\s72\sa5\s33\s6b"#)
+        XCTAssertEqual(info.senderCount, 0)
+        XCTAssertEqual(info.funString, "FunStringFive")
+        XCTAssertEqual(info.goalContributionType, "SUB_POINTS")
+        XCTAssertEqual(info.goalCurrentContributions, "181")
+        XCTAssertEqual(info.goalDescription, #"Kochen\s+\s69"#)
+        XCTAssertEqual(info.goalTargetContributions, "299")
+        XCTAssertEqual(info.goalUserContributions, "1")
+    }
 }
 
 // MARK: - UserNotice.Action anyValue
