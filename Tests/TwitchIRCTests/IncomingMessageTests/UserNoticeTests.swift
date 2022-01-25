@@ -3,17 +3,17 @@ import XCTest
 
 final class UserNoticeTests: XCTestCase {
     
-    typealias Action = UserNotice.Action
+    typealias Action = UserNotice.MessageID
     
     func unwrapInnerValue<T>(
-        action: UserNotice.Action,
+        action: UserNotice.MessageID,
         as type: T.Type = T.self,
         file: StaticString = #file,
         line: UInt = #line
     ) throws -> T {
         try XCTUnwrap(
             action.anyValue as? T,
-            "Action case not expected. Available value: \(action.anyValue), Expected type: \(T.self)",
+            "MessageID case not expected. Available value: \(action.anyValue), Expected type: \(T.self)",
             file: file,
             line: line
         )
@@ -40,7 +40,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "1337")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.ReSubInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.ReSubInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.cumulativeMonths, 6)
         XCTAssertEqual(info.shouldShareStreak, true)
@@ -80,7 +80,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "13405587")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.months, 1)
         XCTAssertEqual(info.recipientDisplayName, "Mr_Woodchuck")
@@ -119,7 +119,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "196450059")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.months, 3)
         XCTAssertEqual(info.recipientDisplayName, "TenureCalculator")
@@ -158,7 +158,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "123456")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.RaidInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.RaidInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.displayName, "TestChannel")
         XCTAssertEqual(info.login, "testchannel")
@@ -187,7 +187,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "131260580")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let ritualName: String = try unwrapInnerValue(action: un.msgId)
+        let ritualName: String = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(ritualName, "new_chatter")
     }
@@ -213,7 +213,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "757980712")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.CommunityPayForwardInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.CommunityPayForwardInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.priorGifterAnonymous, false)
         XCTAssertEqual(info.priorGifterDisplayName, "dillydilby")
@@ -242,7 +242,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "449423975")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.StandardPayForwardInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.StandardPayForwardInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.priorGifterAnonymous, false)
         XCTAssertEqual(info.priorGifterDisplayName, "Benenator_007")
@@ -274,7 +274,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.userId, "274598607")
         XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
         
-        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.msgId)
+        let info: Action.SubGiftInfo = try unwrapInnerValue(action: un.messageId)
         
         XCTAssertEqual(info.months, 4)
         XCTAssertEqual(info.recipientDisplayName, "rtg_richy")
@@ -294,8 +294,8 @@ final class UserNoticeTests: XCTestCase {
     }
 }
 
-// MARK: - UserNotice.Action anyValue
-private extension UserNotice.Action {
+// MARK: - UserNotice.MessageID anyValue
+private extension UserNotice.MessageID {
     var anyValue: Any {
         switch self {
         case let .sub(value):

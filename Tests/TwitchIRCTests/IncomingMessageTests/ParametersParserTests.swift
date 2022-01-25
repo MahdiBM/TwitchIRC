@@ -55,7 +55,7 @@ final class ParametersParserTests: XCTestCase {
         /// `user-type` is equal to `mod`
         /// so trying to get it as any Representable type like `SubPlan` must fail.
         XCTAssertEqual(
-            parser.representable(for: "user-type", as: UserNotice.Action.SubPlan.self),
+            parser.representable(for: "user-type", as: UserNotice.MessageID.SubPlan.self),
             nil
         )
         /// There is no such key as `non-existent-key`

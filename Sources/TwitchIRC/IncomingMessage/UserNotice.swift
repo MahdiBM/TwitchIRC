@@ -2,7 +2,7 @@
 /// A Twitch `USERNOTICE` message.
 public struct UserNotice {
     
-    public enum Action {
+    public enum MessageID {
         
         public enum SubPlan: String {
             case followersTier = ""
@@ -151,7 +151,7 @@ public struct UserNotice {
     /// User's lowercased name.
     public var userLogin = String()
     /// More-precise info about this user notice.
-    public var msgId: Action!
+    public var messageId: MessageID!
     /// Broadcaster's Twitch identifier.
     public var roomId = String()
     /// System's description of this message.
@@ -188,7 +188,7 @@ public struct UserNotice {
         
         switch parser.optionalString(for: "msg-id") {
         case "sub":
-            self.msgId = .sub(.init(
+            self.messageId = .sub(.init(
                 cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
                 shouldShareStreak: parser.bool(for: "msg-param-should-share-streak"),
                 streakMonths: parser.uint(for: "msg-param-streak-months"),
@@ -206,7 +206,7 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = [["msg-param-streak-months"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
         case "resub":
-            self.msgId = .resub(.init(
+            self.messageId = .resub(.init(
                 cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
                 shouldShareStreak: parser.bool(for: "msg-param-should-share-streak"),
                 streakMonths: parser.uint(for: "msg-param-streak-months"),
@@ -225,7 +225,7 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = [["msg-param-streak-months"], ["msg-param-anon-gift", "msg-param-gift-month-being-redeemed", "msg-param-gift-months", "msg-param-gifter-id", "msg-param-gifter-login", "msg-param-gifter-name"]]
         case "subgift":
-            self.msgId = .subGift(.init(
+            self.messageId = .subGift(.init(
                 months: parser.uint(for: "msg-param-months"),
                 recipientDisplayName: parser.string(for: "msg-param-recipient-display-name"),
                 recipientId: parser.string(for: "msg-param-recipient-id"),
@@ -244,7 +244,7 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-fun-string"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
         case "anonsubgift":
-            self.msgId = .anonSubGift(.init(
+            self.messageId = .anonSubGift(.init(
                 months: parser.uint(for: "msg-param-months"),
                 recipientDisplayName: parser.string(for: "msg-param-recipient-display-name"),
                 recipientId: parser.string(for: "msg-param-recipient-id"),
@@ -263,7 +263,7 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = [["msg-param-fun-string"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
         case "submysterygift":
-            self.msgId = .subMysteryGift(.init(
+            self.messageId = .subMysteryGift(.init(
                 massGiftCount: parser.uint(for: "msg-param-mass-gift-count"),
                 originId: parser.string(for: "msg-param-origin-id"),
                 senderCount: parser.uint(for: "msg-param-sender-count"),
@@ -277,7 +277,7 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = [["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-gift-theme"]]
         case "giftpaidupgrade":
-            self.msgId = .giftPaidUpgrade(.init(
+            self.messageId = .giftPaidUpgrade(.init(
                 promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
                 promoName: parser.string(for: "msg-param-promo-name"),
                 senderLogin: parser.string(for: "msg-param-sender-login"),
@@ -285,16 +285,16 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = []
         case "rewardgift":
-            self.msgId = .rewardGift
+            self.messageId = .rewardGift
             occasionalSubDependentKeyGroups = []
         case "anongiftpaidupgrade":
-            self.msgId = .anonGiftPaidUpgrade(.init(
+            self.messageId = .anonGiftPaidUpgrade(.init(
                 promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
                 promoName: parser.string(for: "msg-param-promo-name")
             ))
             occasionalSubDependentKeyGroups = []
         case "raid":
-            self.msgId = .raid(.init(
+            self.messageId = .raid(.init(
                 displayName: parser.string(for: "msg-param-displayName"),
                 login: parser.string(for: "msg-param-login"),
                 viewerCount: parser.uint(for: "msg-param-viewerCount"),
@@ -302,20 +302,20 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = [["msg-param-profileImageURL"]]
         case "unraid":
-            self.msgId = .unraid
+            self.messageId = .unraid
             occasionalSubDependentKeyGroups = []
         case "ritual":
-            self.msgId = .ritual(
+            self.messageId = .ritual(
                 name: parser.string(for: "msg-param-ritual-name")
             )
             occasionalSubDependentKeyGroups = []
         case "bitsbadgetier":
-            self.msgId = .bitsBadgeTier(
+            self.messageId = .bitsBadgeTier(
                 threshold: parser.string(for: "msg-param-threshold")
             )
             occasionalSubDependentKeyGroups = []
         case "communitypayforward":
-            self.msgId = .communityPayForward(.init(
+            self.messageId = .communityPayForward(.init(
                 priorGifterAnonymous: parser.bool(for: "msg-param-prior-gifter-anonymous"),
                 priorGifterDisplayName: parser.string(for: "msg-param-prior-gifter-display-name"),
                 priorGifterId: parser.string(for: "msg-param-prior-gifter-id"),
@@ -323,7 +323,7 @@ public struct UserNotice {
             ))
             occasionalSubDependentKeyGroups = []
         case "standardpayforward":
-            self.msgId = .standardPayForward(.init(
+            self.messageId = .standardPayForward(.init(
                 priorGifterAnonymous: parser.bool(for: "msg-param-prior-gifter-anonymous"),
                 priorGifterDisplayName: parser.string(for: "msg-param-prior-gifter-display-name"),
                 priorGifterId: parser.string(for: "msg-param-prior-gifter-id"),
