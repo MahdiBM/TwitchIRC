@@ -1,5 +1,5 @@
 
-enum OutgoingMessage {
+public enum OutgoingMessage {
     /// Sends a message to a channel.
     case privateMessage(to: String, message: String, msgIdToReply: String? = nil)
     /// Sends a whisper to a channel.
@@ -20,7 +20,7 @@ enum OutgoingMessage {
     /// Pong Twitch.
     case pong
     
-    func serialize() -> String {
+    public func serialize() -> String {
         switch self {
         case let .privateMessage(channel, message, msgIdToReply):
             let prefix: String
