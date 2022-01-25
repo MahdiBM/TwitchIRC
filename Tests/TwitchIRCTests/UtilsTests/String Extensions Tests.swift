@@ -1,6 +1,5 @@
 @testable import TwitchIRC
 import XCTest
-import Foundation
 
 final class StringExtensionTests: XCTestCase {
     
