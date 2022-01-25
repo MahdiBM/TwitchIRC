@@ -335,29 +335,45 @@ public struct Notice {
         }
     }
     
-    /// The channel's lowercased name.
-    public var channel = String()
-    /// The notice's message.
-    public var message = String()
-    /// The notice's identifier.
-    public var messageId: MessageID!
+    public enum Kind {
+        case global(
+            /// The notice's message.
+            message: String
+        )
+        case local(
+            /// The channel's lowercased name.
+            channel: String,
+            /// The notice's message.
+            message: String,
+            /// The notice's identifier.
+            messageId: MessageID
+        )
+    }
+    
+    /// The notice's kind. Also contains the related info.
+    public var kind: Kind!
     
     public init() { }
     
     init? (contentLhs: String, contentRhs: String) {
-        guard contentLhs.count > 10,
-              contentRhs.first == "#",
-              contentLhs.hasPrefix("@msg-id="),
-              let (channel, message) = contentRhs.dropFirst().componentsOneSplit(separatedBy: " :")
-        else {
+        if contentLhs.count > 10,
+           contentRhs.first == "#",
+           contentLhs.hasPrefix("@msg-id="),
+           let (channel, message) = contentRhs.dropFirst().componentsOneSplit(separatedBy: " :") {
+            let messageIdValue = String(contentLhs.dropFirst(8).dropLast(2))
+            guard let messageId = MessageID(rawValue: messageIdValue) else {
+                return nil
+            }
+            self.kind = .local(
+                channel: String(channel),
+                message: String(message),
+                messageId: messageId
+            )
+        } else if let (star, message) = contentRhs.componentsOneSplit(separatedBy: " :"),
+                  star == "*" {
+            self.kind = .global(message: message)
+        } else {
             return nil
         }
-        self.channel = String(channel)
-        self.message = String(message)
-        let messageIdValue = String(contentLhs.dropFirst(8).dropLast(2))
-        guard let messageId = MessageID(rawValue: messageIdValue) else {
-            return nil
-        }
-        self.messageId = messageId
     }
 }

@@ -19,10 +19,14 @@ final class NoticeTests: XCTestCase {
         
         let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
         
-        XCTAssertEqual(notice.message, "This room is no longer in slow mode.")
-        XCTAssertEqual(notice.channel, "dallas")
-        let messageId = try XCTUnwrap(notice.messageId)
-        XCTAssertEqual(messageId, .slowOff)
+        switch notice.kind {
+        case let .local(channel, message, messageId):
+            XCTAssertEqual(message, "This room is no longer in slow mode.")
+            XCTAssertEqual(channel, "dallas")
+            XCTAssertEqual(messageId, .slowOff)
+        default:
+            XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind!)")
+        }
     }
     
     func testParsedValues2() throws {
@@ -30,9 +34,37 @@ final class NoticeTests: XCTestCase {
         
         let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
         
-        XCTAssertEqual(notice.message, "This room is now in followers-only mode.")
-        XCTAssertEqual(notice.channel, "simonpetrik")
-        let messageId = try XCTUnwrap(notice.messageId)
-        XCTAssertEqual(messageId, .followersOnZero)
+        switch notice.kind {
+        case let .local(channel, message, messageId):
+            XCTAssertEqual(message, "This room is now in followers-only mode.")
+            XCTAssertEqual(channel, "simonpetrik")
+            XCTAssertEqual(messageId, .followersOnZero)
+        default:
+            XCTFail("Unexpected noice kind. Expected `Kind.local`, found \(notice.kind!)")
+        }
+    }
+    
+    func testParsedValues3() throws {
+        let string = ":tmi.twitch.tv NOTICE * :Login authentication failed"
+        let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
+        
+        switch notice.kind {
+        case let .global(message):
+            XCTAssertEqual(message, "Login authentication failed")
+        default:
+            XCTFail("Unexpected noice kind. Expected `Kind.global`, found \(notice.kind!)")
+        }
+    }
+    
+    func testParsedValues4() throws {
+        let string = ":tmi.twitch.tv NOTICE * :Login unsuccessful"
+        let notice: Notice = try TestUtils.parseAndUnwrap(string: string)
+        
+        switch notice.kind {
+        case let .global(message):
+            XCTAssertEqual(message, "Login unsuccessful")
+        default:
+            XCTFail("Unexpected noice kind. Expected `Kind.global`, found \(notice.kind!)")
+        }
     }
 }
