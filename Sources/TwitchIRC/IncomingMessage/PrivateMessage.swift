@@ -29,6 +29,8 @@ public struct PrivateMessage {
     public var color = String()
     /// User's display name with upper/lower-case letters.
     public var displayName = String()
+    /// User's lowercased name.
+    public var userLogin = String()
     /// User's emotes.
     public var emotes = [String]()
     /// Whether or not the message only contains emotes.
@@ -102,6 +104,7 @@ public struct PrivateMessage {
         self.bits = parser.string(for: "bits")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
+        self.userLogin = self.displayName.lowercased()
         self.emotes = parser.array(for: "emotes")
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")

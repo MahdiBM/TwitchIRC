@@ -15,8 +15,7 @@ public struct Capabilities {
             }) {
                 return capability
             } else {
-                /// TODO: REPORT
-                return nil
+                return .unknown(String(capString))
             }
         }
     }
