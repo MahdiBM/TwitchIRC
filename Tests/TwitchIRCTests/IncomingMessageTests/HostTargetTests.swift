@@ -8,9 +8,8 @@ final class HostTargetTests: XCTestCase {
         let hostTarget: HostTarget = try TestUtils.parseAndUnwrap(string: string)
         
         XCTAssertEqual(hostTarget.channel, "twitchdev")
-        XCTAssertEqual(hostTarget.channelToBeHosted, "twitch")
         XCTAssertEqual(hostTarget.numberOfViewers, 1)
-        XCTAssertEqual(hostTarget.action, .start)
+        XCTAssertTrue(hostTarget.action == .start(hostedChannel: "twitch"))
     }
     
     func testParsedValues2() throws {
@@ -18,19 +17,17 @@ final class HostTargetTests: XCTestCase {
         let hostTarget: HostTarget = try TestUtils.parseAndUnwrap(string: string)
         
         XCTAssertEqual(hostTarget.channel, "twitchdev")
-        XCTAssertEqual(hostTarget.channelToBeHosted, nil)
         XCTAssertEqual(hostTarget.numberOfViewers, 130)
-        XCTAssertEqual(hostTarget.action, .stop)
+        XCTAssertTrue(hostTarget.action == .stop)
     }
     
     func testParsedValues3() throws {
-        let string = ":tmi.twitch.tv HOSTTARGET #twitchdev :twitch"
+        let string = ":tmi.twitch.tv HOSTTARGET #twitchdev :mahdimmbm"
         let hostTarget: HostTarget = try TestUtils.parseAndUnwrap(string: string)
         
         XCTAssertEqual(hostTarget.channel, "twitchdev")
-        XCTAssertEqual(hostTarget.channelToBeHosted, "twitch")
         XCTAssertEqual(hostTarget.numberOfViewers, nil)
-        XCTAssertEqual(hostTarget.action, .start)
+        XCTAssertTrue(hostTarget.action == .start(hostedChannel: "mahdimmbm"))
     }
     
     func testParsedValues4() throws {
@@ -38,8 +35,12 @@ final class HostTargetTests: XCTestCase {
         let hostTarget: HostTarget = try TestUtils.parseAndUnwrap(string: string)
         
         XCTAssertEqual(hostTarget.channel, "twitchdev")
-        XCTAssertEqual(hostTarget.channelToBeHosted, nil)
         XCTAssertEqual(hostTarget.numberOfViewers, nil)
-        XCTAssertEqual(hostTarget.action, .stop)
+        XCTAssertTrue(hostTarget.action == .stop)
     }
+}
+
+// MARK: Equatable for `HostTarget.Action` (basically)
+private func == (lhs: HostTarget.Action, rhs: HostTarget.Action) -> Bool {
+    "\(lhs)" == "\(rhs)"
 }
