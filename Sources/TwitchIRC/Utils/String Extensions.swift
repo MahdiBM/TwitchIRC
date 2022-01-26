@@ -68,8 +68,8 @@ extension RangeReplaceableCollection where Element == Character {
     /// Separates the string by the given separator only with the first matching case.
     func componentsOneSplit(separatedBy separator: String) -> (lhs: Self, rhs: Self)? {
         let separatorLength = separator.count
-        let selfLength = self.count
         guard separatorLength != 0 else { return nil }
+        let selfLength = self.count
         guard !(selfLength < separatorLength) else { return nil }
         
         let selfChars = [Character](self)

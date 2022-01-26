@@ -74,6 +74,12 @@ final class StringExtensionTests: XCTestCase {
             XCTAssertEqual(separated, nil)
         }
         
+        // Testing a string split by itself
+        do {
+            let separated = splitAndPutIntoAnArray("dear", by: "dear")
+            XCTAssertEqual(separated, ["", ""])
+        }
+        
         // Testing empty string
         do {
             let separated = splitAndPutIntoAnArray("", by: "dear..")
@@ -144,6 +150,18 @@ final class StringExtensionTests: XCTestCase {
             XCTAssertEqual(separated, ["Hello my dear ", ""])
         }
         
+        // Testing a string split by itself
+        do {
+            let separated = "dear".components(separatedBy: "dear")
+            XCTAssertEqual(separated, ["", ""])
+        }
+        
+        // Testing 2x(a string) split by itself
+        do {
+            let separated = "deardear".components(separatedBy: "dear")
+            XCTAssertEqual(separated, ["", "", ""])
+        }
+        
         // Testing no matching cases
         do {
             let separated = "Hello my dear dear.".components(separatedBy: "dearr")
@@ -164,8 +182,8 @@ final class StringExtensionTests: XCTestCase {
         
         // Testing empty separator
         do {
-            let separated = "".components(separatedBy: "")
-            XCTAssertEqual(separated, [""])
+            let separated = "dear..".components(separatedBy: "")
+            XCTAssertEqual(separated, ["dear.."])
         }
         
         // Testing empty string and separator
