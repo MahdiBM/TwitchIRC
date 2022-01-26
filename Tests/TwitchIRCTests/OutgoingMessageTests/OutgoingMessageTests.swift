@@ -33,19 +33,6 @@ final class OutgoingMessageTests: XCTestCase {
         }
     }
     
-    func testWhisper() throws {
-        let message = OutgoingMessage.whisper(
-            to: "twitchdev",
-            message: "When next event? BibleThump"
-        )
-        let serialized = message.serialize()
-        
-        XCTAssertEqual(
-            serialized,
-            "WHISPER #twitchdev :When next event? BibleThump"
-        )
-    }
-    
     func testJoin() throws {
         let message = OutgoingMessage.join(
             to: "mahdibm"

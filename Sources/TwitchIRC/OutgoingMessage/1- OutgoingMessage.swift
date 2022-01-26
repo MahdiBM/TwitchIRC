@@ -2,9 +2,6 @@
 public enum OutgoingMessage {
     /// Sends a message to a channel. Channel name must be lowercased.
     case privateMessage(to: String, message: String, messageIdToReply: String? = nil)
-    /// Sends a whisper to a user. username must be lowercased.
-    /// Sending whispers over IRC is discouraged and has a good chance of not working.
-    case whisper(to: String, message: String)
     /// Joins a channel's chat. Channel name must be lowercased.
     case join(to: String)
     /// Parts from a channel's chat. Channel name must be lowercased.
@@ -31,8 +28,6 @@ public enum OutgoingMessage {
                 prefix = ""
             }
             return prefix + "PRIVMSG #\(channel) :\(message)"
-        case let .whisper(channel, message):
-            return "WHISPER #\(channel) :\(message)"
         case let .join(channel):
             return "JOIN #\(channel)"
         case let .part(channel):

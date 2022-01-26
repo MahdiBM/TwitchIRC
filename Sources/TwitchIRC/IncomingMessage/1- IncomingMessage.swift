@@ -5,6 +5,8 @@ public enum IncomingMessage {
     case connectionNotice(ConnectionNotice)
     /// A type of message sent after entering a channel.
     case channelEntrance(ChannelEntrance)
+    /// A Twitch error indicating the command you sent is unknown.
+    case unknownCommand(UnknownCommand)
     /// The global user state of the account connected to Twitch.
     case globalUserState(GlobalUserState)
     /// A normal chat message.
@@ -73,6 +75,12 @@ public enum IncomingMessage {
         case "353", "366":
             if let message = ChannelEntrance(id: messageIdentifier, contentRhs: contentRhs) {
                 return .channelEntrance(message)
+            } else {
+                return nil
+            }
+        case "421":
+            if let message = UnknownCommand(contentRhs: contentRhs) {
+                return .unknownCommand(message)
             } else {
                 return nil
             }

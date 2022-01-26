@@ -37,6 +37,8 @@ private extension IncomingMessage {
             return connectionNotice
         case .channelEntrance(let channelEntrance):
             return channelEntrance
+        case .unknownCommand(let unknownCommand):
+            return unknownCommand
         case .globalUserState(let globalUserState):
             return globalUserState
         case .privateMessage(let privateMessage):
