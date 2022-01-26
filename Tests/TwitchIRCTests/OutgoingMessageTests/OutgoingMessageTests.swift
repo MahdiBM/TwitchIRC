@@ -8,7 +8,7 @@ final class OutgoingMessageTests: XCTestCase {
             let message = OutgoingMessage.privateMessage(
                 to: "mahdimmbm",
                 message: "HeyGuys my dudes",
-                msgIdToReply: nil
+                messageIdToReply: nil
             )
             let serialized = message.serialize()
             
@@ -22,7 +22,7 @@ final class OutgoingMessageTests: XCTestCase {
             let message = OutgoingMessage.privateMessage(
                 to: "ronni",
                 message: "HeyGuys HeyGuys",
-                msgIdToReply: "b34ccfc7-4977-403a-8a94-33c6bac34fb8"
+                messageIdToReply: "b34ccfc7-4977-403a-8a94-33c6bac34fb8"
             )
             let serialized = message.serialize()
             

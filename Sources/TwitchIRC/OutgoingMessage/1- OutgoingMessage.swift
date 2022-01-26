@@ -1,19 +1,20 @@
 
 public enum OutgoingMessage {
-    /// Sends a message to a channel.
-    case privateMessage(to: String, message: String, msgIdToReply: String? = nil)
-    /// Sends a whisper to a channel.
+    /// Sends a message to a channel. Channel name must be lowercased.
+    case privateMessage(to: String, message: String, messageIdToReply: String? = nil)
+    /// Sends a whisper to a user. username must be lowercased.
+    /// Sending whispers over IRC is discouraged and has a good chance of not working.
     case whisper(to: String, message: String)
-    /// Joins a channel's chat.
+    /// Joins a channel's chat. Channel name must be lowercased.
     case join(to: String)
-    /// Parts from a channel's chat.
+    /// Parts from a channel's chat. Channel name must be lowercased.
     case part(from: String)
     /// `oauth` pass for IRC access.
     case pass(pass: String)
-    /// This is for the most part only for IRC compatibility and doesn't do much in Twitch.
+    /// This for the most part, is only for IRC compatibility and doesn't do much in Twitch.
     /// You still need to send it sometimes, but it doesn't precisely do anything.
     case nick(name: String)
-    /// Request additional tags.
+    /// Request additional capabilities.
     case capabilities([Capability])
     /// Ping Twitch.
     case ping
