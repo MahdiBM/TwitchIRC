@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         swiftver:
-          - swift:5
+          - swift:5.0
           - swift:5.1
           - swift:5.2
           - swift:5.3
@@ -15,7 +15,7 @@ jobs:
           - swift:5.5
           - swiftlang/swift:nightly-main
         swiftos:
-          - focal
+          - bionic
     container: ${{ format('{0}-{1}', matrix.swiftver, matrix.swiftos) }}
     runs-on: ubuntu-latest
     steps:
