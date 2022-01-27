@@ -40,7 +40,7 @@ struct ParametersParser {
         })
         let unavailableKeys = self.unavailableKeys
             .filter({ !excludedUnavailableKeys.contains($0) })
-        let unparsedKeys = unparsedKeys.map {
+        let unparsedKeys = self.unparsedKeys.map {
             ParsingLeftOvers.UnparsedKey(key: $0.key, type: $0.type)
         }
         return ParsingLeftOvers(
