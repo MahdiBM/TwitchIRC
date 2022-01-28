@@ -18,6 +18,7 @@ public enum OutgoingMessage {
     /// Pong Twitch.
     case pong
     
+    /// Serializes this message into a string that can be sent to Twitch over IRC.
     public func serialize() -> String {
         switch self {
         case let .privateMessage(channel, message, msgIdToReply):

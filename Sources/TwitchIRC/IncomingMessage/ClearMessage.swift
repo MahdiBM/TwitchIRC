@@ -28,8 +28,8 @@ public struct ClearMessage {
         
         self.channel = String(channel)
         /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
-        /// normal methods like a simple `.dropFirst()` fail in rare cases.
-        /// Remove `.unicodeScalars` in `PrivateMessage`'s `message` and run tests to find out.
+        /// and other normal methods like a simple `.dropFirst()` fail in rare cases.
+        /// Remove `.unicodeScalars` of `PrivateMessage`'s `message` and run tests to find out.
         self.message = String(message.unicodeScalars.dropFirst())
         
         guard contentLhs.count > 2, contentLhs.last == ":" else {

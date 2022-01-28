@@ -1,68 +1,89 @@
 
-extension RangeReplaceableCollection where Element == Character {
+extension RangeReplaceableCollection where Element == Character, Self.Index == String.Index {
     
     /// Separates the string by the given separator only with the first matching case.
     func components(separatedBy separator: String) -> [Self] {
         let separatorLength = separator.count
         guard separatorLength != 0 else { return [self] }
-        guard !(self.count < separatorLength) else { return [self] }
+        let selfLength = self.count
+        guard !(selfLength < separatorLength) else { return [self] }
         
-        let separatorChars = [Character](separator)
+        var endingIndices = ContiguousArray<Index>()
         
-        func oneSplit(_ string: [Character]) -> (lhs: Self, rhs: [Character])? {
-            guard !string.isEmpty else { return nil }
-            
-            let stringLength = string.count
-            let maxIdx = separatorLength - 1
-            var lastIdx: Int? = nil
-            
-            for idx in 0..<stringLength {
-                if let lastIdxUnwrapped = lastIdx {
-                    let nextIdx = lastIdxUnwrapped + 1
-                    if nextIdx == maxIdx {
-                        if string[idx] == separatorChars[nextIdx] {
-                            let startingIdx = idx - maxIdx
-                            let lhs = Self(string[0..<startingIdx])
-                            let rhs = [Character](string[(idx + 1)...])
-                            return (lhs: lhs, rhs: rhs)
-                        } else {
-                            if string[idx] == separatorChars[0] {
-                                lastIdx = 0
-                            } else {
-                                lastIdx = nil
-                            }
-                        }
+        let separatorStartIndex = separator.startIndex
+        let maxIdx = separator.index(separatorStartIndex, offsetBy: separatorLength - 1)
+        var lastIdx: Index? = nil
+        
+        for idx in self.indices {
+            if let lastIdxUnwrapped = lastIdx {
+                let nextIdx = separator.index(after: lastIdxUnwrapped)
+                if nextIdx == maxIdx {
+                    if self[idx] == separator[nextIdx] {
+                        endingIndices.append(idx)
+                        lastIdx = nil
                     } else {
-                        if string[idx] == separatorChars[nextIdx] {
-                            lastIdx = lastIdxUnwrapped + 1
+                        if self[idx] == separator[separatorStartIndex] {
+                            lastIdx = separatorStartIndex
                         } else {
                             lastIdx = nil
                         }
                     }
                 } else {
-                    if string[idx] == separatorChars[0] {
-                        lastIdx = 0
-                        if separatorLength == 1 {
-                            let lhs = Self(string[0..<idx])
-                            let rhs = [Character](string[(idx + 1)...])
-                            return (lhs: lhs, rhs: rhs)
-                        }
+                    if self[idx] == separator[nextIdx] {
+                        lastIdx = nextIdx
+                    } else {
+                        lastIdx = nil
+                    }
+                }
+            } else {
+                if self[idx] == separator[separatorStartIndex] {
+                    if separatorLength == 1 {
+                        endingIndices.append(idx)
+                    } else {
+                        lastIdx = separatorStartIndex
                     }
                 }
             }
-            
-            return nil
         }
         
-        func recursiveOneSplit(_ string: [Character]) -> [Self] {
-            if let (lhs, rhs) = oneSplit(string) {
-                return [lhs] + recursiveOneSplit(rhs)
+        let indicesLength = endingIndices.count
+        guard indicesLength != 0 else { return [self] }
+        let arrayLength = endingIndices.count + 1
+        var array = Array<Self>()
+        array.reserveCapacity(arrayLength)
+        
+        for idx in 0..<arrayLength {
+            if idx == 0 {
+                let endingIndex = endingIndices[0]
+                if let upperBound = self.index(
+                    endingIndex,
+                    offsetBy: -separatorLength,
+                    limitedBy: separatorStartIndex
+                ) {
+                    array.append(Self(self[...upperBound]))
+                } else {
+                    array.append(Self())
+                }
+            } else if idx < indicesLength {
+                let lastIndex = endingIndices[idx - 1]
+                let nextIndex = endingIndices[idx]
+                let lowerBound = self.index(after: lastIndex)
+                if let upperBound = self.index(
+                    nextIndex,
+                    offsetBy: -separatorLength,
+                    limitedBy: lowerBound
+                ) {
+                    array.append(Self(self[lowerBound...upperBound]))
+                } else {
+                    array.append(Self())
+                }
             } else {
-                return [Self(string)]
+                let afterLast = self.index(after: endingIndices.last!)
+                array.append(Self(self[afterLast...]))
             }
         }
         
-        return recursiveOneSplit([Character](self))
+        return array
     }
     
     /// Separates the string by the given separator only with the first matching case.
@@ -72,41 +93,41 @@ extension RangeReplaceableCollection where Element == Character {
         let selfLength = self.count
         guard !(selfLength < separatorLength) else { return nil }
         
-        let selfChars = [Character](self)
-        let separatorChars = [Character](separator)
+        let separatorStartIndex = separator.startIndex
+        let maxIdx = separator.index(separatorStartIndex, offsetBy: separatorLength - 1)
+        var lastIdx: Index? = nil
         
-        let maxIdx = separatorLength - 1
-        var lastIdx: Int? = nil
-        
-        for idx in 0..<selfLength {
+        for idx in self.indices {
             if let lastIdxUnwrapped = lastIdx {
-                let nextIdx = lastIdxUnwrapped + 1
+                let nextIdx = separator.index(after: lastIdxUnwrapped)
                 if nextIdx == maxIdx {
-                    if selfChars[idx] == separatorChars[nextIdx] {
-                        let startingIdx = idx - maxIdx
-                        let lhs = Self(selfChars[0..<startingIdx])
-                        let rhs = Self(selfChars[(idx + 1)...])
+                    if self[idx] == separator[nextIdx] {
+                        let startingIdx = self.index(idx, offsetBy: -(separatorLength - 1))
+                        let lhs = Self(self[..<startingIdx])
+                        let rhsLowerBound = self.index(after: idx)
+                        let rhs = Self(self[rhsLowerBound...])
                         return (lhs: lhs, rhs: rhs)
                     } else {
-                        if selfChars[idx] == separatorChars[0] {
-                            lastIdx = 0
+                        if self[idx] == separator[separatorStartIndex] {
+                            lastIdx = separatorStartIndex
                         } else {
                             lastIdx = nil
                         }
                     }
                 } else {
-                    if selfChars[idx] == separatorChars[nextIdx] {
-                        lastIdx = lastIdxUnwrapped + 1
+                    if self[idx] == separator[nextIdx] {
+                        lastIdx = separator.index(after: lastIdxUnwrapped)
                     } else {
                         lastIdx = nil
                     }
                 }
             } else {
-                if selfChars[idx] == separatorChars[0] {
-                    lastIdx = 0
+                if self[idx] == separator[separatorStartIndex] {
+                    lastIdx = separatorStartIndex
                     if separatorLength == 1 {
-                        let lhs = Self(selfChars[0..<idx])
-                        let rhs = Self(selfChars[(idx + 1)...])
+                        let lhs = Self(self[..<idx])
+                        let rhsLowerBound = self.index(after: idx)
+                        let rhs = Self(self[rhsLowerBound...])
                         return (lhs: lhs, rhs: rhs)
                     }
                 }

@@ -89,7 +89,7 @@ public struct PrivateMessage {
         } /// separating with " ", then lhs contains channel name and rhs is the actual message
         self.channel = channel
         /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
-        /// normal methods like a simple `.dropFirst()` fail in rare cases.
+        /// and other normal methods like a simple `.dropFirst()` fail in rare cases.
         /// Remove `.unicodeScalars` and run tests to find out.
         self.message = String(message.unicodeScalars.dropFirst())
         
