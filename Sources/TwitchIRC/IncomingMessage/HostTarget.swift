@@ -34,7 +34,7 @@ public struct HostTarget {
             }
         } else {
             /// Channel and the optional viewer count
-            let components = rhsRemaining.components(separatedBy: " ")
+            let components = rhsRemaining.componentsSeparatedBy(separator: " ")
             let compCount = components.count
             if compCount == 1 {
                 self.action = .start(hostedChannel: components[0])

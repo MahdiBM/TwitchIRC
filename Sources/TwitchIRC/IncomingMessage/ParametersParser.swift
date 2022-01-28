@@ -14,7 +14,7 @@ struct ParametersParser {
     private var unparsedKeys = [(key: String, type: String)]()
     
     init(_ input: String) {
-        let values = input.components(separatedBy: ";").compactMap {
+        let values = input.componentsSeparatedBy(separator: ";").compactMap {
             $0.componentsOneSplit(separatedBy: "=").map({ (key: $0.lhs, value: $0.rhs) })
         }
         self.storage = .init(values.enumerated())
@@ -113,7 +113,7 @@ struct ParametersParser {
     
     mutating func array(for key: String) -> [String] {
         if let value = self.optionalString(for: key) {
-            return value.components(separatedBy: ",").filter({ !$0.isEmpty })
+            return value.componentsSeparatedBy(separator: ",").filter({ !$0.isEmpty })
         } else {
             return []
         }

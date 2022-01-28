@@ -1,8 +1,11 @@
 
-extension RangeReplaceableCollection where Element == Character, Self.Index == String.Index {
+extension RangeReplaceableCollection where Element == Character, Index == String.Index {
     
     /// Separates the string by the given separator only with the first matching case.
-    func components(separatedBy separator: String) -> [Self] {
+    ///
+    /// Not naming it `components(separatedBy:)` to make
+    /// sure it's not confused with that of `Foundation`.
+    func componentsSeparatedBy(separator: String) -> [Self] {
         let separatorLength = separator.count
         guard separatorLength != 0 else { return [self] }
         let selfLength = self.count
@@ -48,6 +51,7 @@ extension RangeReplaceableCollection where Element == Character, Self.Index == S
         
         let indicesLength = endingIndices.count
         guard indicesLength != 0 else { return [self] }
+        let selfStartIndex = self.startIndex
         let arrayLength = endingIndices.count + 1
         var array = Array<Self>()
         array.reserveCapacity(arrayLength)
@@ -58,7 +62,7 @@ extension RangeReplaceableCollection where Element == Character, Self.Index == S
                 if let upperBound = self.index(
                     endingIndex,
                     offsetBy: -separatorLength,
-                    limitedBy: separatorStartIndex
+                    limitedBy: selfStartIndex
                 ) {
                     array.append(Self(self[...upperBound]))
                 } else {

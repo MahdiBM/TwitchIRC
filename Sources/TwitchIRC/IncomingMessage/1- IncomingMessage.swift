@@ -42,7 +42,7 @@ public enum IncomingMessage {
     
     /// Parses all messages included.
     public static func parse(ircOutput: String) -> [(message: Self?, text: String)] {
-        ircOutput.components(separatedBy: "\r\n")
+        ircOutput.componentsSeparatedBy(separator: "\r\n")
             .filter({ !$0.isEmpty })
             .map({ (parseMessage(message: $0), $0) })
     }

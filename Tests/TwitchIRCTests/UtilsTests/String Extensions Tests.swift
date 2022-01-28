@@ -3,13 +3,138 @@ import XCTest
 
 final class StringExtensionTests: XCTestCase {
     
+    func testComponentsSeparatedBy() throws {
+        
+        try componentsSeparatedByTester(mode: .string)
+        
+        try componentsSeparatedByTester(mode: .substring)
+    }
+    
     func testComponentsOneSplit() throws {
         
+        try componentsOneSplitTester(mode: .string)
+        
+        try componentsOneSplitTester(mode: .substring)
+    }
+    
+    func componentsSeparatedByTester(mode: Mode) throws {
+        
+        func separateComponents(_ string: String, by separator: String) -> [String] {
+            switch getStringProtocol(from: string, mode: mode) {
+            case let .string(string):
+                return string.componentsSeparatedBy(separator: separator)
+            case let .substring(substring):
+                return substring.componentsSeparatedBy(separator: separator).map(String.init)
+            }
+        }
+        
+        // Testing normal usage
+        do {
+            let separated = separateComponents("Hello my dear.", by: "my")
+            XCTAssertEqual(separated, ["Hello ", " dear."])
+        }
+        
+        // Testing separator at the end
+        do {
+            let separated = separateComponents("Hello my dear.", by: "dear.")
+            XCTAssertEqual(separated, ["Hello my ", ""])
+        }
+        
+        // Testing separator at the beginning
+        do {
+            let separated = separateComponents("Hello my dear.", by: "Hell")
+            XCTAssertEqual(separated, ["", "o my dear."])
+        }
+        
+        // Testing only one letter
+        do {
+            let separated = separateComponents("Hello my dear.", by: "m")
+            XCTAssertEqual(separated, ["Hello ", "y dear."])
+        }
+        
+        // Testing only one letter at the end
+        do {
+            let separated = separateComponents("Hello my dear.", by: ".")
+            XCTAssertEqual(separated, ["Hello my dear", ""])
+        }
+        
+        // Testing multiple matching cases
+        do {
+            let separated = separateComponents("Hello my dear dear.", by: "dear")
+            XCTAssertEqual(separated, ["Hello my ", " ", "."])
+        }
+        
+        // Testing multiple matching cases 2
+        do {
+            let separated = separateComponents("dear Hello my deardear", by: "dear")
+            XCTAssertEqual(separated, ["", " Hello my ", "", ""])
+        }
+        
+        // Testing very similar matching cases
+        do {
+            let separated = separateComponents("Hello my dear dear.", by: "dear.")
+            XCTAssertEqual(separated, ["Hello my dear ", ""])
+        }
+        
+        // Testing a string split by itself
+        do {
+            let separated = separateComponents("dear", by: "dear")
+            XCTAssertEqual(separated, ["", ""])
+        }
+        
+        // Testing 2x(a string) split by itself
+        do {
+            let separated = separateComponents("deardear", by: "dear")
+            XCTAssertEqual(separated, ["", "", ""])
+        }
+        
+        // Testing no matching cases
+        do {
+            let separated = separateComponents("Hello my dear dear.", by: "dearr")
+            XCTAssertEqual(separated, ["Hello my dear dear."])
+        }
+        
+        // Testing no matching cases at the end
+        do {
+            let separated = separateComponents("Hello my dear dear.", by: "dear..")
+            XCTAssertEqual(separated, ["Hello my dear dear."])
+        }
+        
+        // Testing empty string
+        do {
+            let separated = separateComponents("", by: "dear..")
+            XCTAssertEqual(separated, [""])
+        }
+        
+        // Testing empty separator
+        do {
+            let separated = separateComponents("dear..", by: "")
+            XCTAssertEqual(separated, ["dear.."])
+        }
+        
+        // Testing empty string and separator
+        do {
+            let separated = separateComponents("", by: "")
+            XCTAssertEqual(separated, [""])
+        }
+    }
+    
+    func componentsOneSplitTester(mode: Mode) throws {
+        
         func splitAndPutIntoAnArray(_ string: String, by separator: String) -> [String]? {
-            if let separated = string.componentsOneSplit(separatedBy: separator) {
-                return [separated.lhs, separated.rhs]
-            } else {
-                return nil
+            switch getStringProtocol(from: string, mode: mode) {
+            case let .string(string):
+                if let separated = string.componentsOneSplit(separatedBy: separator) {
+                    return [separated.lhs, separated.rhs]
+                } else {
+                    return nil
+                }
+            case let .substring(substring):
+                if let separated = substring.componentsOneSplit(separatedBy: separator) {
+                    return [String(separated.lhs), String(separated.rhs)]
+                } else {
+                    return nil
+                }
             }
         }
         
@@ -97,101 +222,29 @@ final class StringExtensionTests: XCTestCase {
             let separated = splitAndPutIntoAnArray("", by: "")
             XCTAssertEqual(separated, nil)
         }
-        
     }
     
-    func testComponentsSeparatedBy() throws {
-        
-        // Testing normal usage
-        do {
-            let separated = "Hello my dear.".components(separatedBy: "my")
-            XCTAssertEqual(separated, ["Hello ", " dear."])
-        }
-        
-        // Testing separator at the end
-        do {
-            let separated = "Hello my dear.".components(separatedBy: "dear.")
-            XCTAssertEqual(separated, ["Hello my ", ""])
-        }
-        
-        // Testing separator at the beginning
-        do {
-            let separated = "Hello my dear.".components(separatedBy: "Hell")
-            XCTAssertEqual(separated, ["", "o my dear."])
-        }
-        
-        // Testing only one letter
-        do {
-            let separated = "Hello my dear.".components(separatedBy: "m")
-            XCTAssertEqual(separated, ["Hello ", "y dear."])
-        }
-        
-        // Testing only one letter at the end
-        do {
-            let separated = "Hello my dear.".components(separatedBy: ".")
-            XCTAssertEqual(separated, ["Hello my dear", ""])
-        }
-        
-        // Testing multiple matching cases
-        do {
-            let separated = "Hello my dear dear.".components(separatedBy: "dear")
-            XCTAssertEqual(separated, ["Hello my ", " ", "."])
-        }
-        
-        // Testing multiple matching cases 2
-        do {
-            let separated = "dear Hello my deardear".components(separatedBy: "dear")
-            XCTAssertEqual(separated, ["", " Hello my ", "", ""])
-        }
-        
-        // Testing very similar matching cases
-        do {
-            let separated = "Hello my dear dear.".components(separatedBy: "dear.")
-            XCTAssertEqual(separated, ["Hello my dear ", ""])
-        }
-        
-        // Testing a string split by itself
-        do {
-            let separated = "dear".components(separatedBy: "dear")
-            XCTAssertEqual(separated, ["", ""])
-        }
-        
-        // Testing 2x(a string) split by itself
-        do {
-            let separated = "deardear".components(separatedBy: "dear")
-            XCTAssertEqual(separated, ["", "", ""])
-        }
-        
-        // Testing no matching cases
-        do {
-            let separated = "Hello my dear dear.".components(separatedBy: "dearr")
-            XCTAssertEqual(separated, ["Hello my dear dear."])
-        }
-        
-        // Testing no matching cases at the end
-        do {
-            let separated = "Hello my dear dear.".components(separatedBy: "dear..")
-            XCTAssertEqual(separated, ["Hello my dear dear."])
-        }
-        
-        // Testing empty string
-        do {
-            let separated = "".components(separatedBy: "dear..")
-            XCTAssertEqual(separated, [""])
-        }
-        
-        // Testing empty separator
-        do {
-            let separated = "dear..".components(separatedBy: "")
-            XCTAssertEqual(separated, ["dear.."])
-        }
-        
-        // Testing empty string and separator
-        do {
-            let separated = "".components(separatedBy: "")
-            XCTAssertEqual(separated, [""])
-        }
-        
+    enum StringOrSub {
+        case string(String)
+        case substring(Substring)
     }
     
+    enum Mode {
+        case string
+        case substring
+    }
+    
+    func getStringProtocol(from string: String, mode: Mode) -> StringOrSub {
+        switch mode {
+        case .string:
+            return .string(string)
+        case .substring:
+            let newString = "1" + string + "b"
+            let range = 1..<(newString.count - 1)
+            let startIndex = newString.startIndex
+            let lowerBound = newString.index(startIndex, offsetBy: range.lowerBound)
+            let upperBound = newString.index(startIndex, offsetBy: range.upperBound)
+            return .substring(newString[lowerBound..<upperBound])
+        }
+    }
 }

@@ -8,7 +8,7 @@ public struct Capabilities {
     init? (contentRhs: String) {
         guard contentRhs.hasPrefix("* ACK :")
         else { return nil }
-        let capabilityStrings = contentRhs.dropFirst(7).components(separatedBy: " ")
+        let capabilityStrings = contentRhs.dropFirst(7).componentsSeparatedBy(separator: " ")
         self.capabilities = capabilityStrings.compactMap { capString in
             if let capability = Capability.allCases.first(where: {
                 $0.twitchDescription == capString
