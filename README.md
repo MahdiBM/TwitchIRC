@@ -7,7 +7,7 @@ A Swift package to take of parsing/serializing Twitch IRC messages for you.
 To parse Twitch messages, use `IncomingMessage.parse(ircOutput:)`:
 ```swift
 /// `websocketOutput` here represents the `String` Twitch sent you over IRC.
-let twitchMessages: [(message: IncomingMessage?, text: String)] = IncomingMessage.parse(ircOutput: "")
+let twitchMessages: [(message: IncomingMessage?, text: String)] = IncomingMessage.parse(ircOutput: websocketOutput)
 ```
 Then to use:
 ```swift
@@ -57,4 +57,4 @@ To see what's official and what's not, you can take a look at the [official docu
 
 If you have any questions, [TwitchDev Discord server](https://discord.gg/twitchdev) will likely prove helpful to you. I'm available there @Mahdi BM#0517.   
 
-Feel free to make PRs or create Issues as well :)
+Feel free to make PRs or open Issues as well :)
