@@ -66,6 +66,10 @@ public struct UserNotice {
             public var goalUserContributions: String
         }
         
+        public struct PrimePaidUpgradeInfo {
+            public var subPlan: SubPlan?
+        }
+        
         public struct GiftPaidUpgradeInfo {
             public var promoGiftTotal: UInt
             public var promoName: String
@@ -120,6 +124,7 @@ public struct UserNotice {
         case subGift(SubGiftInfo)
         case anonSubGift(SubGiftInfo)
         case subMysteryGift(SubMysteryGiftInfo)
+        case primePaidUpgrade(PrimePaidUpgradeInfo)
         case giftPaidUpgrade(GiftPaidUpgradeInfo)
         case rewardGift
         case anonGiftPaidUpgrade(AnonGiftPaidUpgradeInfo)
@@ -279,6 +284,11 @@ public struct UserNotice {
                 giftTheme: parser.string(for: "msg-param-gift-theme")
             ))
             occasionalSubDependentKeyGroups = [["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-gift-theme"]]
+        case "primepaidupgrade":
+            self.messageId = .primePaidUpgrade(.init(
+                subPlan: parser.representable(for: "msg-param-sub-plan")
+            ))
+            occasionalSubDependentKeyGroups = []
         case "giftpaidupgrade":
             self.messageId = .giftPaidUpgrade(.init(
                 promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),

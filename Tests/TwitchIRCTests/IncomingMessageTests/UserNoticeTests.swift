@@ -338,6 +338,32 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(info.goalTargetContributions, "")
         XCTAssertEqual(info.goalUserContributions, "")
     }
+    
+    func testParsedValues10() throws {
+        let string = #"@badge-info=subscriber/1;badges=subscriber/0,sub-gifter/1;color=#8422B2;display-name=ItsMeekz;emotes=;flags=;id=0f138c82-d842-4055-af48-f7a84a43461d;login=itsmeekz;mod=0;msg-id=primepaidupgrade;msg-param-sub-plan=1000;room-id=117855516;subscriber=1;system-msg=ItsMeekz\sconverted\sfrom\sa\sPrime\ssub\sto\sa\sTier\s1\ssub!;tmi-sent-ts=1643569662528;user-id=608094265;user-type= :tmi.twitch.tv USERNOTICE #domino_stein"#
+        
+        let un: UserNotice = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(un.channel, "domino_stein")
+        XCTAssertEqual(un.message, "")
+        XCTAssertEqual(un.badgeInfo, ["subscriber/1"])
+        XCTAssertEqual(un.badges, ["subscriber/0", "sub-gifter/1"])
+        XCTAssertEqual(un.color, "#8422B2")
+        XCTAssertEqual(un.displayName, "ItsMeekz")
+        XCTAssertEqual(un.emotes, [])
+        XCTAssertEqual(un.flags, [])
+        XCTAssertEqual(un.id, "0f138c82-d842-4055-af48-f7a84a43461d")
+        XCTAssertEqual(un.userLogin, "itsmeekz")
+        XCTAssertEqual(un.roomId, "117855516")
+        XCTAssertEqual(un.systemMessage, #"ItsMeekz\sconverted\sfrom\sa\sPrime\ssub\sto\sa\sTier\s1\ssub!"#)
+        XCTAssertEqual(un.tmiSentTs, 1643569662528)
+        XCTAssertEqual(un.userId, "608094265")
+        XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
+        
+        let info: Action.PrimePaidUpgradeInfo = try unwrapInnerValue(action: un.messageId)
+        
+        XCTAssertEqual(info.subPlan, .tier1)
+    }
 }
 
 // MARK: - UserNotice.MessageID anyValue
@@ -353,6 +379,8 @@ private extension UserNotice.MessageID {
         case let .anonSubGift(value):
             return value
         case let .subMysteryGift(value):
+            return value
+        case let .primePaidUpgrade(value):
             return value
         case let .giftPaidUpgrade(value):
             return value
