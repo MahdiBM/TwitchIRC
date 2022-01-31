@@ -21,10 +21,10 @@ public enum OutgoingMessage {
     /// Serializes this message into a string that can be sent to Twitch over IRC.
     public func serialize() -> String {
         switch self {
-        case let .privateMessage(channel, message, msgIdToReply):
+        case let .privateMessage(channel, message, messageIdToReply):
             let prefix: String
-            if let msgId = msgIdToReply {
-                prefix = "@reply-parent-msg-id=" + msgId + " "
+            if let messageId = messageIdToReply, !messageId.isEmpty {
+                prefix = "@reply-parent-msg-id=" + messageId + " "
             } else {
                 prefix = ""
             }

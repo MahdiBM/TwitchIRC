@@ -31,6 +31,20 @@ final class OutgoingMessageTests: XCTestCase {
                 "@reply-parent-msg-id=b34ccfc7-4977-403a-8a94-33c6bac34fb8 PRIVMSG #ronni :HeyGuys HeyGuys"
             )
         }
+        
+        do {
+            let message = OutgoingMessage.privateMessage(
+                to: "ronni",
+                message: "HeyGuys HeyGuys",
+                messageIdToReply: ""
+            )
+            let serialized = message.serialize()
+            
+            XCTAssertEqual(
+                serialized,
+                "PRIVMSG #ronni :HeyGuys HeyGuys"
+            )
+        }
     }
     
     func testJoin() throws {
