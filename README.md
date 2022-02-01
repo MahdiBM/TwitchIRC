@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/MahdiBM/TwitchIRC/actions/workflows/tests.yml/badge.svg)](https://github.com/MahdiBM/TwitchIRC/actions/workflows/tests.yml)
  
-A Swift package to take of parsing/serializing Twitch IRC messages for you.
+A dependancy-free Swift package that takes of parsing and serializing Twitch IRC messages.
 
 ## How To Parse
 
