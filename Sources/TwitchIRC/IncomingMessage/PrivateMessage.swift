@@ -40,9 +40,12 @@ public struct PrivateMessage {
     /// Whether it's the first time the user is sending a message.
     public var firstMessage = Bool()
     /// Not sure exactly what is this? usually empty.
-    public var msgId = String()
+    public var messageId = String()
     /// Message's id.
     public var id = String()
+    /// Not sure but should be the message id of the
+    /// message that the chant was started with.
+    public var crowdChantParentMessageId = String()
     /// The id of the custom reward, if any.
     public var customRewardId = String()
     /// Broadcaster's Twitch identifier.
@@ -109,8 +112,9 @@ public struct PrivateMessage {
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")
         self.firstMessage = parser.bool(for: "first-msg")
-        self.msgId = parser.string(for: "msg-id")
+        self.messageId = parser.string(for: "msg-id")
         self.id = parser.string(for: "id")
+        self.crowdChantParentMessageId = parser.string(for: "crowd-chant-parent-msg-id")
         self.customRewardId = parser.string(for: "custom-reward-id")
         self.roomId = parser.string(for: "room-id")
         self.tmiSentTs = parser.uint(for: "tmi-sent-ts")
@@ -125,7 +129,7 @@ public struct PrivateMessage {
         )
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        let occasionalKeys = [["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]]
+        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]]
         
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
