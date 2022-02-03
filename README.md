@@ -49,6 +49,11 @@ let serialized = outgoingMessage.serialize()
 /// Now send `serialized` to Twitch over IRC.
 ```
 
+## I don't see some info in some messages
+TwitchIRC contains all info sent by Twitch. If you don't see something in message types, its probably deprecated.    
+Some of the deprecated keys are `subscriber`, `mod` or `user-type`. You need to instead use the `badges` for those 3 mentioned keys.   
+I'm personally actively looking for any non-parsed info using the `parsingLeftOvers` property that some message types have, and will update the package with the new info as soon as I catch them.
+
 ## Warning
 
 This package includes both official and unofficial info sent to you over IRC by Twitch.   
