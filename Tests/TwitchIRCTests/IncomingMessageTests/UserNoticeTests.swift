@@ -13,7 +13,7 @@ final class UserNoticeTests: XCTestCase {
     ) throws -> T {
         try XCTUnwrap(
             action.anyValue as? T,
-            "MessageID case not expected. Available value: \(action.anyValue), Expected type: \(T.self)",
+            "MessageID type not expected. Available value: \(action.anyValue), Expected type: \(T.self)",
             file: file,
             line: line
         )

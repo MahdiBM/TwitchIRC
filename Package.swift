@@ -9,11 +9,8 @@ let package = Package(
             name: "TwitchIRC",
             targets: ["TwitchIRC"]),
     ],
-    dependencies: [],
     targets: [
-        .target(
-            name: "TwitchIRC",
-            dependencies: []),
+        .target(name: "TwitchIRC"),
         .testTarget(
             name: "TwitchIRCTests",
             dependencies: ["TwitchIRC"]),
