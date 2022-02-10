@@ -69,7 +69,7 @@ public struct PrivateMessage {
     public var isSubscriber: Bool {
         self.badges.contains(where: { $0.hasPrefix("subscriber") })
     }
-    public var isOwner: Bool {
+    public var isBroadcaster: Bool {
         self.badges.contains(where: { $0.hasPrefix("broadcaster") })
     }
     public var isVIP: Bool {
