@@ -1,6 +1,6 @@
 
 /// A Twitch `USERSTATE` message.
-public struct UserState {
+public struct UserState: Sendable {
     
     /// Channel lowercased name.
     public var channel = String()

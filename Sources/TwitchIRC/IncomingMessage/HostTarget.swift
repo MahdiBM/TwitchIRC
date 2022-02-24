@@ -1,8 +1,8 @@
 
 /// A Twitch `HOSTTARGET` message.
-public struct HostTarget {
+public struct HostTarget: Sendable {
     
-    public enum Action {
+    public enum Action: Sendable {
         case start(
             /// The lowercased name of the channel that is going to be hosted.
             hostedChannel: String

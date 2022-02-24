@@ -1,12 +1,12 @@
 
-public struct ParsingLeftOvers {
+public struct ParsingLeftOvers: Sendable {
     
-    public struct UnusedPair {
+    public struct UnusedPair: Sendable {
         let key: String
         let value: String
     }
     
-    public struct UnparsedKey {
+    public struct UnparsedKey: Sendable {
         let key: String
         let type: String
     }

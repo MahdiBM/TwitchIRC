@@ -1,5 +1,6 @@
 
-public struct ConnectionNotice {
+/// A notice of connection to Twitch.
+public struct ConnectionNotice: Sendable {
     
     /// The Twitch message accompanying the notice.
     public var message = String()

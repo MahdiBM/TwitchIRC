@@ -1,6 +1,6 @@
 
 /// A Twitch `PART` message.
-public struct Part {
+public struct Part: Sendable {
     
     /// The channel's lowercased name.
     public var channel = String()

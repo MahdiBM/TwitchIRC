@@ -1,6 +1,6 @@
 
 /// A Twitch `GLOBALUSERSTATE` message.
-public struct GlobalUserState {
+public struct GlobalUserState: Sendable {
     
     /// Badge info.
     public var badgeInfo = [String]()

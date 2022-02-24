@@ -1,6 +1,6 @@
 
 /// A Twitch `ROOMSTATE` message.
-public struct RoomState {
+public struct RoomState: Sendable {
     
     /// The channel's lowercased name.
     public var channel = String()

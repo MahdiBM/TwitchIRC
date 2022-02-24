@@ -1,5 +1,6 @@
 
-public struct ChannelEntrance {
+/// Notices sent after entering a channel.
+public struct ChannelEntrance: Sendable {
     
     /// The Twitch message accompanying the notice.
     public var message = String()

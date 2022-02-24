@@ -1,6 +1,6 @@
 
 /// A Twitch message indicating usage of an unknown command.
-public struct UnknownCommand {
+public struct UnknownCommand: Sendable {
     
     /// The lowercased Twitch account username that sent the message.
     public var username = String()

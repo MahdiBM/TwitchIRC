@@ -1,8 +1,8 @@
 
 /// A Twitch `PRIVMSG` message.
-public struct PrivateMessage {
+public struct PrivateMessage: Sendable {
     
-    public struct ReplyParent {
+    public struct ReplyParent: Sendable {
         /// Replied user's display name with upper/lower-case letters.
         public var displayName: String = ""
         /// Replied user's lowercased name.

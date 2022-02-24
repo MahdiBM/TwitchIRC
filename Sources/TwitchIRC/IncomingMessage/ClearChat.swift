@@ -1,6 +1,6 @@
 
 /// A Twitch `CLEARCHAT` message.
-public struct ClearChat {
+public struct ClearChat: Sendable {
     
     /// The channel's lowercased name.
     public var channel = String()

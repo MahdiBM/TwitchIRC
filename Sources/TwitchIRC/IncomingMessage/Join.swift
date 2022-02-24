@@ -1,6 +1,6 @@
 
 /// A Twitch `JOIN` message.
-public struct Join {
+public struct Join: Sendable {
     
     /// The channel's lowercased name.
     public var channel = String()

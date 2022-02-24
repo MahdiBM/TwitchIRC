@@ -1,5 +1,6 @@
 
-public struct Capabilities {
+/// Additional Capabilities you can request from Twitch.
+public struct Capabilities: Sendable {
     
     public var capabilities: [Capability] = []
     

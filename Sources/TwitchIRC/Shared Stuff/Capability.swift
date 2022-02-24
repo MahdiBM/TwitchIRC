@@ -1,5 +1,5 @@
 
-public enum Capability: CaseIterable {
+public enum Capability: CaseIterable, Sendable {
     case membership
     case tags
     case commands

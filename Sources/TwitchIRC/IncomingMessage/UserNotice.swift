@@ -1,10 +1,10 @@
 
 /// A Twitch `USERNOTICE` message.
-public struct UserNotice {
+public struct UserNotice: Sendable {
     
-    public enum MessageID {
+    public enum MessageID: Sendable {
         
-        public enum SubPlan: String {
+        public enum SubPlan: String, Sendable {
             case followersTier = ""
             case tier1 = "1000"
             case tier2 = "2000"
@@ -12,7 +12,7 @@ public struct UserNotice {
             case prime = "Prime"
         }
         
-        public struct SubInfo {
+        public struct SubInfo: Sendable {
             public var cumulativeMonths: UInt
             public var shouldShareStreak: Bool
             public var streakMonths: UInt
@@ -29,7 +29,7 @@ public struct UserNotice {
             public var goalUserContributions: String
         }
         
-        public struct ReSubInfo {
+        public struct ReSubInfo: Sendable {
             public var cumulativeMonths: UInt
             public var shouldShareStreak: Bool
             public var streakMonths: UInt
@@ -47,7 +47,7 @@ public struct UserNotice {
             public var gifterName: String
         }
         
-        public struct SubGiftInfo {
+        public struct SubGiftInfo: Sendable {
             public var months: UInt
             public var recipientDisplayName: String
             public var recipientId: String
@@ -66,18 +66,18 @@ public struct UserNotice {
             public var goalUserContributions: String
         }
         
-        public struct PrimePaidUpgradeInfo {
+        public struct PrimePaidUpgradeInfo: Sendable {
             public var subPlan: SubPlan?
         }
         
-        public struct GiftPaidUpgradeInfo {
+        public struct GiftPaidUpgradeInfo: Sendable {
             public var promoGiftTotal: UInt
             public var promoName: String
             public var senderLogin: String
             public var senderName: String
         }
         
-        public struct SubMysteryGiftInfo {
+        public struct SubMysteryGiftInfo: Sendable {
             public var massGiftCount: UInt
             public var originId: String
             public var senderCount: UInt
@@ -90,26 +90,26 @@ public struct UserNotice {
             public var giftTheme: String
         }
         
-        public struct AnonGiftPaidUpgradeInfo {
+        public struct AnonGiftPaidUpgradeInfo: Sendable {
             public var promoGiftTotal: UInt
             public var promoName: String
         }
         
-        public struct RaidInfo {
+        public struct RaidInfo: Sendable {
             public var displayName: String
             public var login: String
             public var viewerCount: UInt
             public var profileImageURL: String
         }
         
-        public struct CommunityPayForwardInfo {
+        public struct CommunityPayForwardInfo: Sendable {
             public var priorGifterAnonymous: Bool
             public var priorGifterDisplayName: String
             public var priorGifterId: String
             public var priorGifterUserName: String
         }
         
-        public struct StandardPayForwardInfo {
+        public struct StandardPayForwardInfo: Sendable {
             public var priorGifterAnonymous: Bool
             public var priorGifterDisplayName: String
             public var priorGifterId: String
