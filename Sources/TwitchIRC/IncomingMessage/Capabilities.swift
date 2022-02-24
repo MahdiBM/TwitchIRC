@@ -1,5 +1,5 @@
 
-/// Additional Capabilities you can request from Twitch.
+/// A Twitch `ACK` message.
 public struct Capabilities: Sendable {
     
     public var capabilities: [Capability] = []

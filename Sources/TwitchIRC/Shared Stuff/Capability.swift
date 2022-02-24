@@ -1,4 +1,5 @@
 
+/// Additional capabilities you can ask from Twitch.
 public enum Capability: CaseIterable, Sendable {
     case membership
     case tags

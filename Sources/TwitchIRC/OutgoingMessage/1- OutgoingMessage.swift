@@ -1,4 +1,5 @@
 
+/// An IRC message to be sent to Twitch.
 public enum OutgoingMessage: Sendable {
     /// Sends a message to a channel. Channel name must be lowercased.
     case privateMessage(to: String, message: String, messageIdToReply: String? = nil)
