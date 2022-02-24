@@ -1,5 +1,5 @@
 
-public enum OutgoingMessage {
+public enum OutgoingMessage: Sendable {
     /// Sends a message to a channel. Channel name must be lowercased.
     case privateMessage(to: String, message: String, messageIdToReply: String? = nil)
     /// Joins a channel's chat. Channel name must be lowercased.
