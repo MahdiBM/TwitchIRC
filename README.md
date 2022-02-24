@@ -50,9 +50,29 @@ let serialized = outgoingMessage.serialize()
 ```
 
 ## I don't see some info in some messages
+
 TwitchIRC contains all info sent by Twitch. If you don't see something in message types, its probably deprecated.    
 Some of the deprecated keys are `subscriber`, `mod` or `user-type`. You need to instead use the `badges` for those 3 mentioned keys.   
 I'm personally actively looking for any non-parsed info using the `parsingLeftOvers` property that some message types have, and will update the package with the new info as soon as I catch them.
+
+## How To Add TwitchIRC To Your Project
+
+To use the `TwitchIRC` library in a SwiftPM project, 
+add the following line to the dependencies in your `Package.swift` file:
+
+```swift
+.package(url: "https://github.com/MahdiBM/TwitchIRC", from: "1.0.0-beta"),
+```
+
+Include `"TwitchIRC"` as a dependency for your executable target:
+
+```swift
+.target(name: "<target>", dependencies: [
+    .product(name: "TwitchIRC", package: "TwitchIRC"),
+]),
+```
+
+Finally, add `import TwitchIRC` to your source code.
 
 ## Warning
 
