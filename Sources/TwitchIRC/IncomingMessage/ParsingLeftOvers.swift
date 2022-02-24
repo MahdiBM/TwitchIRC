@@ -1,12 +1,12 @@
 
-public struct ParsingLeftOvers: Sendable {
+public struct ParsingLeftOvers {
     
-    public struct UnusedPair: Sendable {
+    public struct UnusedPair {
         let key: String
         let value: String
     }
     
-    public struct UnparsedKey: Sendable {
+    public struct UnparsedKey {
         let key: String
         let type: String
     }
@@ -24,3 +24,10 @@ public struct ParsingLeftOvers: Sendable {
         && self.unparsedKeys.isEmpty
     }
 }
+
+// - MARK: Sendable conformances
+#if swift(>=5.5)
+extension ParsingLeftOvers: Sendable { }
+extension ParsingLeftOvers.UnusedPair: Sendable { }
+extension ParsingLeftOvers.UnparsedKey: Sendable { }
+#endif

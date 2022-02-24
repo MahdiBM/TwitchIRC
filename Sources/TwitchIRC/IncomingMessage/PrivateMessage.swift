@@ -1,8 +1,8 @@
 
 /// A Twitch `PRIVMSG` message.
-public struct PrivateMessage: Sendable {
+public struct PrivateMessage {
     
-    public struct ReplyParent: Sendable {
+    public struct ReplyParent {
         /// Replied user's display name with upper/lower-case letters.
         public var displayName: String = ""
         /// Replied user's lowercased name.
@@ -96,9 +96,16 @@ public struct PrivateMessage: Sendable {
         /// Remove `.unicodeScalars` and run tests to find out.
         self.message = String(message.unicodeScalars.dropFirst())
         
-        guard let (infoPart, _) = contentLhs.componentsOneSplit(separatedBy: " :") else {
+        guard let (infoPart, userLoginPart) = contentLhs.componentsOneSplit(separatedBy: " :") else {
             return nil
-        } /// separates " :senderName!senderName@senderName." from what is behind it.
+        } /// separates "senderName!senderName@senderName." from what is behind it.
+        
+        guard let (userLogin1, theRest) = userLoginPart.dropLast().componentsOneSplit(separatedBy: "!"),
+              let (userLogin2, userLogin3) = theRest.componentsOneSplit(separatedBy: "@"),
+              userLogin1 == userLogin2, userLogin2 == userLogin3 else {
+            return nil
+        }
+        self.userLogin = String(userLogin1)
         
         var parser = ParametersParser(String(infoPart.dropFirst()))
         
@@ -107,7 +114,6 @@ public struct PrivateMessage: Sendable {
         self.bits = parser.string(for: "bits")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
-        self.userLogin = self.displayName.lowercased()
         self.emotes = parser.array(for: "emotes")
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")
@@ -137,3 +143,9 @@ public struct PrivateMessage: Sendable {
         )
     }
 }
+
+// - MARK: Sendable conformances
+#if swift(>=5.5)
+extension PrivateMessage: Sendable { }
+extension PrivateMessage.ReplyParent: Sendable { }
+#endif

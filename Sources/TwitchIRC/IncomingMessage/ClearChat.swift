@@ -1,6 +1,6 @@
 
 /// A Twitch `CLEARCHAT` message.
-public struct ClearChat: Sendable {
+public struct ClearChat {
     
     /// The channel's lowercased name.
     public var channel = String()
@@ -36,3 +36,8 @@ public struct ClearChat: Sendable {
         }
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension ClearChat: Sendable { }
+#endif

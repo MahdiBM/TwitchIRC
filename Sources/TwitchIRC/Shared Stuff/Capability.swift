@@ -1,6 +1,6 @@
 
 /// Additional capabilities you can ask from Twitch.
-public enum Capability: CaseIterable, Sendable {
+public enum Capability: CaseIterable {
     case membership
     case tags
     case commands
@@ -23,3 +23,8 @@ public enum Capability: CaseIterable, Sendable {
         }
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension Capability: Sendable { }
+#endif

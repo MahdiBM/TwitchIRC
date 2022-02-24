@@ -1,5 +1,5 @@
 
-public struct Whisper: Sendable {
+public struct Whisper {
     
     /// The receiver of this whisper. All lowercased.
     public var receiver = String()
@@ -51,3 +51,8 @@ public struct Whisper: Sendable {
         )
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension Whisper: Sendable { }
+#endif

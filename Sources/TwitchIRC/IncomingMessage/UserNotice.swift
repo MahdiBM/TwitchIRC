@@ -1,10 +1,10 @@
 
 /// A Twitch `USERNOTICE` message.
-public struct UserNotice: Sendable {
+public struct UserNotice {
     
-    public enum MessageID: Sendable {
+    public enum MessageID {
         
-        public enum SubPlan: String, Sendable {
+        public enum SubPlan: String {
             case followersTier = ""
             case tier1 = "1000"
             case tier2 = "2000"
@@ -12,7 +12,7 @@ public struct UserNotice: Sendable {
             case prime = "Prime"
         }
         
-        public struct SubInfo: Sendable {
+        public struct SubInfo {
             public var cumulativeMonths: UInt
             public var shouldShareStreak: Bool
             public var streakMonths: UInt
@@ -29,7 +29,7 @@ public struct UserNotice: Sendable {
             public var goalUserContributions: String
         }
         
-        public struct ReSubInfo: Sendable {
+        public struct ReSubInfo {
             public var cumulativeMonths: UInt
             public var shouldShareStreak: Bool
             public var streakMonths: UInt
@@ -47,7 +47,7 @@ public struct UserNotice: Sendable {
             public var gifterName: String
         }
         
-        public struct SubGiftInfo: Sendable {
+        public struct SubGiftInfo {
             public var months: UInt
             public var recipientDisplayName: String
             public var recipientId: String
@@ -66,18 +66,18 @@ public struct UserNotice: Sendable {
             public var goalUserContributions: String
         }
         
-        public struct PrimePaidUpgradeInfo: Sendable {
+        public struct PrimePaidUpgradeInfo {
             public var subPlan: SubPlan?
         }
         
-        public struct GiftPaidUpgradeInfo: Sendable {
+        public struct GiftPaidUpgradeInfo {
             public var promoGiftTotal: UInt
             public var promoName: String
             public var senderLogin: String
             public var senderName: String
         }
         
-        public struct SubMysteryGiftInfo: Sendable {
+        public struct SubMysteryGiftInfo {
             public var massGiftCount: UInt
             public var originId: String
             public var senderCount: UInt
@@ -90,26 +90,26 @@ public struct UserNotice: Sendable {
             public var giftTheme: String
         }
         
-        public struct AnonGiftPaidUpgradeInfo: Sendable {
+        public struct AnonGiftPaidUpgradeInfo {
             public var promoGiftTotal: UInt
             public var promoName: String
         }
         
-        public struct RaidInfo: Sendable {
+        public struct RaidInfo {
             public var displayName: String
             public var login: String
             public var viewerCount: UInt
             public var profileImageURL: String
         }
         
-        public struct CommunityPayForwardInfo: Sendable {
+        public struct CommunityPayForwardInfo {
             public var priorGifterAnonymous: Bool
             public var priorGifterDisplayName: String
             public var priorGifterId: String
             public var priorGifterUserName: String
         }
         
-        public struct StandardPayForwardInfo: Sendable {
+        public struct StandardPayForwardInfo {
             public var priorGifterAnonymous: Bool
             public var priorGifterDisplayName: String
             public var priorGifterId: String
@@ -370,3 +370,20 @@ public struct UserNotice: Sendable {
         )
     }
 }
+
+// - MARK conformances
+#if swift(>=5.5)
+extension UserNotice: Sendable { }
+extension UserNotice.MessageID: Sendable { }
+extension UserNotice.MessageID.SubPlan: Sendable { }
+extension UserNotice.MessageID.SubInfo: Sendable { }
+extension UserNotice.MessageID.ReSubInfo: Sendable { }
+extension UserNotice.MessageID.SubGiftInfo: Sendable { }
+extension UserNotice.MessageID.PrimePaidUpgradeInfo: Sendable { }
+extension UserNotice.MessageID.GiftPaidUpgradeInfo: Sendable { }
+extension UserNotice.MessageID.SubMysteryGiftInfo: Sendable { }
+extension UserNotice.MessageID.AnonGiftPaidUpgradeInfo: Sendable { }
+extension UserNotice.MessageID.RaidInfo: Sendable { }
+extension UserNotice.MessageID.CommunityPayForwardInfo: Sendable { }
+extension UserNotice.MessageID.StandardPayForwardInfo: Sendable { }
+#endif

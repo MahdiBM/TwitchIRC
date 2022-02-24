@@ -1,6 +1,6 @@
 
 /// Notices sent after entering a channel.
-public struct ChannelEntrance: Sendable {
+public struct ChannelEntrance {
     
     /// The Twitch message accompanying the notice.
     public var message = String()
@@ -35,3 +35,8 @@ public struct ChannelEntrance: Sendable {
         self.joinedChannel = joinedChannel
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension ChannelEntrance: Sendable { }
+#endif

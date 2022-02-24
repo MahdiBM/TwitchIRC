@@ -1,6 +1,6 @@
 
 /// A Twitch `USERSTATE` message.
-public struct UserState: Sendable {
+public struct UserState {
     
     /// Channel lowercased name.
     public var channel = String()
@@ -39,3 +39,8 @@ public struct UserState: Sendable {
         )
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension UserState: Sendable { }
+#endif

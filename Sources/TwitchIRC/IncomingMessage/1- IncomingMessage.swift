@@ -1,6 +1,6 @@
 
 /// A message coming from Twitch.
-public enum IncomingMessage: Sendable {
+public enum IncomingMessage {
     /// A type of message sent after successful connection to Twitch.
     case connectionNotice(ConnectionNotice)
     /// A type of message sent after entering a channel.
@@ -173,5 +173,9 @@ public enum IncomingMessage: Sendable {
             return nil
         }
     }
-    
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension IncomingMessage: Sendable { }
+#endif

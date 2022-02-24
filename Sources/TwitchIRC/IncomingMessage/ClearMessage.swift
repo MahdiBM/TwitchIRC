@@ -1,6 +1,6 @@
 
 /// A Twitch `CLEARMESSAGE` message.
-public struct ClearMessage: Sendable {
+public struct ClearMessage {
     
     /// The channel's lowercased name.
     public var channel = String()
@@ -46,3 +46,8 @@ public struct ClearMessage: Sendable {
         self.parsingLeftOvers = parser.getLeftOvers()
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension ClearMessage: Sendable { }
+#endif

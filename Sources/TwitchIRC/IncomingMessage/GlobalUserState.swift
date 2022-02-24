@@ -1,6 +1,6 @@
 
 /// A Twitch `GLOBALUSERSTATE` message.
-public struct GlobalUserState: Sendable {
+public struct GlobalUserState {
     
     /// Badge info.
     public var badgeInfo = [String]()
@@ -35,3 +35,8 @@ public struct GlobalUserState: Sendable {
         )
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension GlobalUserState: Sendable { }
+#endif

@@ -1,6 +1,6 @@
 
 /// A Twitch `ACK` message.
-public struct Capabilities: Sendable {
+public struct Capabilities {
     
     public var capabilities: [Capability] = []
     
@@ -21,3 +21,8 @@ public struct Capabilities: Sendable {
         }
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension Capabilities: Sendable { }
+#endif

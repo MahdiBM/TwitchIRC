@@ -1,6 +1,6 @@
 
 /// A Twitch `PART` message.
-public struct Part: Sendable {
+public struct Part {
     
     /// The channel's lowercased name.
     public var channel = String()
@@ -31,3 +31,8 @@ public struct Part: Sendable {
         self.userLogin = String(name1)
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension Part: Sendable { }
+#endif

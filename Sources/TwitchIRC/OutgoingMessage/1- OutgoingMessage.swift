@@ -1,6 +1,6 @@
 
 /// An IRC message to be sent to Twitch.
-public enum OutgoingMessage: Sendable {
+public enum OutgoingMessage {
     /// Sends a message to a channel. Channel name must be lowercased.
     case privateMessage(to: String, message: String, messageIdToReply: String? = nil)
     /// Joins a channel's chat. Channel name must be lowercased.
@@ -48,3 +48,8 @@ public enum OutgoingMessage: Sendable {
         }
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension OutgoingMessage: Sendable { }
+#endif

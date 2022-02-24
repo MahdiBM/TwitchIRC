@@ -1,6 +1,6 @@
 
 /// A Twitch `JOIN` message.
-public struct Join: Sendable {
+public struct Join {
     
     /// The channel's lowercased name.
     public var channel = String()
@@ -31,3 +31,8 @@ public struct Join: Sendable {
         self.userLogin = String(name1)
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension Join: Sendable { }
+#endif

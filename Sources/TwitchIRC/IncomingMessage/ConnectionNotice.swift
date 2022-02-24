@@ -1,6 +1,6 @@
 
 /// A notice of connection to Twitch.
-public struct ConnectionNotice: Sendable {
+public struct ConnectionNotice {
     
     /// The Twitch message accompanying the notice.
     public var message = String()
@@ -21,3 +21,8 @@ public struct ConnectionNotice: Sendable {
         self.number = number
     }
 }
+
+// - MARK: Sendable conformance
+#if swift(>=5.5)
+extension ConnectionNotice: Sendable { }
+#endif

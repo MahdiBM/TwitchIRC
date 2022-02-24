@@ -1,8 +1,8 @@
 
 /// A Twitch `NOTICE` message.
-public struct Notice: Sendable {
+public struct Notice {
     
-    public enum MessageID: String, CaseIterable, Sendable {
+    public enum MessageID: String, CaseIterable {
         /// <user> is already banned in this channel.
         case alreadyBanned = "alreadybanned"
         /// This room is not in emote-only mode.
@@ -335,7 +335,7 @@ public struct Notice: Sendable {
         }
     }
     
-    public enum Kind: Sendable {
+    public enum Kind {
         case global(
             /// The notice's message.
             message: String
@@ -377,3 +377,10 @@ public struct Notice: Sendable {
         }
     }
 }
+
+// - MARK: Sendable conformances
+#if swift(>=5.5)
+extension Notice: Sendable { }
+extension Notice.MessageID: Sendable { }
+extension Notice.Kind: Sendable { }
+#endif
