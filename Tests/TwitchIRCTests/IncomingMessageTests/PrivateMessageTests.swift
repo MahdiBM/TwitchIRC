@@ -63,7 +63,7 @@ final class PrivateMessageTests: XCTestCase {
     }
     
     /// Tests a single weird character in the message (here UTF8 [217, 145])
-    /// The character is barely visible in Xcode.
+    /// The character is only barely visible in Xcode.
     func testParsedValues3() throws {
         let string = "@badge-info=;badges=;client-nonce=3dc1eef952878c31098361ebfc5017d7;color=;display-name=littlesnakysnake;emotes=;first-msg=0;flags=;id=9a323937-80fe-442a-b3a9-8c32e37cfb4f;mod=0;room-id=180980116;subscriber=0;tmi-sent-ts=1642848914241;turbo=0;user-id=478769067;user-type= :littlesnakysnake!littlesnakysnake@littlesnakysnake.tmi.twitch.tv PRIVMSG #carl_the_legend :ّ"
         
@@ -129,6 +129,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
     
+    /// Tests `crowdChantParentMessageId`.
     func testParsedValues5() throws {
         let string = "@badge-info=;badges=;client-nonce=fa05d91c0394473736a56399f18b4d72;color=#19B330;crowd-chant-parent-msg-id=2bcffcc6-b9c7-4cf0-aef1-67ea8dbd60e3;display-name=TheHunterChamp;emotes=;first-msg=1;flags=;id=e1200eb4-8815-42bf-803f-a118deffe669;mod=0;room-id=139078933;subscriber=0;tmi-sent-ts=1643759403569;turbo=0;user-id=167448427;user-type= :thehunterchamp!thehunterchamp@thehunterchamp.tmi.twitch.tv PRIVMSG #xopxsam :PUSHIN 🅿️ TriDance"
     
@@ -154,6 +155,36 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.tmiSentTs, 1643759403569)
         XCTAssertEqual(msg.clientNonce, "fa05d91c0394473736a56399f18b4d72")
         XCTAssertEqual(msg.userId, "167448427")
+        XCTAssertTrue(msg.replyParent == .init())
+        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+    }
+    
+    /// Tests where `displayName.lowercased() != userLogin`.
+    func testParsedValues6() throws {
+        let string = "@badge-info=;badges=;client-nonce=915d8fd68f216eedc4f6b4aeea9e0f1b;color=#FF69B4;display-name=건조한갱생거북;emotes=;first-msg=0;flags=;id=df123fb2-4ff9-4dcc-bee0-740f4ac0e085;mod=0;room-id=198860406;subscriber=0;tmi-sent-ts=1645799365193;turbo=0;user-id=434919515;user-type= :newturtle_timi!newturtle_timi@newturtle_timi.tmi.twitch.tv PRIVMSG #berry0314 :ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+        
+        let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(msg.channel, "berry0314")
+        XCTAssertEqual(msg.message, "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+        XCTAssertEqual(msg.badgeInfo, [])
+        XCTAssertEqual(msg.badges, [])
+        XCTAssertEqual(msg.bits, "")
+        XCTAssertEqual(msg.color, "#FF69B4")
+        XCTAssertEqual(msg.displayName, "건조한갱생거북")
+        XCTAssertEqual(msg.userLogin, "newturtle_timi")
+        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emoteOnly, false)
+        XCTAssertEqual(msg.flags, [])
+        XCTAssertEqual(msg.firstMessage, false)
+        XCTAssertEqual(msg.messageId, "")
+        XCTAssertEqual(msg.id, "df123fb2-4ff9-4dcc-bee0-740f4ac0e085")
+        XCTAssertEqual(msg.crowdChantParentMessageId, "")
+        XCTAssertEqual(msg.customRewardId, "")
+        XCTAssertEqual(msg.roomId, "198860406")
+        XCTAssertEqual(msg.tmiSentTs, 1645799365193)
+        XCTAssertEqual(msg.clientNonce, "915d8fd68f216eedc4f6b4aeea9e0f1b")
+        XCTAssertEqual(msg.userId, "434919515")
         XCTAssertTrue(msg.replyParent == .init())
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
