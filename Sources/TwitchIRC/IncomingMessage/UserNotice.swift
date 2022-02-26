@@ -371,7 +371,7 @@ public struct UserNotice {
     }
 }
 
-// - MARK conformances
+// - MARK Sendable conformances
 #if swift(>=5.5)
 extension UserNotice: Sendable { }
 extension UserNotice.MessageID: Sendable { }
