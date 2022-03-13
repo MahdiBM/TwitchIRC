@@ -80,11 +80,15 @@ final class ParametersParserTests: XCTestCase {
         )
         XCTAssertEqual(
             parser._testOnly_unparsedKeys().debugDescription,
-            [(key: String, type: String)]([
-                (key: "reply-parent-msg-id", type: "UInt"),
-                (key: "reply-parent-user-login", type: "Int"),
-                (key: "room-id", type: "Bool"),
-                (key: "user-type", type: "SubPlan")
+            [(key: String, value: String, type: String)]([
+                (
+                    key: "reply-parent-msg-id",
+                    value: "92d75439-9bfa-42d2-b20c-7dc4a2c07f6b",
+                    type: "UInt"
+                ),
+                (key: "reply-parent-user-login", value: "jay_999666", type: "Int"),
+                (key: "room-id", value: "751562865", type: "Bool"),
+                (key: "user-type", value: "mod", type: "SubPlan")
             ]).debugDescription
         )
         
@@ -116,10 +120,14 @@ final class ParametersParserTests: XCTestCase {
         XCTAssertEqual(
             leftOvers.unparsedKeys.debugDescription,
             [
-                UnparsedKey(key: "reply-parent-msg-id", type: "UInt"),
-                UnparsedKey(key: "reply-parent-user-login", type: "Int"),
-                UnparsedKey(key: "room-id", type: "Bool"),
-                UnparsedKey(key: "user-type", type: "SubPlan")
+                UnparsedKey(
+                    key: "reply-parent-msg-id",
+                    value: "92d75439-9bfa-42d2-b20c-7dc4a2c07f6b",
+                    type: "UInt"
+                ),
+                UnparsedKey(key: "reply-parent-user-login", value: "jay_999666", type: "Int"),
+                UnparsedKey(key: "room-id", value: "751562865", type: "Bool"),
+                UnparsedKey(key: "user-type", value: "mod", type: "SubPlan")
             ].debugDescription
         )
         XCTAssertEqual(leftOvers.isEmpty, false)

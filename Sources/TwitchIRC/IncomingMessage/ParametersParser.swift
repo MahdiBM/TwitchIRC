@@ -11,7 +11,7 @@ struct ParametersParser {
     /// Keys that were unavailable.
     private var unavailableKeys = [String]()
     /// Keys that were failed to be parsed into a certain type.
-    private var unparsedKeys = [(key: String, type: String)]()
+    private var unparsedKeys = [(pair: (key: String, value: String), type: String)]()
     
     init(_ input: String) {
         let values = input.componentsSeparatedBy(separator: ";").compactMap {
@@ -41,7 +41,7 @@ struct ParametersParser {
         let unavailableKeys = self.unavailableKeys
             .filter({ !excludedUnavailableKeys.contains($0) })
         let unparsedKeys = self.unparsedKeys.map {
-            ParsingLeftOvers.UnparsedKey(key: $0.key, type: $0.type)
+            ParsingLeftOvers.UnparsedKey(key: $0.pair.key, value: $0.pair.value, type: $0.type)
         }
         return ParsingLeftOvers(
             unusedPairs: unusedPairs,
@@ -95,8 +95,8 @@ struct ParametersParser {
         }
     }
     
-    private mutating func appendUnparsedKey<T>(key: String, type: T.Type) {
-        self.unparsedKeys.append((key: key, type: String(describing: type)))
+    private mutating func appendUnparsedKey<T>(pair: (key: String, value: String), type: T.Type) {
+        self.unparsedKeys.append((pair: pair, type: String(describing: type)))
     }
     
     mutating func optionalString(for key: String) -> String? {
@@ -124,7 +124,7 @@ struct ParametersParser {
             if let uint = UInt(stored.element.value) {
                 return uint
             } else {
-               self.appendUnparsedKey(key: key, type: UInt.self)
+                self.appendUnparsedKey(pair: stored.element, type: UInt.self)
                return nil
            }
         } else {
@@ -141,7 +141,7 @@ struct ParametersParser {
             if let int = Int(stored.element.value) {
                 return int
             } else {
-                self.appendUnparsedKey(key: key, type: Int.self)
+                self.appendUnparsedKey(pair: stored.element, type: Int.self)
                 return nil
             }
         } else {
@@ -161,7 +161,7 @@ struct ParametersParser {
             } else if value == "0" || value == "false" {
                 return false
             } else {
-                self.appendUnparsedKey(key: key, type: Bool.self)
+                self.appendUnparsedKey(pair: stored.element, type: Bool.self)
                 return nil
             }
         } else {
@@ -181,7 +181,7 @@ struct ParametersParser {
             if let representable = R.init(rawValue: stored.element.value) {
                 return representable
             } else {
-                self.appendUnparsedKey(key: key, type: R.self)
+                self.appendUnparsedKey(pair: stored.element, type: R.self)
                 return nil
            }
         } else {
@@ -203,8 +203,8 @@ struct ParametersParser {
         self.unavailableKeys
     }
     
-    func _testOnly_unparsedKeys() -> [(key: String, type: String)] {
-        self.unparsedKeys
+    func _testOnly_unparsedKeys() -> [(key: String, value: String, type: String)] {
+        self.unparsedKeys.map({ (key: $0.0.key, value: $0.0.value, type: $0.1) })
     }
 #endif
 }

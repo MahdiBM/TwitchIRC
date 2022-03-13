@@ -1,13 +1,20 @@
 
+/// The remaining stuff after parsing of messages is done.
+/// Useful for making sure you've not missed any data.
+/// This type should always be empty, otherwise there is a parsing problem.
+/// Please report all problems on https://github.com/MahdiBM/TwitchIRC/issues.
 public struct ParsingLeftOvers {
     
+    /// A pair of key-value that was not used during parsing.
     public struct UnusedPair {
         let key: String
         let value: String
     }
     
+    /// An unsuccessful parsing attempt for a key
     public struct UnparsedKey {
         let key: String
+        let value: String
         let type: String
     }
     
