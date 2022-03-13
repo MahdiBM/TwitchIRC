@@ -2,9 +2,9 @@
 /// A Twitch `JOIN` message.
 public struct Join {
     
-    /// The channel's lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
-    /// The user's lowercased name.
+    /// User's name with no uppercased/Han characters.
     public var userLogin = String()
     
     public init() { }

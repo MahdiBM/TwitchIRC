@@ -2,7 +2,7 @@
 /// A Twitch `ROOMSTATE` message.
 public struct RoomState {
     
-    /// The channel's lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
     /// Whether or not normal viewers can only send emotes.
     public var emoteOnly = Bool()

@@ -4,9 +4,9 @@ public struct ChannelEntrance {
     
     /// The Twitch message accompanying the notice.
     public var message = String()
-    /// The user that has successfully joined the channel. All lowercased.
+    /// User's name with no uppercased/Han characters.
     public var userLogin = String()
-    /// The channel that has been joined. All lowercased.
+    /// The channel name that has been joined, with no uppercased/Han characters.
     public var joinedChannel = String()
     /// The number that Twitch sends alongside this notice.
     public var number = UInt()

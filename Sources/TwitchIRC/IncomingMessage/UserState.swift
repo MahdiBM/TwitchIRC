@@ -2,7 +2,7 @@
 /// A Twitch `USERSTATE` message.
 public struct UserState: MessageWithBadges {
     
-    /// Channel lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
     /// User's badge info.
     public var badgeInfo = [String]()
@@ -10,7 +10,7 @@ public struct UserState: MessageWithBadges {
     public var badges = [String]()
     /// User's in-chat name color.
     public var color = String()
-    /// User's display name with upper/lower-case letters.
+    /// User's display name with uppercased/Han characters.
     public var displayName = String()
     /// User's emote sets.
     public var emoteSets = [String]()

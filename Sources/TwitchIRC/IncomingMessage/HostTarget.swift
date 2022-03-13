@@ -10,9 +10,9 @@ public struct HostTarget {
         case stop
     }
     
-    /// The channel's lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
-    /// The number of viewers of the host.
+    /// Number of viewers of the host.
     public var numberOfViewers = Optional<UInt>.none
     /// The action being taken. Currently either starting a host or stopping it.
     public var action: Action!

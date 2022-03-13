@@ -453,7 +453,7 @@ public struct UserNotice: MessageWithBadges {
         case standardPayForward(StandardPayForwardInfo)
     }
     
-    /// Channel lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
     /// Possible message sent by user.
     public var message = String()
@@ -463,7 +463,7 @@ public struct UserNotice: MessageWithBadges {
     public var badges = [String]()
     /// User's in-chat name color.
     public var color = String()
-    /// User's display name with upper/lower-case letters.
+    /// User's display name with uppercased/Han characters.
     public var displayName = String()
     /// User's emotes.
     public var emotes = [String]()
@@ -471,7 +471,7 @@ public struct UserNotice: MessageWithBadges {
     public var flags = [String]()
     /// Message's id.
     public var id = String()
-    /// User's lowercased name.
+    /// User's name with no uppercased/Han characters.
     public var userLogin = String()
     /// More-precise info about this user notice.
     public var messageId: MessageID!

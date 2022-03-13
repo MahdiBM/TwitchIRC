@@ -8,7 +8,7 @@ public struct GlobalUserState: MessageWithBadges {
     public var badges = [String]()
     /// User's in-chat name color.
     public var color = String()
-    /// User's display name with upper/lower-case letters.
+    /// User's display name with uppercased/Han characters.
     public var displayName = String()
     /// User's emote sets.
     public var emoteSets = [String]()

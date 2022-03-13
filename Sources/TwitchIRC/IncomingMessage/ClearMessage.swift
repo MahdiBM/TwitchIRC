@@ -2,17 +2,17 @@
 /// A Twitch `CLEARMESSAGE` message.
 public struct ClearMessage {
     
-    /// The channel's lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
     /// The deleted message.
     public var message = String()
-    /// The user's lowercased name.
+    /// User's name with no uppercased/Han characters.
     public var userLogin = String()
-    /// The cleared message's identifier.
+    /// Cleared message's identifier.
     public var targetMessageId = String()
     /// Broadcaster's Twitch identifier.
     public var roomId = String()
-    /// The timestamp of this message.
+    /// Timestamp of this message.
     public var tmiSentTs = UInt()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()

@@ -2,9 +2,9 @@
 /// A Twitch `CLEARCHAT` message.
 public struct ClearChat {
     
-    /// The channel's lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
-    /// The cleared user's lowercased name.
+    /// The cleared user's name, with no uppercased/Han characters.
     /// If `nil` then the whole chat has been cleared.
     public var userLogin = Optional<String>.none
     /// The duration of the ban/timeout.

@@ -3,9 +3,9 @@
 public struct PrivateMessage: MessageWithBadges {
     
     public struct ReplyParent {
-        /// Replied user's display name with upper/lower-case letters.
+        /// Replied user's display name with uppercased/Han characters.
         public var displayName = String()
-        /// Replied user's lowercased name.
+        /// Replied user's name with no uppercased/Han characters.
         public var userLogin = String()
         /// The replied message.
         public var message = String()
@@ -31,7 +31,7 @@ public struct PrivateMessage: MessageWithBadges {
         }
     }
     
-    /// Channel lowercased name.
+    /// Channel's name with no uppercased/Han characters.
     public var channel = String()
     /// The message sent.
     public var message = String()
@@ -43,9 +43,9 @@ public struct PrivateMessage: MessageWithBadges {
     public var bits = String()
     /// User's in-chat name color.
     public var color = String()
-    /// User's display name with upper/lower-case letters.
+    /// User's display name with uppercased/Han characters.
     public var displayName = String()
-    /// User's lowercased name.
+    /// User's name with no uppercased/Han characters.
     public var userLogin = String()
     /// User's emotes.
     public var emotes = [String]()

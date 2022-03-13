@@ -9,7 +9,7 @@ public struct Whisper: MessageWithBadges {
     public var badges = [String]()
     /// Sender's in-chat name color.
     public var color = String()
-    /// Sender's display name with with upper/lower-case letters.
+    /// Sender's display name with uppercased/Han characters.
     public var displayName = String()
     /// Sender's emotes.
     public var emotes = [String]()
