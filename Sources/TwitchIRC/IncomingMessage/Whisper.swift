@@ -1,5 +1,5 @@
 
-public struct Whisper {
+public struct Whisper: MessageWithBadges {
     
     /// The receiver of this whisper. All lowercased.
     public var receiver = String()

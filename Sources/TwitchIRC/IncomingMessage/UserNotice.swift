@@ -1,6 +1,6 @@
 
 /// A Twitch `USERNOTICE` message.
-public struct UserNotice {
+public struct UserNotice: MessageWithBadges {
     
     public enum MessageID {
         

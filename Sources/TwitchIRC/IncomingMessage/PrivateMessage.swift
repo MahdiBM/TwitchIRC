@@ -1,6 +1,6 @@
 
 /// A Twitch `PRIVMSG` message.
-public struct PrivateMessage {
+public struct PrivateMessage: MessageWithBadges {
     
     public struct ReplyParent {
         /// Replied user's display name with upper/lower-case letters.
@@ -60,24 +60,6 @@ public struct PrivateMessage {
     public var replyParent = ReplyParent()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
-    
-    // MARK: Convenience stuff
-    
-    public var isMod: Bool {
-        self.badges.contains(where: { $0.hasPrefix("moderator") })
-    }
-    public var isSubscriber: Bool {
-        self.badges.contains(where: { $0.hasPrefix("subscriber") })
-    }
-    public var isBroadcaster: Bool {
-        self.badges.contains(where: { $0.hasPrefix("broadcaster") })
-    }
-    public var isVIP: Bool {
-        self.badges.contains(where: { $0.hasPrefix("vip") })
-    }
-    public var isTurbo: Bool {
-        self.badges.contains(where: { $0.hasPrefix("turbo") })
-    }
     
     public init() { }
     
