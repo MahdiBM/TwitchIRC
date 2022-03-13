@@ -190,7 +190,7 @@ final class PrivateMessageTests: XCTestCase {
     }
 }
 
-// MARK: PrivateMessage.ReplyParent Equatable (basically)
+// MARK: - PrivateMessage.ReplyParent Equatable (basically)
 private func == (lhs: PrivateMessage.ReplyParent, rhs: PrivateMessage.ReplyParent) -> Bool {
     lhs.displayName == rhs.displayName
     && lhs.userLogin == rhs.userLogin

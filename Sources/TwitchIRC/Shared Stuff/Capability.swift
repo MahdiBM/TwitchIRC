@@ -24,7 +24,7 @@ public enum Capability: CaseIterable {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension Capability: Sendable { }
 #endif

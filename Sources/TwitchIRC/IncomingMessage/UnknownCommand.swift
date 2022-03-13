@@ -22,7 +22,7 @@ public struct UnknownCommand {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension UnknownCommand: Sendable { }
 #endif

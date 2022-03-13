@@ -25,7 +25,7 @@ public struct ParsingLeftOvers {
     }
 }
 
-// - MARK: Sendable conformances
+// MARK: - Sendable conformances
 #if swift(>=5.5)
 extension ParsingLeftOvers: Sendable { }
 extension ParsingLeftOvers.UnusedPair: Sendable { }

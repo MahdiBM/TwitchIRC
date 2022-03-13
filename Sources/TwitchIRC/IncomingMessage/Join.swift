@@ -32,7 +32,7 @@ public struct Join {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension Join: Sendable { }
 #endif

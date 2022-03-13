@@ -378,7 +378,7 @@ public struct Notice {
     }
 }
 
-// - MARK: Sendable conformances
+// MARK: - Sendable conformances
 #if swift(>=5.5)
 extension Notice: Sendable { }
 extension Notice.MessageID: Sendable { }

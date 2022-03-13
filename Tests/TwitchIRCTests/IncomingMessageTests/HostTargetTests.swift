@@ -40,7 +40,7 @@ final class HostTargetTests: XCTestCase {
     }
 }
 
-// MARK: Equatable for `HostTarget.Action` (basically)
+// MARK: - Equatable for `HostTarget.Action` (basically)
 private func == (lhs: HostTarget.Action, rhs: HostTarget.Action) -> Bool {
     "\(lhs)" == "\(rhs)"
 }

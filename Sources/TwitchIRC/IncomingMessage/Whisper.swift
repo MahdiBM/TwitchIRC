@@ -52,7 +52,7 @@ public struct Whisper: MessageWithBadges {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension Whisper: Sendable { }
 #endif

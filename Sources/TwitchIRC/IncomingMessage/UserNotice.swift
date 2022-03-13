@@ -27,6 +27,57 @@ public struct UserNotice: MessageWithBadges {
             public var goalDescription: String
             public var goalTargetContributions: String
             public var goalUserContributions: String
+            
+            internal init(
+                cumulativeMonths: UInt,
+                shouldShareStreak: Bool,
+                streakMonths: UInt,
+                subPlan: UserNotice.MessageID.SubPlan?,
+                subPlanName: String,
+                months: UInt,
+                multimonthDuration: UInt,
+                multimonthTenure: Bool,
+                wasGifted: Bool,
+                goalContributionType: String,
+                goalCurrentContributions: String,
+                goalDescription: String,
+                goalTargetContributions: String,
+                goalUserContributions: String
+            ) {
+                self.cumulativeMonths = cumulativeMonths
+                self.shouldShareStreak = shouldShareStreak
+                self.streakMonths = streakMonths
+                self.subPlan = subPlan
+                self.subPlanName = subPlanName
+                self.months = months
+                self.multimonthDuration = multimonthDuration
+                self.multimonthTenure = multimonthTenure
+                self.wasGifted = wasGifted
+                self.goalContributionType = goalContributionType
+                self.goalCurrentContributions = goalCurrentContributions
+                self.goalDescription = goalDescription
+                self.goalTargetContributions = goalTargetContributions
+                self.goalUserContributions = goalUserContributions
+            }
+            
+            public init() {
+                self.init(
+                    cumulativeMonths: UInt(),
+                    shouldShareStreak: Bool(),
+                    streakMonths: UInt(),
+                    subPlan: nil,
+                    subPlanName: String(),
+                    months: UInt(),
+                    multimonthDuration: UInt(),
+                    multimonthTenure: Bool(),
+                    wasGifted: Bool(),
+                    goalContributionType: String(),
+                    goalCurrentContributions: String(),
+                    goalDescription: String(),
+                    goalTargetContributions: String(),
+                    goalUserContributions: String()
+                )
+            }
         }
         
         public struct ReSubInfo {
@@ -45,6 +96,60 @@ public struct UserNotice: MessageWithBadges {
             public var gifterId: String
             public var gifterLogin: String
             public var gifterName: String
+            
+            internal init(
+                cumulativeMonths: UInt,
+                shouldShareStreak: Bool,
+                streakMonths: UInt,
+                subPlan: UserNotice.MessageID.SubPlan?,
+                subPlanName: String,
+                anonGift: Bool,
+                months: UInt,
+                multimonthDuration: UInt,
+                multimonthTenure: Bool,
+                wasGifted: Bool,
+                giftMonthBeingRedeemed: UInt,
+                giftMonths: UInt,
+                gifterId: String,
+                gifterLogin: String,
+                gifterName: String
+            ) {
+                self.cumulativeMonths = cumulativeMonths
+                self.shouldShareStreak = shouldShareStreak
+                self.streakMonths = streakMonths
+                self.subPlan = subPlan
+                self.subPlanName = subPlanName
+                self.anonGift = anonGift
+                self.months = months
+                self.multimonthDuration = multimonthDuration
+                self.multimonthTenure = multimonthTenure
+                self.wasGifted = wasGifted
+                self.giftMonthBeingRedeemed = giftMonthBeingRedeemed
+                self.giftMonths = giftMonths
+                self.gifterId = gifterId
+                self.gifterLogin = gifterLogin
+                self.gifterName = gifterName
+            }
+            
+            public init() {
+                self.init(
+                    cumulativeMonths: UInt(),
+                    shouldShareStreak: Bool(),
+                    streakMonths: UInt(),
+                    subPlan: nil,
+                    subPlanName: String(),
+                    anonGift: Bool(),
+                    months: UInt(),
+                    multimonthDuration: UInt(),
+                    multimonthTenure: Bool(),
+                    wasGifted: Bool(),
+                    giftMonthBeingRedeemed: UInt(),
+                    giftMonths: UInt(),
+                    gifterId: String(),
+                    gifterLogin: String(),
+                    gifterName: String()
+                )
+            }
         }
         
         public struct SubGiftInfo {
@@ -64,10 +169,75 @@ public struct UserNotice: MessageWithBadges {
             public var goalDescription: String
             public var goalTargetContributions: String
             public var goalUserContributions: String
+            
+            internal init(
+                months: UInt,
+                recipientDisplayName: String,
+                recipientId: String,
+                recipientUserName: String,
+                subPlan: UserNotice.MessageID.SubPlan?,
+                subPlanName: String,
+                giftMonths: UInt,
+                originId: String,
+                senderCount: UInt,
+                funString: String,
+                giftTheme: String,
+                goalContributionType: String,
+                goalCurrentContributions: String,
+                goalDescription: String,
+                goalTargetContributions: String,
+                goalUserContributions: String
+            ) {
+                self.months = months
+                self.recipientDisplayName = recipientDisplayName
+                self.recipientId = recipientId
+                self.recipientUserName = recipientUserName
+                self.subPlan = subPlan
+                self.subPlanName = subPlanName
+                self.giftMonths = giftMonths
+                self.originId = originId
+                self.senderCount = senderCount
+                self.funString = funString
+                self.giftTheme = giftTheme
+                self.goalContributionType = goalContributionType
+                self.goalCurrentContributions = goalCurrentContributions
+                self.goalDescription = goalDescription
+                self.goalTargetContributions = goalTargetContributions
+                self.goalUserContributions = goalUserContributions
+            }
+            
+            public init() {
+                self.init(
+                    months: UInt(),
+                    recipientDisplayName: String(),
+                    recipientId: String(),
+                    recipientUserName: String(),
+                    subPlan: nil,
+                    subPlanName: String(),
+                    giftMonths: UInt(),
+                    originId: String(),
+                    senderCount: UInt(),
+                    funString: String(),
+                    giftTheme: String(),
+                    goalContributionType: String(),
+                    goalCurrentContributions: String(),
+                    goalDescription: String(),
+                    goalTargetContributions: String(),
+                    goalUserContributions: String()
+                )
+            }
         }
         
         public struct PrimePaidUpgradeInfo {
             public var subPlan: SubPlan?
+            
+            internal init(subPlan: SubPlan?) {
+                self.subPlan = subPlan
+            }
+            
+            public init() {
+                self.subPlan = nil
+            }
         }
         
         public struct GiftPaidUpgradeInfo {
@@ -75,6 +245,27 @@ public struct UserNotice: MessageWithBadges {
             public var promoName: String
             public var senderLogin: String
             public var senderName: String
+            
+            internal init(
+                promoGiftTotal: UInt,
+                promoName: String,
+                senderLogin: String,
+                senderName: String
+            ) {
+                self.promoGiftTotal = promoGiftTotal
+                self.promoName = promoName
+                self.senderLogin = senderLogin
+                self.senderName = senderName
+            }
+            
+            public init() {
+                self.init(
+                    promoGiftTotal: UInt(),
+                    promoName: String(),
+                    senderLogin: String(),
+                    senderName: String()
+                )
+            }
         }
         
         public struct SubMysteryGiftInfo {
@@ -88,11 +279,65 @@ public struct UserNotice: MessageWithBadges {
             public var goalTargetContributions: String
             public var goalUserContributions: String
             public var giftTheme: String
+            
+            internal init(
+                massGiftCount: UInt,
+                originId: String,
+                senderCount: UInt,
+                subPlan: UserNotice.MessageID.SubPlan?,
+                goalContributionType: String,
+                goalCurrentContributions: String,
+                goalDescription: String,
+                goalTargetContributions: String,
+                goalUserContributions: String,
+                giftTheme: String
+            ) {
+                self.massGiftCount = massGiftCount
+                self.originId = originId
+                self.senderCount = senderCount
+                self.subPlan = subPlan
+                self.goalContributionType = goalContributionType
+                self.goalCurrentContributions = goalCurrentContributions
+                self.goalDescription = goalDescription
+                self.goalTargetContributions = goalTargetContributions
+                self.goalUserContributions = goalUserContributions
+                self.giftTheme = giftTheme
+            }
+            
+            public init() {
+                self.init(
+                    massGiftCount: UInt(),
+                    originId: String(),
+                    senderCount: UInt(),
+                    subPlan: nil,
+                    goalContributionType: String(),
+                    goalCurrentContributions: String(),
+                    goalDescription: String(),
+                    goalTargetContributions: String(),
+                    goalUserContributions: String(),
+                    giftTheme: String()
+                )
+            }
         }
         
         public struct AnonGiftPaidUpgradeInfo {
             public var promoGiftTotal: UInt
             public var promoName: String
+            
+            internal init(
+                promoGiftTotal: UInt,
+                promoName: String
+            ) {
+                self.promoGiftTotal = promoGiftTotal
+                self.promoName = promoName
+            }
+            
+            public init() {
+                self.init(
+                    promoGiftTotal: UInt(),
+                    promoName: String()
+                )
+            }
         }
         
         public struct RaidInfo {
@@ -100,6 +345,27 @@ public struct UserNotice: MessageWithBadges {
             public var login: String
             public var viewerCount: UInt
             public var profileImageURL: String
+            
+            internal init(
+                displayName: String,
+                login: String,
+                viewerCount: UInt,
+                profileImageURL: String
+            ) {
+                self.displayName = displayName
+                self.login = login
+                self.viewerCount = viewerCount
+                self.profileImageURL = profileImageURL
+            }
+            
+            public init() {
+                self.init(
+                    displayName: String(),
+                    login: String(),
+                    viewerCount: UInt(),
+                    profileImageURL: String()
+                )
+            }
         }
         
         public struct CommunityPayForwardInfo {
@@ -107,6 +373,27 @@ public struct UserNotice: MessageWithBadges {
             public var priorGifterDisplayName: String
             public var priorGifterId: String
             public var priorGifterUserName: String
+            
+            internal init(
+                priorGifterAnonymous: Bool,
+                priorGifterDisplayName: String,
+                priorGifterId: String,
+                priorGifterUserName: String
+            ) {
+                self.priorGifterAnonymous = priorGifterAnonymous
+                self.priorGifterDisplayName = priorGifterDisplayName
+                self.priorGifterId = priorGifterId
+                self.priorGifterUserName = priorGifterUserName
+            }
+            
+            public init() {
+                self.init(
+                    priorGifterAnonymous: Bool(),
+                    priorGifterDisplayName: String(),
+                    priorGifterId: String(),
+                    priorGifterUserName: String()
+                )
+            }
         }
         
         public struct StandardPayForwardInfo {
@@ -117,6 +404,36 @@ public struct UserNotice: MessageWithBadges {
             public var recipientDisplayName: String
             public var recipientId: String
             public var recipientUserName: String
+            
+            internal init(
+                priorGifterAnonymous: Bool,
+                priorGifterDisplayName: String,
+                priorGifterId: String,
+                priorGifterUserName: String,
+                recipientDisplayName: String,
+                recipientId: String,
+                recipientUserName: String
+            ) {
+                self.priorGifterAnonymous = priorGifterAnonymous
+                self.priorGifterDisplayName = priorGifterDisplayName
+                self.priorGifterId = priorGifterId
+                self.priorGifterUserName = priorGifterUserName
+                self.recipientDisplayName = recipientDisplayName
+                self.recipientId = recipientId
+                self.recipientUserName = recipientUserName
+            }
+            
+            public init() {
+                self.init(
+                    priorGifterAnonymous: Bool(),
+                    priorGifterDisplayName: String(),
+                    priorGifterId: String(),
+                    priorGifterUserName: String(),
+                    recipientDisplayName: String(),
+                    recipientId: String(),
+                    recipientUserName: String()
+                )
+            }
         }
         
         case sub(SubInfo)
@@ -371,7 +688,7 @@ public struct UserNotice: MessageWithBadges {
     }
 }
 
-// - MARK Sendable conformances
+// MARK: - Sendable conformances
 #if swift(>=5.5)
 extension UserNotice: Sendable { }
 extension UserNotice.MessageID: Sendable { }

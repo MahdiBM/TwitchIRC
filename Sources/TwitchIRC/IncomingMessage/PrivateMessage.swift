@@ -4,15 +4,31 @@ public struct PrivateMessage: MessageWithBadges {
     
     public struct ReplyParent {
         /// Replied user's display name with upper/lower-case letters.
-        public var displayName: String = ""
+        public var displayName = String()
         /// Replied user's lowercased name.
-        public var userLogin: String = ""
+        public var userLogin = String()
         /// The replied message.
-        public var message: String = ""
+        public var message = String()
         /// Replied message's id.
-        public var id: String = ""
+        public var id = String()
         /// Replied user's Twitch identifier.
-        public var userId: String = ""
+        public var userId = String()
+        
+        public init() { }
+        
+        init(
+            displayName: String,
+            userLogin: String,
+            message: String,
+            id: String,
+            userId: String
+        ) {
+            self.displayName = displayName
+            self.userLogin = userLogin
+            self.message = message
+            self.id = id
+            self.userId = userId
+        }
     }
     
     /// Channel lowercased name.
@@ -126,7 +142,7 @@ public struct PrivateMessage: MessageWithBadges {
     }
 }
 
-// - MARK: Sendable conformances
+// MARK: - Sendable conformances
 #if swift(>=5.5)
 extension PrivateMessage: Sendable { }
 extension PrivateMessage.ReplyParent: Sendable { }

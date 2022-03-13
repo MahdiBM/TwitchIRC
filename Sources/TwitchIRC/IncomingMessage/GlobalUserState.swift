@@ -36,7 +36,7 @@ public struct GlobalUserState: MessageWithBadges {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension GlobalUserState: Sendable { }
 #endif

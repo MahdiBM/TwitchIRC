@@ -22,7 +22,7 @@ public struct Capabilities {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension Capabilities: Sendable { }
 #endif

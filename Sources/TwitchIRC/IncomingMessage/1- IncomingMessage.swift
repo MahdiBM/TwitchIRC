@@ -175,7 +175,7 @@ public enum IncomingMessage {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension IncomingMessage: Sendable { }
 #endif

@@ -48,7 +48,7 @@ public struct HostTarget {
     }
 }
 
-// - MARK: Sendable conformances
+// MARK: - Sendable conformances
 #if swift(>=5.5)
 extension HostTarget: Sendable { }
 extension HostTarget.Action: Sendable { }

@@ -36,7 +36,7 @@ public struct ChannelEntrance {
     }
 }
 
-// - MARK: Sendable conformance
+// MARK: - Sendable conformance
 #if swift(>=5.5)
 extension ChannelEntrance: Sendable { }
 #endif
