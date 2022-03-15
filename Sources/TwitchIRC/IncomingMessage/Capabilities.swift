@@ -10,13 +10,14 @@ public struct Capabilities {
         guard contentRhs.hasPrefix("* ACK :")
         else { return nil }
         let capabilityStrings = contentRhs.dropFirst(7).componentsSeparatedBy(separator: " ")
-        self.capabilities = capabilityStrings.compactMap { capString in
+        
+        for capString in capabilityStrings {
             if let capability = Capability.allCases.first(where: {
                 $0.twitchDescription == capString
             }) {
-                return capability
+                self.capabilities.append(capability)
             } else {
-                return .unknown(String(capString))
+                return nil
             }
         }
     }
