@@ -1,7 +1,7 @@
 
 extension RangeReplaceableCollection where Element == Character, Index == String.Index {
     
-    /// Separates the string by the given separator only with the first matching case.
+    /// Splits self by a given separator into as many pieces as possible.
     ///
     /// Not naming it `components(separatedBy:)` to make
     /// sure it's not confused with that of `Foundation`.
@@ -90,7 +90,7 @@ extension RangeReplaceableCollection where Element == Character, Index == String
         return array
     }
     
-    /// Separates the string by the given separator only with the first matching case.
+    /// Splits self into two pieces by a given separator, if the separator exists in self.
     func componentsOneSplit(separatedBy separator: String) -> (lhs: Self, rhs: Self)? {
         let separatorLength = separator.count
         guard separatorLength != 0 else { return nil }
