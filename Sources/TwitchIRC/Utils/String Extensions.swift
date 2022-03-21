@@ -24,16 +24,16 @@ extension RangeReplaceableCollection where Element == Character, Index == String
                     if self[idx] == separator[nextIdx] {
                         endingIndices.append(idx)
                         lastIdx = nil
+                    } else if self[idx] == separator[separatorStartIndex] {
+                        lastIdx = separatorStartIndex
                     } else {
-                        if self[idx] == separator[separatorStartIndex] {
-                            lastIdx = separatorStartIndex
-                        } else {
-                            lastIdx = nil
-                        }
+                        lastIdx = nil
                     }
                 } else {
                     if self[idx] == separator[nextIdx] {
                         lastIdx = nextIdx
+                    } else if self[idx] == separator[separatorStartIndex] {
+                        lastIdx = separatorStartIndex
                     } else {
                         lastIdx = nil
                     }
@@ -111,16 +111,16 @@ extension RangeReplaceableCollection where Element == Character, Index == String
                         let rhsLowerBound = self.index(after: idx)
                         let rhs = Self(self[rhsLowerBound...])
                         return (lhs: lhs, rhs: rhs)
+                    } else if self[idx] == separator[separatorStartIndex] {
+                        lastIdx = separatorStartIndex
                     } else {
-                        if self[idx] == separator[separatorStartIndex] {
-                            lastIdx = separatorStartIndex
-                        } else {
-                            lastIdx = nil
-                        }
+                        lastIdx = nil
                     }
                 } else {
                     if self[idx] == separator[nextIdx] {
                         lastIdx = separator.index(after: lastIdxUnwrapped)
+                    } else if self[idx] == separator[separatorStartIndex] {
+                        lastIdx = separatorStartIndex
                     } else {
                         lastIdx = nil
                     }

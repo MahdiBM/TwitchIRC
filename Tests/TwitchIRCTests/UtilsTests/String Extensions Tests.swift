@@ -70,6 +70,12 @@ final class StringExtensionTests: XCTestCase {
             XCTAssertEqual(separated, ["", " Hello my ", "", ""])
         }
         
+        // Testing half-overlapping cases
+        do {
+            let separated = separateComponents("dedear", by: "dear")
+            XCTAssertEqual(separated, ["de", ""])
+        }
+        
         // Testing very similar matching cases
         do {
             let separated = separateComponents("Hello my dear dear.", by: "dear.")
@@ -80,6 +86,12 @@ final class StringExtensionTests: XCTestCase {
         do {
             let separated = separateComponents("dear", by: "dear")
             XCTAssertEqual(separated, ["", ""])
+        }
+        
+        // Testing half-overlapping cases
+        do {
+            let separated = separateComponents("dedear", by: "dear")
+            XCTAssertEqual(separated, ["de", ""])
         }
         
         // Testing 2x(a string) split by itself
