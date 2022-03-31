@@ -451,6 +451,7 @@ public struct UserNotice: MessageWithBadges {
         case bitsBadgeTier(threshold: String)
         case communityPayForward(CommunityPayForwardInfo)
         case standardPayForward(StandardPayForwardInfo)
+        case announcement(color: String)
     }
     
     /// Channel's name with no uppercased/Han characters.
@@ -662,6 +663,9 @@ public struct UserNotice: MessageWithBadges {
                 recipientId: parser.string(for: "msg-param-recipient-id"),
                 recipientUserName: parser.string(for: "msg-param-recipient-user-name")
             ))
+            occasionalSubDependentKeyGroups = []
+        case "announcement":
+            self.messageId = .announcement(color: parser.string(for: "msg-param-color"))
             occasionalSubDependentKeyGroups = []
         default: return nil
         }

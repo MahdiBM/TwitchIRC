@@ -364,6 +364,32 @@ final class UserNoticeTests: XCTestCase {
         
         XCTAssertEqual(info.subPlan, .tier1)
     }
+    
+    func testParsedValues11() throws {
+        let string = #"@badge-info=subscriber/44;badges=broadcaster/1,subscriber/3036,partner/1;color=#8A2BE2;display-name=Schlonsti;emotes=;flags=;id=0d011cb5-84c9-4abf-b469-905fa48d1e73;login=schlonsti;mod=0;msg-id=announcement;msg-param-color=PRIMARY;room-id=90968980;subscriber=1;system-msg=;tmi-sent-ts=1648760291007;user-id=90968980;user-type= :tmi.twitch.tv USERNOTICE #schlonsti :fehler"#
+        
+        let un: UserNotice = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(un.channel, "schlonsti")
+        XCTAssertEqual(un.message, "fehler")
+        XCTAssertEqual(un.badgeInfo, ["subscriber/44"])
+        XCTAssertEqual(un.badges, ["broadcaster/1", "subscriber/3036", "partner/1"])
+        XCTAssertEqual(un.color, "#8A2BE2")
+        XCTAssertEqual(un.displayName, "Schlonsti")
+        XCTAssertEqual(un.emotes, [])
+        XCTAssertEqual(un.flags, [])
+        XCTAssertEqual(un.id, "0d011cb5-84c9-4abf-b469-905fa48d1e73")
+        XCTAssertEqual(un.userLogin, "schlonsti")
+        XCTAssertEqual(un.roomId, "90968980")
+        XCTAssertEqual(un.systemMessage, "")
+        XCTAssertEqual(un.tmiSentTs, 1648760291007)
+        XCTAssertEqual(un.userId, "90968980")
+        XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
+        
+        let infoColor: String = try unwrapInnerValue(action: un.messageId)
+        
+        XCTAssertEqual(infoColor, "PRIMARY")
+    }
 }
 
 // MARK: - UserNotice.MessageID anyValue
@@ -400,6 +426,8 @@ private extension UserNotice.MessageID {
             return value
         case let .standardPayForward(value):
             return value
+        case let .announcement(color):
+            return color
         }
     }
 }
