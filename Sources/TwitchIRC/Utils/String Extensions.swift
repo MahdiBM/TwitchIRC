@@ -15,9 +15,14 @@ extension RangeReplaceableCollection where Element == Character, Index == String
         
         let separatorStartIndex = separator.startIndex
         let maxIdx = separator.index(separatorStartIndex, offsetBy: separatorLength - 1)
-        var lastIdx: Index? = nil
+        let selfStartIndex = self.startIndex
+        let selfEndIndex = self.endIndex
         
-        for idx in self.indices {
+        var lastIdx: Index? = nil
+        var indexSeparatorStartedInSelf: Index? = nil
+        var idx = selfStartIndex
+        
+        while idx < selfEndIndex {
             if let lastIdxUnwrapped = lastIdx {
                 let nextIdx = separator.index(after: lastIdxUnwrapped)
                 if nextIdx == maxIdx {
@@ -35,7 +40,9 @@ extension RangeReplaceableCollection where Element == Character, Index == String
                     } else if self[idx] == separator[separatorStartIndex] {
                         lastIdx = separatorStartIndex
                     } else {
+                        idx = self.index(after: indexSeparatorStartedInSelf!)
                         lastIdx = nil
+                        continue
                     }
                 }
             } else {
@@ -43,15 +50,16 @@ extension RangeReplaceableCollection where Element == Character, Index == String
                     if separatorLength == 1 {
                         endingIndices.append(idx)
                     } else {
+                        indexSeparatorStartedInSelf = idx
                         lastIdx = separatorStartIndex
                     }
                 }
             }
+            idx = self.index(after: idx)
         }
         
         let indicesLength = endingIndices.count
         guard indicesLength != 0 else { return [self] }
-        let selfStartIndex = self.startIndex
         let arrayLength = endingIndices.count + 1
         var array = Array<Self>()
         array.reserveCapacity(arrayLength)
@@ -99,9 +107,13 @@ extension RangeReplaceableCollection where Element == Character, Index == String
         
         let separatorStartIndex = separator.startIndex
         let maxIdx = separator.index(separatorStartIndex, offsetBy: separatorLength - 1)
-        var lastIdx: Index? = nil
+        let endIndex = self.endIndex
         
-        for idx in self.indices {
+        var lastIdx: Index? = nil
+        var indexSeparatorStartedInSelf: Index? = nil
+        var idx = self.startIndex
+        
+        while idx < endIndex {
             if let lastIdxUnwrapped = lastIdx {
                 let nextIdx = separator.index(after: lastIdxUnwrapped)
                 if nextIdx == maxIdx {
@@ -122,20 +134,24 @@ extension RangeReplaceableCollection where Element == Character, Index == String
                     } else if self[idx] == separator[separatorStartIndex] {
                         lastIdx = separatorStartIndex
                     } else {
+                        idx = self.index(after: indexSeparatorStartedInSelf!)
                         lastIdx = nil
+                        continue
                     }
                 }
             } else {
                 if self[idx] == separator[separatorStartIndex] {
-                    lastIdx = separatorStartIndex
                     if separatorLength == 1 {
                         let lhs = Self(self[..<idx])
                         let rhsLowerBound = self.index(after: idx)
                         let rhs = Self(self[rhsLowerBound...])
                         return (lhs: lhs, rhs: rhs)
                     }
+                    indexSeparatorStartedInSelf = idx
+                    lastIdx = separatorStartIndex
                 }
             }
+            idx = self.index(after: idx)
         }
         
         return nil

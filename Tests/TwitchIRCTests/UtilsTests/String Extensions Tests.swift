@@ -76,6 +76,12 @@ final class StringExtensionTests: XCTestCase {
             XCTAssertEqual(separated, ["de", ""])
         }
         
+        // Testing half-overlapping cases 2
+        do {
+            let separated = separateComponents("uretmi.tmi.twitch.tv PRIVMSG", by: "tmi.twitch.tv")
+            XCTAssertEqual(separated, ["uretmi.", " PRIVMSG"])
+        }
+        
         // Testing very similar matching cases
         do {
             let separated = separateComponents("Hello my dear dear.", by: "dear.")
@@ -86,12 +92,6 @@ final class StringExtensionTests: XCTestCase {
         do {
             let separated = separateComponents("dear", by: "dear")
             XCTAssertEqual(separated, ["", ""])
-        }
-        
-        // Testing half-overlapping cases
-        do {
-            let separated = separateComponents("dedear", by: "dear")
-            XCTAssertEqual(separated, ["de", ""])
         }
         
         // Testing 2x(a string) split by itself
@@ -221,6 +221,12 @@ final class StringExtensionTests: XCTestCase {
         do {
             let separated = splitAndPutIntoAnArray("", by: "dear..")
             XCTAssertEqual(separated, nil)
+        }
+        
+        // Testing half-overlapping cases
+        do {
+            let separated = splitAndPutIntoAnArray("uretmi.tmi.twitch.tv PRIVMSG", by: "tmi.twitch.tv")
+            XCTAssertEqual(separated, ["uretmi.", " PRIVMSG"])
         }
         
         // Testing empty separator
