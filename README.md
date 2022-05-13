@@ -61,7 +61,7 @@ To use the `TwitchIRC` library in a SwiftPM project,
 add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/MahdiBM/TwitchIRC", from: "1.0.0-beta"),
+.package(url: "https://github.com/MahdiBM/TwitchIRC", from: "1.0.0"),
 ```
 
 Include `"TwitchIRC"` as a dependency for your executable target:
