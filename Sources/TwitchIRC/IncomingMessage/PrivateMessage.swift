@@ -55,6 +55,9 @@ public struct PrivateMessage: MessageWithBadges {
     public var flags = [String]()
     /// Whether it's the first time the user is sending a message.
     public var firstMessage = Bool()
+    /// Not sure but probably whether or not the chatter
+    /// hasn't been chatting for a while in this channel, before this message.
+    public var returningChatter = Bool()
     /// Not sure exactly what is this? usually empty.
     public var messageId = String()
     /// Message's id.
@@ -116,6 +119,7 @@ public struct PrivateMessage: MessageWithBadges {
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")
         self.firstMessage = parser.bool(for: "first-msg")
+        self.returningChatter = parser.bool(for: "returning-chatter")
         self.messageId = parser.string(for: "msg-id")
         self.id = parser.string(for: "id")
         self.crowdChantParentMessageId = parser.string(for: "crowd-chant-parent-msg-id")

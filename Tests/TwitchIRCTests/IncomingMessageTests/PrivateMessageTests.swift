@@ -188,6 +188,37 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertTrue(msg.replyParent == .init())
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
+    
+    /// Tests where `returningChatter`.
+    func testParsedValues7() throws {
+        let string = "@badge-info=;badges=vip/1;color=#0000FF;display-name=flexvegapro3;emotes=;first-msg=0;flags=;id=9c3e3024-a4b4-493b-8668-96597be002ac;mod=0;returning-chatter=0;room-id=550217406;subscriber=0;tmi-sent-ts=1655439139118;turbo=0;user-id=705215697;user-type= :flexvegapro3!flexvegapro3@flexvegapro3.tmi.twitch.tv PRIVMSG #novastark_7 :jajaja xD"
+        
+        let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(msg.channel, "novastark_7")
+        XCTAssertEqual(msg.message, "jajaja xD")
+        XCTAssertEqual(msg.badgeInfo, [])
+        XCTAssertEqual(msg.badges, ["vip/1"])
+        XCTAssertEqual(msg.bits, "")
+        XCTAssertEqual(msg.color, "#0000FF")
+        XCTAssertEqual(msg.displayName, "flexvegapro3")
+        XCTAssertEqual(msg.userLogin, "flexvegapro3")
+        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emoteOnly, false)
+        XCTAssertEqual(msg.flags, [])
+        XCTAssertEqual(msg.firstMessage, false)
+        XCTAssertEqual(msg.returningChatter, false)
+        XCTAssertEqual(msg.messageId, "")
+        XCTAssertEqual(msg.id, "9c3e3024-a4b4-493b-8668-96597be002ac")
+        XCTAssertEqual(msg.crowdChantParentMessageId, "")
+        XCTAssertEqual(msg.customRewardId, "")
+        XCTAssertEqual(msg.roomId, "550217406")
+        XCTAssertEqual(msg.tmiSentTs, 1655439139118)
+        XCTAssertEqual(msg.clientNonce, "")
+        XCTAssertEqual(msg.userId, "705215697")
+        XCTAssertTrue(msg.replyParent == .init())
+        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+    }
 }
 
 // MARK: - PrivateMessage.ReplyParent Equatable (basically)
