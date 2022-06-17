@@ -75,7 +75,7 @@ struct ParametersParser {
                 .map(self.unavailableKeys.contains)
                 .filter({ $0 == true })
                 .count
-            if trueCount == 0 || trueCount == nextGroup.count {
+            if trueCount == 0 || trueCount == groupCount {
                 current += nextGroup
             }
         }

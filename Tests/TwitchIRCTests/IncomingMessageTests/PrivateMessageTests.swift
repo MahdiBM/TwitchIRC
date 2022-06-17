@@ -29,7 +29,10 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.clientNonce, "")
         XCTAssertEqual(msg.userId, "1337")
         XCTAssertTrue(msg.replyParent == .init())
-        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+        
+        XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+        XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
     /// Tests a message with bits.
@@ -59,7 +62,10 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.clientNonce, "")
         XCTAssertEqual(msg.userId, "1337")
         XCTAssertTrue(msg.replyParent == .init())
-        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+       
+        XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+        XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
     /// Tests a single weird character in the message (here UTF8 [217, 145])
@@ -90,7 +96,10 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.clientNonce, "3dc1eef952878c31098361ebfc5017d7")
         XCTAssertEqual(msg.userId, "478769067")
         XCTAssertTrue(msg.replyParent == .init())
-        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+        
+        XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+        XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
     /// Tests a replied message that has reply parent info.
@@ -126,7 +135,10 @@ final class PrivateMessageTests: XCTestCase {
             id: "92d75439-9bfa-42d2-b20c-7dc4a2c07f6b",
             userId: "621834053"
         ))
-        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+        
+        XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+        XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
     /// Tests `crowdChantParentMessageId`.
@@ -156,7 +168,10 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.clientNonce, "fa05d91c0394473736a56399f18b4d72")
         XCTAssertEqual(msg.userId, "167448427")
         XCTAssertTrue(msg.replyParent == .init())
-        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+        
+        XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+        XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
     /// Tests where `displayName.lowercased() != userLogin`.
@@ -186,7 +201,10 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.clientNonce, "915d8fd68f216eedc4f6b4aeea9e0f1b")
         XCTAssertEqual(msg.userId, "434919515")
         XCTAssertTrue(msg.replyParent == .init())
-        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+        
+        XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
+        XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
+        XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
     /// Tests where `returningChatter`.

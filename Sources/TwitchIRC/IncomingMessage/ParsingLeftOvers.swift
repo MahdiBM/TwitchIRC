@@ -28,7 +28,7 @@ public struct ParsingLeftOvers {
     public var isEmpty: Bool {
         self.unusedPairs.isEmpty
         && self.unparsedKeys.isEmpty
-        && self.unparsedKeys.isEmpty
+        && self.unavailableKeys.isEmpty
     }
 }
 
