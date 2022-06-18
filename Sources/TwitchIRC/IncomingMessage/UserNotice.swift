@@ -601,7 +601,7 @@ public struct UserNotice: MessageWithBadges {
                 goalUserContributions: parser.string(for: "msg-param-goal-user-contributions"),
                 giftTheme: parser.string(for: "msg-param-gift-theme")
             ))
-            occasionalSubDependentKeyGroups = [["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-gift-theme"]]
+            occasionalSubDependentKeyGroups = [["msg-param-goal-description"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-gift-theme"]]
         case "primepaidupgrade":
             self.messageId = .primePaidUpgrade(.init(
                 subPlan: parser.representable(for: "msg-param-sub-plan")
@@ -614,7 +614,7 @@ public struct UserNotice: MessageWithBadges {
                 senderLogin: parser.string(for: "msg-param-sender-login"),
                 senderName: parser.string(for: "msg-param-sender-name")
             ))
-            occasionalSubDependentKeyGroups = []
+            occasionalSubDependentKeyGroups = [["msg-param-promo-gift-total", "msg-param-promo-name"]]
         case "rewardgift":
             self.messageId = .rewardGift
             occasionalSubDependentKeyGroups = []
