@@ -427,7 +427,7 @@ private extension UserNotice.MessageID {
         case let .standardPayForward(value):
             return value
         case let .announcement(color):
-            return color
+            return color as Any
         }
     }
 }

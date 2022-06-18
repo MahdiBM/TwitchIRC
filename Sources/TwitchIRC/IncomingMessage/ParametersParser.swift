@@ -125,7 +125,7 @@ struct ParametersParser {
                 return uint
             } else {
                 self.appendUnparsedKey(pair: stored.element, type: UInt.self)
-               return nil
+                return nil
            }
         } else {
             return nil

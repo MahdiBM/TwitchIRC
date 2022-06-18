@@ -451,7 +451,7 @@ public struct UserNotice: MessageWithBadges {
         case bitsBadgeTier(threshold: String)
         case communityPayForward(CommunityPayForwardInfo)
         case standardPayForward(StandardPayForwardInfo)
-        case announcement(color: String)
+        case announcement(color: String?)
     }
     
     /// Channel's name with no uppercased/Han characters.
@@ -528,7 +528,7 @@ public struct UserNotice: MessageWithBadges {
                 goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
                 goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
             ))
-            occasionalSubDependentKeyGroups = [["msg-param-streak-months"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
+            occasionalSubDependentKeyGroups = [["msg-param-streak-months"], ["msg-param-goal-description"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
         case "resub":
             self.messageId = .resub(.init(
                 cumulativeMonths: parser.uint(for: "msg-param-cumulative-months"),
@@ -665,8 +665,8 @@ public struct UserNotice: MessageWithBadges {
             ))
             occasionalSubDependentKeyGroups = []
         case "announcement":
-            self.messageId = .announcement(color: parser.string(for: "msg-param-color"))
-            occasionalSubDependentKeyGroups = []
+            self.messageId = .announcement(color: parser.optionalString(for: "msg-param-color"))
+            occasionalSubDependentKeyGroups = [["msg-param-color"]]
         default: return nil
         }
         
