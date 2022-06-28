@@ -547,7 +547,7 @@ public struct UserNotice: MessageWithBadges {
                 gifterLogin: parser.string(for: "msg-param-gifter-login"),
                 gifterName: parser.string(for: "msg-param-gifter-name")
             ))
-            occasionalSubDependentKeyGroups = [["msg-param-streak-months"], ["msg-param-anon-gift", "msg-param-gift-month-being-redeemed", "msg-param-gift-months", "msg-param-gifter-id", "msg-param-gifter-login", "msg-param-gifter-name"], ["msg-param-months", "msg-param-multimonth-duration", "msg-param-multimonth-tenure", "msg-param-was-gifted"]]
+            occasionalSubDependentKeyGroups = [["msg-param-streak-months"], ["msg-param-multimonth-duration", "msg-param-multimonth-tenure"], ["msg-param-anon-gift", "msg-param-gift-month-being-redeemed", "msg-param-gift-months", "msg-param-gifter-id", "msg-param-gifter-login", "msg-param-gifter-name"], ["msg-param-months", "msg-param-multimonth-duration", "msg-param-multimonth-tenure", "msg-param-was-gifted"]]
         case "subgift":
             self.messageId = .subGift(.init(
                 months: parser.uint(for: "msg-param-months"),
@@ -567,7 +567,7 @@ public struct UserNotice: MessageWithBadges {
                 goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
                 goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
             ))
-            occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-gift-theme"], ["msg-param-fun-string"], ["msg-param-gift-months", "msg-param-origin-id"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
+            occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-goal-description"], ["msg-param-gift-theme"], ["msg-param-fun-string"], ["msg-param-gift-months", "msg-param-origin-id"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
         case "anonsubgift":
             self.messageId = .anonSubGift(.init(
                 months: parser.uint(for: "msg-param-months"),
