@@ -623,7 +623,7 @@ public struct UserNotice: MessageWithBadges {
                 promoGiftTotal: parser.uint(for: "msg-param-promo-gift-total"),
                 promoName: parser.string(for: "msg-param-promo-name")
             ))
-            occasionalSubDependentKeyGroups = []
+            occasionalSubDependentKeyGroups = [["msg-param-promo-gift-total"], ["msg-param-promo-name"]]
         case "raid":
             self.messageId = .raid(.init(
                 displayName: parser.string(for: "msg-param-displayName"),

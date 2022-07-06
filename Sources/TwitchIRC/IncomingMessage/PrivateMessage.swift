@@ -55,8 +55,7 @@ public struct PrivateMessage: MessageWithBadges {
     public var flags = [String]()
     /// Whether it's the first time the user is sending a message.
     public var firstMessage = Bool()
-    /// Not sure but probably whether or not the chatter
-    /// hasn't been chatting for a while in this channel, before this message.
+    /// Flag for new viewers who have chatted at least twice in the last 30 days.
     public var returningChatter = Bool()
     /// Not sure exactly what is this? usually empty.
     public var messageId = String()
