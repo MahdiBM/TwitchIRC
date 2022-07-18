@@ -14,6 +14,8 @@ public struct UserState: MessageWithBadges {
     public var displayName = String()
     /// User's emote sets.
     public var emoteSets = [String]()
+    /// The ID of this user state message.
+    public var id = String()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
     
@@ -32,6 +34,7 @@ public struct UserState: MessageWithBadges {
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
         self.emoteSets = parser.array(for: "emote-sets")
+        self.id = parser.string(for: "id")
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
         self.parsingLeftOvers = parser.getLeftOvers(
