@@ -37,8 +37,9 @@ public struct UserState: MessageWithBadges {
         self.id = parser.string(for: "id")
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
+        let sometimesUnavailableKeys = ["id"]
         self.parsingLeftOvers = parser.getLeftOvers(
-            excludedUnusedKeys: deprecatedKeys
+            excludedUnusedKeys: deprecatedKeys + sometimesUnavailableKeys
         )
     }
 }
