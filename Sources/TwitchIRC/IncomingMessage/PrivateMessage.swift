@@ -135,7 +135,7 @@ public struct PrivateMessage: MessageWithBadges {
             userId: parser.string(for: "reply-parent-user-id")
         )
         
-        let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
+        let deprecatedKeys = ["turbo", "mod", "vip", "subscriber", "user-type"]
         let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]]
         
         self.parsingLeftOvers = parser.getLeftOvers(
