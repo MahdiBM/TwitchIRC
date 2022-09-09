@@ -1,6 +1,31 @@
 
 /// A Twitch `PRIVMSG` message.
 public struct PrivateMessage: MessageWithBadges {
+
+    public struct EmoteReference: Identifiable, Equatable {
+        /// The emote ID used in Twitch's API
+        public var id = String()
+        /// The emote name, which is the text used to represent the emote in a message
+        public var name = String()
+        /// The index in the message at which the emote starts
+        public var startIndex = Int()
+        /// The index in the message at which the emote ends
+        public var endIndex = Int()
+
+        public init() { }
+
+        init(
+            id: String,
+            name: String,
+            startIndex: Int,
+            endIndex: Int
+        ) {
+            self.id = id
+            self.name = name
+            self.startIndex = startIndex
+            self.endIndex = endIndex
+        }
+    }
     
     public struct ReplyParent {
         /// Replied user's display name with uppercased/Han characters.
@@ -47,8 +72,8 @@ public struct PrivateMessage: MessageWithBadges {
     public var displayName = String()
     /// User's name with no uppercased/Han characters.
     public var userLogin = String()
-    /// User's emotes.
-    public var emotes = [String]()
+    /// The emotes present in the message.
+    public var emotes = [EmoteReference]()
     /// Whether or not the message only contains emotes.
     public var emoteOnly = Bool()
     /// Flags of this message.
@@ -114,7 +139,7 @@ public struct PrivateMessage: MessageWithBadges {
         self.bits = parser.string(for: "bits")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
-        self.emotes = parser.array(for: "emotes")
+        self.emotes = parseEmotes(from: parser.string(for: "emotes"))
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")
         self.firstMessage = parser.bool(for: "first-msg")
@@ -143,10 +168,64 @@ public struct PrivateMessage: MessageWithBadges {
             groupsOfExcludedUnavailableKeys: occasionalKeys
         )
     }
+
+    private func parseEmotes(from emoteString: String) -> [EmoteReference] {
+        /// First, we need to make sure we have an homogeneous array. In the message, emotes come as
+        /// a string that looks like `<id>:<start>-<end>/<id>:<start>-<end>`. However, when the same
+        /// emote repeats multiple times, it's more like
+        /// `<id>:<start>-<end>,<start>-<end>,<start>-<end>/<id>:<start>-<end>` and the parser has
+        /// issues giving it back as a list (the parser uses commas to sepparate, and doesn't take
+        /// the `/` into account).
+        ///
+        /// To solve this, we ask the parser to read it as a string and we treat the whole thing.
+        ///
+        /// Splitting by `/` returns an array like
+        /// `["<id>:<start>-<end>", "<start>-<end>", "<start>-<end>", "<id>:<start>-<end>"]`,
+        /// which makes it hard to treat all the elements the same since some of them have no `<id>`.
+        /// We solve this by using the last seen id as the id for elements that don't have one.
+        ///
+        /// Ater that, it's just a matter of parsing the indices and finding the equivalent text in
+        /// the chat message. With those, we can create our `EmoteReference` instance and save it.
+        var parsed: [EmoteReference] = []
+
+        let emoteArray = emoteString.split(separator: "/")
+            .flatMap { $0.split(separator: ",") }
+            .map { String($0) }
+
+        var lastID: String? = nil
+        for emote in emoteArray {
+            /// This gives us either `["<id>", "<start>", "<end>"]` or `["<start>", "<end>"]`
+            var parts = emote.split(separator: ":")
+                .flatMap { $0.split(separator: "-") }
+                .map { String($0) }
+
+            /// If we have an id, save it
+            if parts.count == 3 {
+                lastID = parts.removeFirst()
+            }
+
+            /// Try and retrieve the parts and add them to our list of emotes
+            if let lastID,
+                let startIndex = Int(parts[0]),
+                let endIndex = Int(parts[1]),
+                let name = message[stringIn: startIndex...endIndex]
+            {
+                parsed.append(.init(
+                    id: lastID,
+                    name: name,
+                    startIndex: startIndex,
+                    endIndex: endIndex
+                ))
+            }
+        }
+
+        return parsed
+    }
 }
 
 // MARK: - Sendable conformances
 #if swift(>=5.5)
 extension PrivateMessage: Sendable { }
+extension PrivateMessage.EmoteReference: Sendable { }
 extension PrivateMessage.ReplyParent: Sendable { }
 #endif

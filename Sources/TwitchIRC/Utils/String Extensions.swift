@@ -156,4 +156,24 @@ extension RangeReplaceableCollection where Element == Character, Index == String
         
         return nil
     }
+
+    /// Subscripts a string using integers to create the equivalent indices.
+    subscript(range: ClosedRange<Int>) -> SubSequence? {
+        guard
+            let start = index(startIndex, offsetBy: range.lowerBound, limitedBy: endIndex),
+            let end = index(startIndex, offsetBy: range.upperBound, limitedBy: endIndex)
+        else { return nil }
+
+        return self[start...end]
+    }
+
+    /// Subscripts a string using integers to create the equivalent indices.
+    subscript(stringIn range: ClosedRange<Int>) -> String? {
+        guard
+            let start = index(startIndex, offsetBy: range.lowerBound, limitedBy: endIndex),
+            let end = index(startIndex, offsetBy: range.upperBound, limitedBy: endIndex)
+        else { return nil }
+
+        return String(self[start...end])
+    }
 }

@@ -7,6 +7,12 @@ final class PrivateMessageTests: XCTestCase {
         let string = "@badge-info=;badges=global_mod/1,turbo/1;color=#0D4200;display-name=ronni;emotes=25:0-4,12-16/1902:6-10;id=b34ccfc7-4977-403a-8a94-33c6bac34fb8;mod=0;room-id=1337;subscriber=0;tmi-sent-ts=1507246572675;turbo=1;user-id=1337;user-type=global_mod :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :Kappa Keepo Kappa"
         
         let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+
+        let emotes: [PrivateMessage.EmoteReference] = [
+            .init(id: "25", name: "Kappa", startIndex: 0, endIndex: 4),
+            .init(id: "25", name: "Kappa", startIndex: 12, endIndex: 16),
+            .init(id: "1902", name: "Keepo", startIndex: 6, endIndex: 10)
+        ]
         
         XCTAssertEqual(msg.channel, "ronni")
         XCTAssertEqual(msg.message, "Kappa Keepo Kappa")
@@ -16,7 +22,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "#0D4200")
         XCTAssertEqual(msg.displayName, "ronni")
         XCTAssertEqual(msg.userLogin, "ronni")
-        XCTAssertEqual(msg.emotes, ["25:0-4", "12-16/1902:6-10"])
+        XCTAssertEqual(msg.emotes, emotes)
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
