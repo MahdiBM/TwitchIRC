@@ -23,7 +23,7 @@ public struct Emote {
         self.endIndex = endIndex
     }
 
-    public static func parse(from emoteString: String, and message: String) -> [Emote] {
+    static func parse(from emoteString: String, and message: String) -> [Emote] {
         /// First, we need to make sure we have an homogeneous array. In the message, emotes come as
         /// a string that looks like `<id>:<start>-<end>/<id>:<start>-<end>`. However, when the same
         /// emote repeats multiple times, it's more like
@@ -38,9 +38,9 @@ public struct Emote {
         /// which makes it hard to treat all the elements the same since some of them have no `<id>`.
         /// We solve this by using the last seen id as the id for elements that don't have one.
         ///
-        /// Ater that, it's just a matter of parsing the indices and finding the equivalent text in
+        /// After that, it's just a matter of parsing the indices and finding the equivalent text in
         /// the chat message. With those, we can create our `EmoteReference` instance and save it.
-        var parsed: [Emote] = []
+        var parsed = [Emote]()
 
         let emoteArray = emoteString.split(separator: "/")
             .flatMap { $0.split(separator: ",") }
@@ -52,20 +52,30 @@ public struct Emote {
             var parts = emote.split(separator: ":")
                 .flatMap { $0.split(separator: "-") }
                 .map { String($0) }
-
-            /// If we have an id, save it
-            if parts.count == 3 {
+            
+            switch parts.count {
+            case 3:
+                /// If we have an id, save it
                 lastID = parts.removeFirst()
+            case 2:
+                if lastID == nil {
+                    /// Unexpected emote
+                    continue
+                } else {
+                    break
+                }
+            default:
+                /// Unexpected emote
+                continue
             }
 
             /// Try and retrieve the parts and add them to our list of emotes
-            if let lastID = lastID,
-                let startIndex = Int(parts[0]),
+            if let startIndex = Int(parts[0]),
                 let endIndex = Int(parts[1]),
                 let name = message[stringIn: startIndex...endIndex]
             {
                 parsed.append(.init(
-                    id: lastID,
+                    id: lastID!,
                     name: name,
                     startIndex: startIndex,
                     endIndex: endIndex
@@ -77,7 +87,7 @@ public struct Emote {
     }
 }
 
-extension String {
+private extension String {
     /// Subscripts a string using integers to create the equivalent indices.
     subscript(stringIn range: ClosedRange<Int>) -> String? {
         guard
