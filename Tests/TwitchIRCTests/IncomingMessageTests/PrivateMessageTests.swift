@@ -8,7 +8,7 @@ final class PrivateMessageTests: XCTestCase {
         
         let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
 
-        let emotes: [PrivateMessage.EmoteReference] = [
+        let emotes: [Emote] = [
             .init(id: "25", name: "Kappa", startIndex: 0, endIndex: 4),
             .init(id: "25", name: "Kappa", startIndex: 12, endIndex: 16),
             .init(id: "1902", name: "Keepo", startIndex: 6, endIndex: 10)
