@@ -245,6 +245,16 @@ final class PrivateMessageTests: XCTestCase {
     }
 }
 
+// MARK: - Emote Equatable
+extension Emote: Equatable {
+    public static func == (lhs: Emote, rhs: Emote) -> Bool {
+        lhs.id == rhs.id
+        && lhs.startIndex == rhs.startIndex
+        && lhs.endIndex == rhs.endIndex
+        && lhs.name == rhs.name
+    }
+}
+
 // MARK: - PrivateMessage.ReplyParent Equatable (basically)
 private func == (lhs: PrivateMessage.ReplyParent, rhs: PrivateMessage.ReplyParent) -> Bool {
     lhs.displayName == rhs.displayName

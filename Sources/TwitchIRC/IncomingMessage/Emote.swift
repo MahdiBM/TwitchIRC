@@ -1,5 +1,5 @@
 
-public struct Emote: Equatable {
+public struct Emote {
     /// The emote ID used in Twitch's API
     public var id = String()
     /// The emote name, which is the text used to represent the emote in a message
