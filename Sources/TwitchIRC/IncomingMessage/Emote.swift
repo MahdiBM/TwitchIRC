@@ -8,7 +8,7 @@ public struct Emote {
     public var startIndex = Int()
     /// The index in the message at which the emote ends
     public var endIndex = Int()
-    /// Whether this is an animated emote.
+    /// Whether this is an animated emote
     public var isAnimated = Bool()
 
     public init() { }
@@ -44,8 +44,8 @@ public struct Emote {
         ///
         /// After that, it's just a matter of parsing the indices and finding the equivalent text in
         /// the chat message. With those, we can create our `EmoteReference` instance and save it.
+        let message = message.unicodeScalars
         var parsed = [Emote]()
-
         let emoteArray = emoteString.split(separator: "/")
             .flatMap { $0.split(separator: ",") }
             .map { String($0) }
@@ -80,9 +80,9 @@ public struct Emote {
 
             /// Try and retrieve the parts and add them to our list of emotes
             if let startIndex = Int(parts[0]),
-                let endIndex = Int(parts[1]),
-                let name = message[stringIn: startIndex...endIndex]
-            {
+               let endIndex = Int(parts[1]),
+               startIndex <= endIndex,
+               let name = message[stringIn: startIndex...endIndex] {
                 parsed.append(.init(
                     id: lastProperties!.id,
                     name: name,
@@ -97,14 +97,13 @@ public struct Emote {
     }
 }
 
-private extension String {
+private extension String.UnicodeScalarView {
     /// Subscripts a string using integers to create the equivalent indices.
     subscript(stringIn range: ClosedRange<Int>) -> String? {
-        guard
-            let start = index(startIndex, offsetBy: range.lowerBound, limitedBy: endIndex),
-            let end = index(startIndex, offsetBy: range.upperBound, limitedBy: endIndex)
+        guard let start = index(startIndex, offsetBy: range.lowerBound, limitedBy: endIndex),
+              let end = index(startIndex, offsetBy: range.upperBound, limitedBy: endIndex)
         else { return nil }
-
+        
         return String(self[start...end])
     }
 }
