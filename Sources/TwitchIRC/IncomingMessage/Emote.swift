@@ -8,6 +8,8 @@ public struct Emote {
     public var startIndex = Int()
     /// The index in the message at which the emote ends
     public var endIndex = Int()
+    /// Whether this is an animated emote.
+    public var isAnimated = Bool()
 
     public init() { }
 
@@ -15,12 +17,14 @@ public struct Emote {
         id: String,
         name: String,
         startIndex: Int,
-        endIndex: Int
+        endIndex: Int,
+        isAnimated: Bool
     ) {
         self.id = id
         self.name = name
         self.startIndex = startIndex
         self.endIndex = endIndex
+        self.isAnimated = isAnimated
     }
 
     static func parse(from emoteString: String, and message: String) -> [Emote] {
@@ -46,7 +50,7 @@ public struct Emote {
             .flatMap { $0.split(separator: ",") }
             .map { String($0) }
 
-        var lastID: String? = nil
+        var lastProperties: (id: String, animated: Bool)? = nil
         for emote in emoteArray {
             /// This gives us either `["<id>", "<start>", "<end>"]` or `["<start>", "<end>"]`
             var parts = emote.split(separator: ":")
@@ -56,9 +60,14 @@ public struct Emote {
             switch parts.count {
             case 3:
                 /// If we have an id, save it
-                lastID = parts.removeFirst()
+                let id = parts.removeFirst()
+                if id.hasPrefix("emotesv2_") {
+                    lastProperties = (String(id.dropFirst(9)), true)
+                } else {
+                    lastProperties = (id, false)
+                }
             case 2:
-                if lastID == nil {
+                if lastProperties == nil {
                     /// Unexpected emote
                     continue
                 } else {
@@ -75,10 +84,11 @@ public struct Emote {
                 let name = message[stringIn: startIndex...endIndex]
             {
                 parsed.append(.init(
-                    id: lastID!,
+                    id: lastProperties!.id,
                     name: name,
                     startIndex: startIndex,
-                    endIndex: endIndex
+                    endIndex: endIndex,
+                    isAnimated: lastProperties!.animated
                 ))
             }
         }
