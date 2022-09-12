@@ -181,7 +181,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(un.badges, [])
         XCTAssertEqual(un.color, "")
         XCTAssertEqual(un.displayName, "SevenTest1")
-        XCTAssertEqual(un.emotes, "")
+        XCTAssertEqual(un.emotes, "30259:0-6")
         XCTAssertEqual(un.flags, [])
         XCTAssertEqual(un.id, "37feed0f-b9c7-4c3a-b475-21c6c6d21c3d")
         XCTAssertEqual(un.userLogin, "seventest1")

@@ -30,7 +30,7 @@ final class WhisperTests: XCTestCase {
         XCTAssertEqual(whisper.badges, [])
         XCTAssertEqual(whisper.color, "#1E90FF")
         XCTAssertEqual(whisper.displayName, "MahdiMMBM")
-        XCTAssertEqual(whisper.emotes, "")
+        XCTAssertEqual(whisper.emotes, "30259:0-6,8-14")
         XCTAssertEqual(whisper.messageId, "3")
         XCTAssertEqual(whisper.threadId, "519827148_684111155")
         XCTAssertEqual(whisper.userId, "519827148")
