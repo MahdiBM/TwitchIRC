@@ -47,8 +47,8 @@ public struct PrivateMessage: MessageWithBadges {
     public var displayName = String()
     /// User's name with no uppercased/Han characters.
     public var userLogin = String()
-    /// User's emotes.
-    public var emotes = [String]()
+    /// The emotes present in the message.
+    public var emotes = [Emote]()
     /// Whether or not the message only contains emotes.
     public var emoteOnly = Bool()
     /// Flags of this message.
@@ -114,7 +114,7 @@ public struct PrivateMessage: MessageWithBadges {
         self.bits = parser.string(for: "bits")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
-        self.emotes = parser.array(for: "emotes")
+        self.emotes = Emote.parse(from: parser.string(for: "emotes"), and: self.message)
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")
         self.firstMessage = parser.bool(for: "first-msg")
