@@ -12,7 +12,7 @@ public struct Whisper: MessageWithBadges {
     /// Sender's display name with uppercased/Han characters.
     public var displayName = String()
     /// Sender's emotes.
-    public var emotes = [String]()
+    public var emotes = String()
     /// Message's identifier.
     public var messageId = String()
     /// This whisper-thread's identifier.
@@ -21,6 +21,10 @@ public struct Whisper: MessageWithBadges {
     public var userId = String()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
+    
+    public func parseEmotes() -> [Emote] {
+        Emote.parse(from: emotes, and: message)
+    }
     
     public init() { }
     
@@ -40,7 +44,7 @@ public struct Whisper: MessageWithBadges {
         self.badges = parser.array(for: "badges")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
-        self.emotes = parser.array(for: "emotes")
+        self.emotes = parser.string(for: "emotes")
         self.messageId = parser.string(for: "message-id")
         self.threadId = parser.string(for: "thread-id")
         self.userId = parser.string(for: "user-id")

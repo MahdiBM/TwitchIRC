@@ -8,7 +8,7 @@ final class PrivateMessageTests: XCTestCase {
         
         let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
 
-        let emotes: [Emote] = [
+        let parsedEmotes: [Emote] = [
             .init(id: "25", name: "Kappa", startIndex: 0, endIndex: 4, isAnimated: false),
             .init(id: "25", name: "Kappa", startIndex: 12, endIndex: 16, isAnimated: false),
             .init(id: "1902", name: "Keepo", startIndex: 6, endIndex: 10, isAnimated: false)
@@ -22,7 +22,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "#0D4200")
         XCTAssertEqual(msg.displayName, "ronni")
         XCTAssertEqual(msg.userLogin, "ronni")
-        XCTAssertEqual(msg.emotes, emotes)
+        XCTAssertEqual(msg.emotes, "25:0-4,12-16/1902:6-10")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
@@ -35,6 +35,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.clientNonce, "")
         XCTAssertEqual(msg.userId, "1337")
         XCTAssertTrue(msg.replyParent == .init())
+        XCTAssertEqual(msg.parseEmotes(), parsedEmotes)
         
         XCTAssertEqual(msg.parsingLeftOvers.unavailableKeys, ["returning-chatter"])
         XCTAssertTrue(msg.parsingLeftOvers.unparsedKeys.isEmpty)
@@ -55,7 +56,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "")
         XCTAssertEqual(msg.displayName, "ronni")
         XCTAssertEqual(msg.userLogin, "ronni")
-        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
@@ -89,7 +90,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "")
         XCTAssertEqual(msg.displayName, "littlesnakysnake")
         XCTAssertEqual(msg.userLogin, "littlesnakysnake")
-        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
@@ -122,7 +123,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "#1E90FF")
         XCTAssertEqual(msg.displayName, "MahdiMMBM")
         XCTAssertEqual(msg.userLogin, "mahdimmbm")
-        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
@@ -161,7 +162,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "#19B330")
         XCTAssertEqual(msg.displayName, "TheHunterChamp")
         XCTAssertEqual(msg.userLogin, "thehunterchamp")
-        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, true)
@@ -194,7 +195,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "#FF69B4")
         XCTAssertEqual(msg.displayName, "건조한갱생거북")
         XCTAssertEqual(msg.userLogin, "newturtle_timi")
-        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
@@ -227,7 +228,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertEqual(msg.color, "#0000FF")
         XCTAssertEqual(msg.displayName, "flexvegapro3")
         XCTAssertEqual(msg.userLogin, "flexvegapro3")
-        XCTAssertEqual(msg.emotes, [])
+        XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)

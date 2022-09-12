@@ -466,8 +466,8 @@ public struct UserNotice: MessageWithBadges {
     public var color = String()
     /// User's display name with uppercased/Han characters.
     public var displayName = String()
-    /// User's emotes.
-    public var emotes = [String]()
+    /// User's sent emotes.
+    public var emotes = String()
     /// Flags of this notice.
     public var flags = [String]()
     /// Message's id.
@@ -486,6 +486,10 @@ public struct UserNotice: MessageWithBadges {
     public var userId = String()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
+    
+    public func parseEmotes() -> [Emote] {
+        Emote.parse(from: emotes, and: message)
+    }
     
     public init() { }
     
@@ -674,7 +678,7 @@ public struct UserNotice: MessageWithBadges {
         self.badges = parser.array(for: "badges")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
-        self.emotes = parser.array(for: "emotes")
+        self.emotes = parser.string(for: "emotes")
         self.flags = parser.array(for: "flags")
         self.id = parser.string(for: "id")
         self.userLogin = parser.string(for: "login")

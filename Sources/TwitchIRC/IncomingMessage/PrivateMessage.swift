@@ -47,8 +47,8 @@ public struct PrivateMessage: MessageWithBadges {
     public var displayName = String()
     /// User's name with no uppercased/Han characters.
     public var userLogin = String()
-    /// The emotes present in the message.
-    public var emotes = [Emote]()
+    /// The string describing emotes of the message.
+    public var emotes = String()
     /// Whether or not the message only contains emotes.
     public var emoteOnly = Bool()
     /// Flags of this message.
@@ -78,6 +78,10 @@ public struct PrivateMessage: MessageWithBadges {
     public var replyParent = ReplyParent()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
+    
+    public func parseEmotes() -> [Emote] {
+        Emote.parse(from: emotes, and: message)
+    }
     
     public init() { }
     
@@ -114,7 +118,7 @@ public struct PrivateMessage: MessageWithBadges {
         self.bits = parser.string(for: "bits")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
-        self.emotes = Emote.parse(from: parser.string(for: "emotes"), and: self.message)
+        self.emotes = parser.string(for: "emotes")
         self.emoteOnly = parser.bool(for: "emote-only")
         self.flags = parser.array(for: "flags")
         self.firstMessage = parser.bool(for: "first-msg")
