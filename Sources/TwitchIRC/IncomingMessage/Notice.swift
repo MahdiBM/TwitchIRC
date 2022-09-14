@@ -121,6 +121,8 @@ public struct Notice {
         case hostTargetWentOffline = "hosttargetwentoffline"
         /// <number> host commands remaining this half hour.
         case hostsRemaining = "hostsremaining"
+        /// Message cannot be replied to.
+        case invalidParent = "invalidparent"
         /// Invalid username: <user>
         case invalidUser = "invaliduser"
         /// You have added <user> as a moderator of this channel.
