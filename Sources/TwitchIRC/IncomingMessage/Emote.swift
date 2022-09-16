@@ -31,13 +31,13 @@ public struct Emote {
         let message = message.unicodeScalars
         var parsed = [Emote]()
         
-        for emotes in message.split(separator: "/") {
+        for emotes in emoteString.split(separator: "/") {
             let split = emotes.split(separator: ":")
             guard split.count == 2 else { continue }
             let id = String(split[0])
             let isAnimated = id.hasPrefix("emotesv2_")
             for rangeString in split[1].split(separator: ",") {
-                let ranges = rangeString.split(separator: ":")
+                let ranges = rangeString.split(separator: "-")
                 guard ranges.count == 2,
                       let lowerBound = Int(String(ranges[0])),
                       let upperBound = Int(String(ranges[1])),
