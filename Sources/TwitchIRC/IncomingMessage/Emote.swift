@@ -28,67 +28,27 @@ public struct Emote {
     }
 
     static func parse(from emoteString: String, and message: String) -> [Emote] {
-        /// First, we need to make sure we have an homogeneous array. In the message, emotes come as
-        /// a string that looks like `<id>:<start>-<end>/<id>:<start>-<end>`. However, when the same
-        /// emote repeats multiple times, it's more like
-        /// `<id>:<start>-<end>,<start>-<end>,<start>-<end>/<id>:<start>-<end>` and the parser has
-        /// issues giving it back as a list (the parser uses commas to sepparate, and doesn't take
-        /// the `/` into account).
-        ///
-        /// To solve this, we ask the parser to read it as a string and we treat the whole thing.
-        ///
-        /// Splitting by `/` returns an array like
-        /// `["<id>:<start>-<end>", "<start>-<end>", "<start>-<end>", "<id>:<start>-<end>"]`,
-        /// which makes it hard to treat all the elements the same since some of them have no `<id>`.
-        /// We solve this by using the last seen id as the id for elements that don't have one.
-        ///
-        /// After that, it's just a matter of parsing the indices and finding the equivalent text in
-        /// the chat message. With those, we can create our `EmoteReference` instance and save it.
         let message = message.unicodeScalars
         var parsed = [Emote]()
-        let emoteArray = emoteString.split(separator: "/")
-            .flatMap { $0.split(separator: ",") }
-            .map { String($0) }
-
-        var lastProperties: (id: String, animated: Bool)? = nil
-        for emote in emoteArray {
-            /// This gives us either `["<id>", "<start>", "<end>"]` or `["<start>", "<end>"]`
-            var parts = emote.split(separator: ":")
-                .flatMap { $0.split(separator: "-") }
-                .map { String($0) }
-            
-            switch parts.count {
-            case 3:
-                /// If we have an id, save it
-                let id = parts.removeFirst()
-                if id.hasPrefix("emotesv2_") {
-                    lastProperties = (String(id.dropFirst(9)), true)
-                } else {
-                    lastProperties = (id, false)
-                }
-            case 2:
-                if lastProperties == nil {
-                    /// Unexpected emote
-                    continue
-                } else {
-                    break
-                }
-            default:
-                /// Unexpected emote
-                continue
-            }
-
-            /// Try and retrieve the parts and add them to our list of emotes
-            if let startIndex = Int(parts[0]),
-               let endIndex = Int(parts[1]),
-               startIndex <= endIndex,
-               let name = message[stringIn: startIndex...endIndex] {
+        
+        for emotes in message.split(separator: "/") {
+            let split = emotes.split(separator: ":")
+            guard split.count == 2 else { continue }
+            let id = String(split[0])
+            let isAnimated = id.hasPrefix("emotesv2_")
+            for rangeString in split[1].split(separator: ",") {
+                let ranges = rangeString.split(separator: ":")
+                guard ranges.count == 2,
+                      let lowerBound = Int(String(ranges[0])),
+                      let upperBound = Int(String(ranges[1])),
+                      let name = message[stringIn: lowerBound...upperBound]
+                else { continue }
                 parsed.append(.init(
-                    id: lastProperties!.id,
+                    id: id,
                     name: name,
-                    startIndex: startIndex,
-                    endIndex: endIndex,
-                    isAnimated: lastProperties!.animated
+                    startIndex: lowerBound,
+                    endIndex: upperBound,
+                    isAnimated: isAnimated
                 ))
             }
         }
