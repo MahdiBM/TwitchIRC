@@ -284,7 +284,7 @@ public struct UserNotice: MessageWithBadges {
                 massGiftCount: UInt,
                 originId: String,
                 senderCount: UInt,
-                subPlan: UserNotice.MessageID.SubPlan?,
+                subPlan: SubPlan?,
                 goalContributionType: String,
                 goalCurrentContributions: String,
                 goalDescription: String,
@@ -436,6 +436,70 @@ public struct UserNotice: MessageWithBadges {
             }
         }
         
+        public struct MidnightSquidInfo {
+            public var amount: UInt
+            public var currency: String
+            public var emoteId: String
+            public var exponent: UInt
+            public var isHighlighted: Bool
+            public var pillType: String
+            
+            internal init(
+                amount: UInt,
+                currency: String,
+                emoteId: String,
+                exponent: UInt,
+                isHighlighted: Bool,
+                pillType: String
+            ) {
+                self.amount = amount
+                self.currency = currency
+                self.emoteId = emoteId
+                self.exponent = exponent
+                self.isHighlighted = isHighlighted
+                self.pillType = pillType
+            }
+            
+            public init() {
+                self.init(
+                    amount: UInt(),
+                    currency: String(),
+                    emoteId: String(),
+                    exponent: UInt(),
+                    isHighlighted: Bool(),
+                    pillType: String()
+                )
+            }
+        }
+        
+        public struct CharityDonationInfo {
+            public var charityName: String
+            public var amount: UInt
+            public var currency: String
+            public var exponent: UInt
+            
+            internal init(
+                charityName: String,
+                amount: UInt,
+                currency: String,
+                exponent: UInt
+            ) {
+                self.charityName = charityName
+                self.amount = amount
+                self.currency = currency
+                self.exponent = exponent
+            }
+            
+            public init() {
+                self.init(
+                    charityName: String(),
+                    amount: UInt(),
+                    currency: String(),
+                    exponent: UInt()
+                )
+            }
+        }
+        
         case sub(SubInfo)
         case resub(ReSubInfo)
         case subGift(SubGiftInfo)
@@ -452,6 +516,8 @@ public struct UserNotice: MessageWithBadges {
         case communityPayForward(CommunityPayForwardInfo)
         case standardPayForward(StandardPayForwardInfo)
         case announcement(color: String?)
+        case midnightSquid(MidnightSquidInfo)
+        case charityDonation(CharityDonationInfo)
     }
     
     /// Channel's name with no uppercased/Han characters.
@@ -671,6 +737,24 @@ public struct UserNotice: MessageWithBadges {
         case "announcement":
             self.messageId = .announcement(color: parser.optionalString(for: "msg-param-color"))
             occasionalSubDependentKeyGroups = [["msg-param-color"]]
+        case "midnightsquid":
+            self.messageId = .midnightSquid(.init(
+                amount: parser.uint(for: "msg-param-amount"),
+                currency: parser.string(for: "msg-param-currency"),
+                emoteId: parser.string(for: "msg-param-emote-id"),
+                exponent: parser.uint(for: "msg-param-exponent"),
+                isHighlighted: parser.bool(for: "msg-param-is-highlighted"),
+                pillType: parser.string(for: "msg-param-pill-type")
+            ))
+            occasionalSubDependentKeyGroups = []
+        case "charitydonation":
+            self.messageId = .charityDonation(.init(
+                charityName: parser.string(for: "msg-param-charity-name"),
+                amount: parser.uint(for: "msg-param-donation-amount"),
+                currency: parser.string(for: "msg-param-donation-currency"),
+                exponent: parser.uint(for: "msg-param-exponent")
+            ))
+            occasionalSubDependentKeyGroups = []
         default: return nil
         }
         
@@ -711,4 +795,6 @@ extension UserNotice.MessageID.AnonGiftPaidUpgradeInfo: Sendable { }
 extension UserNotice.MessageID.RaidInfo: Sendable { }
 extension UserNotice.MessageID.CommunityPayForwardInfo: Sendable { }
 extension UserNotice.MessageID.StandardPayForwardInfo: Sendable { }
+extension UserNotice.MessageID.MidnightSquidInfo: Sendable { }
+extension UserNotice.MessageID.CharityDonationInfo: Sendable { }
 #endif

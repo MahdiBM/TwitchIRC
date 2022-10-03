@@ -9,7 +9,9 @@ public struct Emote {
     /// The index in the message at which the emote ends
     public var endIndex = Int()
     /// Whether this is an animated emote
-    public var isAnimated = Bool()
+    public var isAnimated: Bool {
+        id.hasPrefix("emotesv2_")
+    }
 
     public init() { }
 
@@ -17,14 +19,12 @@ public struct Emote {
         id: String,
         name: String,
         startIndex: Int,
-        endIndex: Int,
-        isAnimated: Bool
+        endIndex: Int
     ) {
         self.id = id
         self.name = name
         self.startIndex = startIndex
         self.endIndex = endIndex
-        self.isAnimated = isAnimated
     }
 
     static func parse(from emoteString: String, and message: String) -> [Emote] {
@@ -35,7 +35,6 @@ public struct Emote {
             let split = emotes.split(separator: ":")
             guard split.count == 2 else { continue }
             let id = String(split[0])
-            let isAnimated = id.hasPrefix("emotesv2_")
             for rangeString in split[1].split(separator: ",") {
                 let ranges = rangeString.split(separator: "-")
                 guard ranges.count == 2,
@@ -47,8 +46,7 @@ public struct Emote {
                     id: id,
                     name: name,
                     startIndex: lowerBound,
-                    endIndex: upperBound,
-                    isAnimated: isAnimated
+                    endIndex: upperBound
                 ))
             }
         }
