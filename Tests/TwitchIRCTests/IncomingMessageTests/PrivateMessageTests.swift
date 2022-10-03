@@ -214,7 +214,7 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertTrue(msg.parsingLeftOvers.unusedPairs.isEmpty)
     }
     
-    /// Tests where `returningChatter`.
+    /// Tests `returningChatter`.
     func testParsedValues7() throws {
         let string = "@badge-info=;badges=vip/1;color=#0000FF;display-name=flexvegapro3;emotes=;first-msg=0;flags=;id=9c3e3024-a4b4-493b-8668-96597be002ac;mod=0;returning-chatter=0;room-id=550217406;subscriber=0;tmi-sent-ts=1655439139118;turbo=0;user-id=705215697;user-type= :flexvegapro3!flexvegapro3@flexvegapro3.tmi.twitch.tv PRIVMSG #novastark_7 :jajaja xD"
         
@@ -244,6 +244,43 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertTrue(msg.replyParent == .init())
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
+    
+    /// Tests `pinnedChat`.
+    func testParsedValues8() throws {
+        let string = "@badge-info=subscriber/3;badges=vip/1,subscriber/3,sub-gifter/300;color=#FFFF00;display-name=2Taqz;emotes=;first-msg=0;flags=;id=cd943357-38bf-4bc9-b524-c0da490dcc36;mod=0;pinned-chat-paid-amount=1200;pinned-chat-paid-canonical-amount=10;pinned-chat-paid-currency=EUR;pinned-chat-paid-exponent=2;returning-chatter=0;room-id=117855516;subscriber=1;tmi-sent-ts=1664561279533;turbo=0;user-id=249610052;user-type=;vip=1 :2taqz!2taqz@2taqz.tmi.twitch.tv PRIVMSG #domino :und wieder 12€ verbrennen"
+        
+        let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(msg.channel, "domino")
+        XCTAssertEqual(msg.message, "und wieder 12€ verbrennen")
+        XCTAssertEqual(msg.badgeInfo, ["subscriber/3"])
+        XCTAssertEqual(msg.badges, ["vip/1", "subscriber/3", "sub-gifter/300"])
+        XCTAssertEqual(msg.bits, "")
+        XCTAssertEqual(msg.color, "#FFFF00")
+        XCTAssertEqual(msg.displayName, "2Taqz")
+        XCTAssertEqual(msg.userLogin, "2taqz")
+        XCTAssertEqual(msg.emotes, "")
+        XCTAssertEqual(msg.emoteOnly, false)
+        XCTAssertEqual(msg.flags, [])
+        XCTAssertEqual(msg.firstMessage, false)
+        XCTAssertEqual(msg.returningChatter, false)
+        XCTAssertEqual(msg.messageId, "")
+        XCTAssertEqual(msg.id, "cd943357-38bf-4bc9-b524-c0da490dcc36")
+        XCTAssertEqual(msg.crowdChantParentMessageId, "")
+        XCTAssertEqual(msg.customRewardId, "")
+        XCTAssertEqual(msg.roomId, "117855516")
+        XCTAssertEqual(msg.tmiSentTs, 1664561279533)
+        XCTAssertEqual(msg.clientNonce, "")
+        XCTAssertEqual(msg.userId, "249610052")
+        XCTAssertTrue(msg.replyParent == .init())
+        XCTAssertTrue(msg.pinnedChat == .init(
+            amount: 1200,
+            canonicalAmount: 10,
+            currency: "EUR",
+            exponent: 2
+        ))
+        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+    }
 }
 
 // MARK: - Emote Equatable
@@ -263,4 +300,12 @@ private func == (lhs: PrivateMessage.ReplyParent, rhs: PrivateMessage.ReplyParen
     && lhs.message == rhs.message
     && lhs.id == rhs.id
     && lhs.userId == rhs.userId
+}
+
+// MARK: - PrivateMessage.PinnedChat Equatable (basically)
+private func == (lhs: PrivateMessage.PinnedChat, rhs: PrivateMessage.PinnedChat) -> Bool {
+    lhs.amount == rhs.amount
+    && lhs.amount == rhs.amount
+    && lhs.currency == rhs.currency
+    && lhs.canonicalAmount == rhs.canonicalAmount
 }

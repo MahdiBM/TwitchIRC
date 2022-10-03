@@ -14,9 +14,7 @@ public struct PrivateMessage: MessageWithBadges {
         /// Replied user's Twitch identifier.
         public var userId = String()
         
-        public init() { }
-        
-        init(
+        internal init(
             displayName: String,
             userLogin: String,
             message: String,
@@ -29,6 +27,29 @@ public struct PrivateMessage: MessageWithBadges {
             self.id = id
             self.userId = userId
         }
+        
+        public init() { }
+    }
+    
+    public struct PinnedChat {
+        public var amount = UInt()
+        public var canonicalAmount = UInt()
+        public var currency = String()
+        public var exponent = UInt()
+        
+        internal init(
+            amount: UInt,
+            canonicalAmount: UInt,
+            currency: String,
+            exponent: UInt
+        ) {
+            self.amount = amount
+            self.canonicalAmount = canonicalAmount
+            self.currency = currency
+            self.exponent = exponent
+        }
+        
+        public init() { }
     }
     
     /// Channel's name with no uppercased/Han characters.
@@ -76,6 +97,8 @@ public struct PrivateMessage: MessageWithBadges {
     public var userId = String()
     /// Info about the replied message, if any.
     public var replyParent = ReplyParent()
+    /// Info of paid pinned messages.
+    public var pinnedChat = PinnedChat()
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
     
@@ -138,9 +161,15 @@ public struct PrivateMessage: MessageWithBadges {
             id: parser.string(for: "reply-parent-msg-id"),
             userId: parser.string(for: "reply-parent-user-id")
         )
+        self.pinnedChat = .init(
+            amount: parser.uint(for: "pinned-chat-paid-amount"),
+            canonicalAmount: parser.uint(for: "pinned-chat-paid-canonical-amount"),
+            currency: parser.string(for: "pinned-chat-paid-currency"),
+            exponent: parser.uint(for: "pinned-chat-paid-exponent")
+        )
         
         let deprecatedKeys = ["turbo", "mod", "vip", "subscriber", "user-type"]
-        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"]]
+        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"], ["pinned-chat-paid-amount", "pinned-chat-paid-canonical-amount", "pinned-chat-paid-currency", "pinned-chat-paid-exponent"]]
         
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
@@ -153,4 +182,5 @@ public struct PrivateMessage: MessageWithBadges {
 #if swift(>=5.5)
 extension PrivateMessage: Sendable { }
 extension PrivateMessage.ReplyParent: Sendable { }
+extension PrivateMessage.PinnedChat: Sendable { }
 #endif
