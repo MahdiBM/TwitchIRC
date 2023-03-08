@@ -500,6 +500,30 @@ public struct UserNotice: MessageWithBadges {
             }
         }
         
+        public struct ViewerMilestoneInfo {
+            public var category: String
+            public var id: String
+            public var value: UInt
+            
+            internal init(
+                category: String,
+                id: String,
+                value: UInt
+            ) {
+                self.category = category
+                self.id = id
+                self.value = value
+            }
+            
+            public init() {
+                self.init(
+                    category: String(),
+                    id: String(),
+                    value: UInt()
+                )
+            }
+        }
+        
         case sub(SubInfo)
         case resub(ReSubInfo)
         case subGift(SubGiftInfo)
@@ -518,6 +542,7 @@ public struct UserNotice: MessageWithBadges {
         case announcement(color: String?)
         case midnightSquid(MidnightSquidInfo)
         case charityDonation(CharityDonationInfo)
+        case viewerMilestone(ViewerMilestoneInfo)
     }
     
     /// Channel's name with no uppercased/Han characters.
@@ -753,6 +778,13 @@ public struct UserNotice: MessageWithBadges {
                 amount: parser.uint(for: "msg-param-donation-amount"),
                 currency: parser.string(for: "msg-param-donation-currency"),
                 exponent: parser.uint(for: "msg-param-exponent")
+            ))
+            occasionalSubDependentKeyGroups = []
+        case "viewermilestone":
+            self.messageId = .viewerMilestone(.init(
+                category: parser.string(for: "msg-param-category"),
+                id: parser.string(for: "msg-param-id"),
+                value: parser.uint(for: "msg-param-value")
             ))
             occasionalSubDependentKeyGroups = []
         default: return nil

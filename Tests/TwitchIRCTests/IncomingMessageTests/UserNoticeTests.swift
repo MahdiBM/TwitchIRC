@@ -453,6 +453,37 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(info.currency, "USD")
         XCTAssertEqual(info.exponent, 2)
     }
+    
+    func testParsedValues14() throws {
+        let string = #"@badge-info=founder/12;badges=moderator/1,founder/0,hype-train/1;color=#0000FF;display-name=metalkiller354;emotes=;flags=;id=aa1d37a5-e0d0-40b2-b374-ae779896a6f9;login=metalkiller354;mod=1;msg-id=viewermilestone;msg-param-category=watch-streak;msg-param-id=f05b2393-3bee-451c-bcb2-d12ea06781d7;msg-param-value=3;room-id=442187430;subscriber=1;system-msg=metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!;tmi-sent-ts=1678130127599;user-id=224637183;user-type=mod :tmi.twitch.tv USERNOTICE #tryaz"#
+        
+        let un: UserNotice = try TestUtils.parseAndUnwrap(string: string)
+        
+        XCTAssertEqual(un.channel, "tryaz")
+        XCTAssertEqual(un.message, "")
+        XCTAssertEqual(un.badgeInfo, ["founder/12"])
+        XCTAssertEqual(un.badges, ["moderator/1", "founder/0", "hype-train/1"])
+        XCTAssertEqual(un.color, "#0000FF")
+        XCTAssertEqual(un.displayName, "metalkiller354")
+        XCTAssertEqual(un.emotes, "")
+        XCTAssertEqual(un.flags, [])
+        XCTAssertEqual(un.id, "aa1d37a5-e0d0-40b2-b374-ae779896a6f9")
+        XCTAssertEqual(un.userLogin, "metalkiller354")
+        XCTAssertEqual(un.roomId, "442187430")
+        XCTAssertEqual(
+            un.systemMessage,
+            #"metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!"#
+        )
+        XCTAssertEqual(un.tmiSentTs, 1678130127599)
+        XCTAssertEqual(un.userId, "224637183")
+        XCTAssertTrue(un.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(un.parsingLeftOvers)")
+        
+        let info: Action.ViewerMilestoneInfo = try unwrapInnerValue(action: un.messageId)
+        
+        XCTAssertEqual(info.category, "watch-streak")
+        XCTAssertEqual(info.id, "f05b2393-3bee-451c-bcb2-d12ea06781d7")
+        XCTAssertEqual(info.value, 3)
+    }
 }
 
 // MARK: - UserNotice.MessageID anyValue
@@ -494,6 +525,8 @@ private extension UserNotice.MessageID {
         case let .midnightSquid(value):
             return value
         case let .charityDonation(value):
+            return value
+        case let .viewerMilestone(value):
             return value
         }
     }
