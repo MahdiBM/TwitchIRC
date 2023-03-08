@@ -829,4 +829,5 @@ extension UserNotice.MessageID.CommunityPayForwardInfo: Sendable { }
 extension UserNotice.MessageID.StandardPayForwardInfo: Sendable { }
 extension UserNotice.MessageID.MidnightSquidInfo: Sendable { }
 extension UserNotice.MessageID.CharityDonationInfo: Sendable { }
+extension UserNotice.MessageID.ViewerMilestoneInfo: Sendable { }
 #endif
