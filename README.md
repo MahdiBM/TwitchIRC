@@ -48,6 +48,10 @@ let outgoingMessage: OutgoingMessage = .privateMessage(to: "mahdimmbm", message:
 let serialized = outgoingMessage.serialize()
 /// Now send `serialized` to Twitch over IRC.
 ```
+> **Warning**    
+> Twitch has deprecated sending _chat commands_ over websocket, and you need to use the REST API instead.   
+> You can still respond to messages over Websocket.   
+> For more info: https://discuss.dev.twitch.tv/t/deprecation-of-chat-commands-through-irc/40486/83
 
 ## I don't see some info in some messages
 
