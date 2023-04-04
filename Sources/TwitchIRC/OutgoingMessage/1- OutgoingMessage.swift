@@ -2,7 +2,12 @@
 /// An IRC message to be sent to Twitch.
 public enum OutgoingMessage {
     /// Sends a message to a channel. Channel name must be lowercased.
-    case privateMessage(to: String, message: String, messageIdToReply: String? = nil)
+    case privateMessage(
+        to: String,
+        message: String,
+        messageIdToReply: String? = nil,
+        clientNonce: String? = nil
+    )
     /// Joins a channel's chat. Channel name must be lowercased.
     case join(to: String)
     /// Parts from a channel's chat. Channel name must be lowercased.
@@ -22,13 +27,15 @@ public enum OutgoingMessage {
     /// Serializes this message into a string that can be sent to Twitch over IRC.
     public func serialize() -> String {
         switch self {
-        case let .privateMessage(channel, message, messageIdToReply):
-            let prefix: String
+        case let .privateMessage(channel, message, messageIdToReply, clientNonce):
+            var prefixes = [String]()
             if let messageId = messageIdToReply, !messageId.isEmpty {
-                prefix = "@reply-parent-msg-id=" + messageId + " "
-            } else {
-                prefix = ""
+                prefixes.append("reply-parent-msg-id=\(messageId)")
             }
+            if let clientNonce = clientNonce, !clientNonce.isEmpty {
+                prefixes.append("client-nonce=\(clientNonce)")
+            }
+            let prefix = prefixes.isEmpty ? "" : "@\(prefixes.joined(separator: ";")) "
             return prefix + "PRIVMSG #\(channel) :\(message)"
         case let .join(channel):
             return "JOIN #\(channel)"
