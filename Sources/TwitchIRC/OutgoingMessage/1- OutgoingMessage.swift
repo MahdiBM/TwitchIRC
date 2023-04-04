@@ -2,6 +2,7 @@
 /// An IRC message to be sent to Twitch.
 public enum OutgoingMessage {
     /// Sends a message to a channel. Channel name must be lowercased.
+    /// `clientNonce` if provided, will be available in the next `userState` you receive.
     case privateMessage(
         to: String,
         message: String,
