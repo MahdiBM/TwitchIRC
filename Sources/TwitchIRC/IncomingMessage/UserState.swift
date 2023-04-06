@@ -16,6 +16,8 @@ public struct UserState: MessageWithBadges {
     public var emoteSets = [String]()
     /// The ID of this user state message.
     public var id = String()
+    /// The nonce sent by client in the PRIVMSG.
+    public var clientNonce: String? = nil
     /// Contains info about unused info and parsing problems.
     public var parsingLeftOvers = ParsingLeftOvers()
     
@@ -34,10 +36,11 @@ public struct UserState: MessageWithBadges {
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
         self.emoteSets = parser.array(for: "emote-sets")
+        self.clientNonce = parser.optionalString(for: "client-nonce")
         self.id = parser.string(for: "id")
         
         let deprecatedKeys = ["turbo", "mod", "subscriber", "user-type"]
-        let sometimesUnavailableKeys = ["id"]
+        let sometimesUnavailableKeys = ["id", "client-nonce"]
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
             excludedUnavailableKeys: sometimesUnavailableKeys

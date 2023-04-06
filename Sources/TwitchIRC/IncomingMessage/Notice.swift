@@ -133,6 +133,8 @@ public struct Notice {
         case msgBadCharacters = "msgbadcharacters"
         /// Your message was not sent because your email address is banned from this channel.
         case msgBannedEmailAlias = "msgbannedemailalias"
+        /// Your message was not sent because your phone number is banned from this channel.
+        case msgBannedPhoneNumberAlias = "msgbannedphonenumberalias"
         /// Your message was not sent because your account is not in good standing in this channel.
         case msgChannelBlocked = "msgchannelblocked"
         /// This channel has been suspended.

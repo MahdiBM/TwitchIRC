@@ -36,6 +36,21 @@ final class OutgoingMessageTests: XCTestCase {
             let message = OutgoingMessage.privateMessage(
                 to: "ronni",
                 message: "HeyGuys HeyGuys",
+                messageIdToReply: "b34ccfc7-4977-403a-8a94-33c6bac34fb8",
+                clientNonce: "nonci"
+            )
+            let serialized = message.serialize()
+            
+            XCTAssertEqual(
+                serialized,
+                "@reply-parent-msg-id=b34ccfc7-4977-403a-8a94-33c6bac34fb8;client-nonce=nonci PRIVMSG #ronni :HeyGuys HeyGuys"
+            )
+        }
+        
+        do {
+            let message = OutgoingMessage.privateMessage(
+                to: "ronni",
+                message: "HeyGuys HeyGuys",
                 messageIdToReply: ""
             )
             let serialized = message.serialize()
