@@ -30,7 +30,24 @@ public struct PrivateMessage: MessageWithBadges {
         
         public init() { }
     }
-    
+
+    public struct ReplyThreadParent {
+        /// Replied user's name with no uppercased/Han characters.
+        public var userLogin = String()
+        /// Replied thread's message's id.
+        public var messageId = String()
+
+        internal init(
+            userLogin: String,
+            messageId: String
+        ) {
+            self.userLogin = userLogin
+            self.messageId = messageId
+        }
+
+        public init() { }
+    }
+
     public struct PinnedChat {
         public var amount = UInt()
         public var canonicalAmount = UInt()
@@ -97,6 +114,8 @@ public struct PrivateMessage: MessageWithBadges {
     public var userId = String()
     /// Info about the replied message, if any.
     public var replyParent = ReplyParent()
+    /// Info about the thread of the replied message, if any.
+    public var replyThreadParent = ReplyThreadParent()
     /// Info of paid pinned messages.
     public var pinnedChat = PinnedChat()
     /// Contains info about unused info and parsing problems.
@@ -161,6 +180,10 @@ public struct PrivateMessage: MessageWithBadges {
             id: parser.string(for: "reply-parent-msg-id"),
             userId: parser.string(for: "reply-parent-user-id")
         )
+        self.replyThreadParent = .init(
+            userLogin: parser.string(for: "reply-thread-parent-user-login"),
+            messageId: parser.string(for: "reply-thread-parent-msg-id")
+        )
         self.pinnedChat = .init(
             amount: parser.uint(for: "pinned-chat-paid-amount"),
             canonicalAmount: parser.uint(for: "pinned-chat-paid-canonical-amount"),
@@ -169,8 +192,8 @@ public struct PrivateMessage: MessageWithBadges {
         )
         
         let deprecatedKeys = ["turbo", "mod", "vip", "subscriber", "user-type"]
-        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"], ["pinned-chat-paid-amount", "pinned-chat-paid-canonical-amount", "pinned-chat-paid-currency", "pinned-chat-paid-exponent"]]
-        
+        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"], ["pinned-chat-paid-amount", "pinned-chat-paid-canonical-amount", "pinned-chat-paid-currency", "pinned-chat-paid-exponent"], ["reply-thread-parent-user-login", "reply-thread-parent-msg-id"]]
+
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
             groupsOfExcludedUnavailableKeys: occasionalKeys
@@ -182,5 +205,6 @@ public struct PrivateMessage: MessageWithBadges {
 #if swift(>=5.5)
 extension PrivateMessage: Sendable { }
 extension PrivateMessage.ReplyParent: Sendable { }
+extension PrivateMessage.ReplyThreadParent: Sendable { }
 extension PrivateMessage.PinnedChat: Sendable { }
 #endif

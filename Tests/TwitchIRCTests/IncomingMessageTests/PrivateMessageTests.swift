@@ -281,6 +281,39 @@ final class PrivateMessageTests: XCTestCase {
         ))
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
+
+    func testParsedValues9() throws {
+        let string = #"@badge-info=predictions/Pompeyo;badges=predictions/blue-1,premium/1;client-nonce=c5639d11fdac91cad488f52a0c0a927a;color=#FFF200;display-name=fladhi;emotes=;first-msg=0;flags=;id=c96d75f7-6fe0-41d0-bd27-80643426613c;mod=0;reply-parent-display-name=RoyaleAlchemist;reply-parent-msg-body=Clash\sRoyale\sAPI\sestá\sde\svuelta\sPogChamp\sPogChamp\s.\sSi\shubo\sun\smantenimiento\so\suna\sinterrupción\sdel\sservicio,\sya\sdebería\shaber\sterminado.\sRoyale\sAlchemist\snecesitará\sentre\s5\sy\s1     0\sminutos\spara\srecuperarse\spor\scompleto\s|\s@Pompeyo4;reply-parent-msg-id=0e772349-8bcd-42cb-9c91-1c9eece83af8;reply-parent-user-id=684111155;reply-parent-user-login=royalealchemist;reply-thread-parent-msg-id=0e772349-8bcd-42cb-9c91-1c9eece83af8;reply-thread-parent-user-login=royalealchemist;returning-chatter=0;room-id=118220323;subscriber=0;tmi-sent-ts=1687334511793;turbo=0;user-id=686358047;user-type= :fladhi!fladhi@fladhi.tmi.twitch.tv PRIVMSG #pompeyo4 :@RoyaleAlchemist whoAsked"#
+
+        let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+
+        XCTAssertEqual(msg.channel, "pompeyo4")
+        XCTAssertEqual(msg.message, "@RoyaleAlchemist whoAsked")
+        XCTAssertEqual(msg.badgeInfo, ["predictions/Pompeyo"])
+        XCTAssertEqual(msg.badges, ["predictions/blue-1", "premium/1"])
+        XCTAssertEqual(msg.bits, "")
+        XCTAssertEqual(msg.color, "#FFF200")
+        XCTAssertEqual(msg.displayName, "fladhi")
+        XCTAssertEqual(msg.userLogin, "fladhi")
+        XCTAssertEqual(msg.emotes, "")
+        XCTAssertEqual(msg.emoteOnly, false)
+        XCTAssertEqual(msg.flags, [])
+        XCTAssertEqual(msg.firstMessage, false)
+        XCTAssertEqual(msg.returningChatter, false)
+        XCTAssertEqual(msg.messageId, "")
+        XCTAssertEqual(msg.id, "c96d75f7-6fe0-41d0-bd27-80643426613c")
+        XCTAssertEqual(msg.crowdChantParentMessageId, "")
+        XCTAssertEqual(msg.customRewardId, "")
+        XCTAssertEqual(msg.roomId, "118220323")
+        XCTAssertEqual(msg.tmiSentTs, 1687334511793)
+        XCTAssertEqual(msg.clientNonce, "c5639d11fdac91cad488f52a0c0a927a")
+        XCTAssertEqual(msg.userId, "686358047")
+        XCTAssertTrue(msg.replyParent == .init(displayName: "RoyaleAlchemist", userLogin: "royalealchemist", message: "Clash\\sRoyale\\sAPI\\sestá\\sde\\svuelta\\sPogChamp\\sPogChamp\\s.\\sSi\\shubo\\sun\\smantenimiento\\so\\suna\\sinterrupción\\sdel\\sservicio,\\sya\\sdebería\\shaber\\sterminado.\\sRoyale\\sAlchemist\\snecesitará\\sentre\\s5\\sy\\s1     0\\sminutos\\spara\\srecuperarse\\spor\\scompleto\\s|\\s@Pompeyo4", id: "0e772349-8bcd-42cb-9c91-1c9eece83af8", userId: "684111155")
+        )
+        XCTAssertTrue(msg.replyThreadParent == .init(userLogin: "royalealchemist", messageId: "0e772349-8bcd-42cb-9c91-1c9eece83af8"))
+        XCTAssertTrue(msg.pinnedChat == .init())
+        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+    }
 }
 
 // MARK: - Emote Equatable
@@ -300,6 +333,15 @@ private func == (lhs: PrivateMessage.ReplyParent, rhs: PrivateMessage.ReplyParen
     && lhs.message == rhs.message
     && lhs.id == rhs.id
     && lhs.userId == rhs.userId
+}
+
+// MARK: - PrivateMessage.ReplyThreadParent Equatable (basically)
+private func == (
+    lhs: PrivateMessage.ReplyThreadParent,
+    rhs: PrivateMessage.ReplyThreadParent
+) -> Bool {
+    lhs.userLogin == rhs.userLogin
+    && lhs.messageId == rhs.messageId
 }
 
 // MARK: - PrivateMessage.PinnedChat Equatable (basically)
