@@ -247,41 +247,44 @@ final class PrivateMessageTests: XCTestCase {
     
     /// Tests `pinnedChat`.
     func testParsedValues8() throws {
-        let string = "@badge-info=subscriber/3;badges=vip/1,subscriber/3,sub-gifter/300;color=#FFFF00;display-name=2Taqz;emotes=;first-msg=0;flags=;id=cd943357-38bf-4bc9-b524-c0da490dcc36;mod=0;pinned-chat-paid-amount=1200;pinned-chat-paid-canonical-amount=10;pinned-chat-paid-currency=EUR;pinned-chat-paid-exponent=2;returning-chatter=0;room-id=117855516;subscriber=1;tmi-sent-ts=1664561279533;turbo=0;user-id=249610052;user-type=;vip=1 :2taqz!2taqz@2taqz.tmi.twitch.tv PRIVMSG #domino :und wieder 12€ verbrennen"
-        
+        let string = #"@badge-info=subscriber/8;badges=vip/1,subscriber/6,sub-gift-leader/1;color=#00FF7F;display-name=r3born_9999;emotes=;first-msg=0;flags=;id=011c7c65-6bab-4a9c-973e-2e04154e3877;mod=0;pinned-chat-paid-amount=100;pinned-chat-paid-canonical-amount=100;pinned-chat-paid-currency=USD;pinned-chat-paid-exponent=2;pinned-chat-paid-is-system-message=0;pinned-chat-paid-level=ONE;returning-chatter=0;room-id=123721524;subscriber=1;tmi-sent-ts=1687641306105;turbo=0;user-id=767491027;user-type=;vip=1 :r3born_9999!r3born_9999@r3born_9999.tmi.twitch.tv PRIVMSG #juicyjcr :will gift 5 subs as well if u clutch up"#
+
         let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
         
-        XCTAssertEqual(msg.channel, "domino")
-        XCTAssertEqual(msg.message, "und wieder 12€ verbrennen")
-        XCTAssertEqual(msg.badgeInfo, ["subscriber/3"])
-        XCTAssertEqual(msg.badges, ["vip/1", "subscriber/3", "sub-gifter/300"])
+        XCTAssertEqual(msg.channel, "juicyjcr")
+        XCTAssertEqual(msg.message, "will gift 5 subs as well if u clutch up")
+        XCTAssertEqual(msg.badgeInfo, ["subscriber/8"])
+        XCTAssertEqual(msg.badges, ["vip/1", "subscriber/6", "sub-gift-leader/1"])
         XCTAssertEqual(msg.bits, "")
-        XCTAssertEqual(msg.color, "#FFFF00")
-        XCTAssertEqual(msg.displayName, "2Taqz")
-        XCTAssertEqual(msg.userLogin, "2taqz")
+        XCTAssertEqual(msg.color, "#00FF7F")
+        XCTAssertEqual(msg.displayName, "r3born_9999")
+        XCTAssertEqual(msg.userLogin, "r3born_9999")
         XCTAssertEqual(msg.emotes, "")
         XCTAssertEqual(msg.emoteOnly, false)
         XCTAssertEqual(msg.flags, [])
         XCTAssertEqual(msg.firstMessage, false)
         XCTAssertEqual(msg.returningChatter, false)
         XCTAssertEqual(msg.messageId, "")
-        XCTAssertEqual(msg.id, "cd943357-38bf-4bc9-b524-c0da490dcc36")
+        XCTAssertEqual(msg.id, "011c7c65-6bab-4a9c-973e-2e04154e3877")
         XCTAssertEqual(msg.crowdChantParentMessageId, "")
         XCTAssertEqual(msg.customRewardId, "")
-        XCTAssertEqual(msg.roomId, "117855516")
-        XCTAssertEqual(msg.tmiSentTs, 1664561279533)
+        XCTAssertEqual(msg.roomId, "123721524")
+        XCTAssertEqual(msg.tmiSentTs, 1687641306105)
         XCTAssertEqual(msg.clientNonce, "")
-        XCTAssertEqual(msg.userId, "249610052")
+        XCTAssertEqual(msg.userId, "767491027")
         XCTAssertTrue(msg.replyParent == .init())
         XCTAssertTrue(msg.pinnedChat == .init(
-            amount: 1200,
-            canonicalAmount: 10,
-            currency: "EUR",
-            exponent: 2
-        ))
+            amount: 100,
+            canonicalAmount: 100,
+            currency: "USD",
+            exponent: 2,
+            isSystemMessage: false,
+            level: "ONE"
+        ), "\(msg.pinnedChat)")
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
 
+    /// Reply Thread Parent
     func testParsedValues9() throws {
         let string = #"@badge-info=predictions/Pompeyo;badges=predictions/blue-1,premium/1;client-nonce=c5639d11fdac91cad488f52a0c0a927a;color=#FFF200;display-name=fladhi;emotes=;first-msg=0;flags=;id=c96d75f7-6fe0-41d0-bd27-80643426613c;mod=0;reply-parent-display-name=RoyaleAlchemist;reply-parent-msg-body=Clash\sRoyale\sAPI\sestá\sde\svuelta\sPogChamp\sPogChamp\s.\sSi\shubo\sun\smantenimiento\so\suna\sinterrupción\sdel\sservicio,\sya\sdebería\shaber\sterminado.\sRoyale\sAlchemist\snecesitará\sentre\s5\sy\s1     0\sminutos\spara\srecuperarse\spor\scompleto\s|\s@Pompeyo4;reply-parent-msg-id=0e772349-8bcd-42cb-9c91-1c9eece83af8;reply-parent-user-id=684111155;reply-parent-user-login=royalealchemist;reply-thread-parent-msg-id=0e772349-8bcd-42cb-9c91-1c9eece83af8;reply-thread-parent-user-login=royalealchemist;returning-chatter=0;room-id=118220323;subscriber=0;tmi-sent-ts=1687334511793;turbo=0;user-id=686358047;user-type= :fladhi!fladhi@fladhi.tmi.twitch.tv PRIVMSG #pompeyo4 :@RoyaleAlchemist whoAsked"#
 
@@ -350,4 +353,6 @@ private func == (lhs: PrivateMessage.PinnedChat, rhs: PrivateMessage.PinnedChat)
     && lhs.amount == rhs.amount
     && lhs.currency == rhs.currency
     && lhs.canonicalAmount == rhs.canonicalAmount
+    && lhs.isSystemMessage == rhs.isSystemMessage
+    && lhs.level == rhs.level
 }
