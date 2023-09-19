@@ -557,6 +557,8 @@ public struct UserNotice: MessageWithBadges {
     public var color = String()
     /// User's display name with uppercased/Han characters.
     public var displayName = String()
+    /// User is VIP or not.
+    public var vip = Bool()
     /// User's sent emotes.
     public var emotes = String()
     /// Flags of this notice.
@@ -794,6 +796,7 @@ public struct UserNotice: MessageWithBadges {
         self.badges = parser.array(for: "badges")
         self.color = parser.string(for: "color")
         self.displayName = parser.string(for: "display-name")
+        self.vip = parser.bool(for: "vip")
         self.emotes = parser.string(for: "emotes")
         self.flags = parser.array(for: "flags")
         self.id = parser.string(for: "id")
