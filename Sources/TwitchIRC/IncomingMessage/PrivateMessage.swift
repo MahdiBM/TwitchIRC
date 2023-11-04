@@ -36,13 +36,21 @@ public struct PrivateMessage: MessageWithBadges {
         public var userLogin = String()
         /// Replied thread's message's id.
         public var messageId = String()
+        /// Replied user's display name.
+        public var displayName = String()
+        /// Replied user's user id.
+        public var userId = String()
 
         internal init(
             userLogin: String,
-            messageId: String
+            messageId: String,
+            displayName: String,
+            userId: String
         ) {
             self.userLogin = userLogin
             self.messageId = messageId
+            self.displayName = displayName
+            self.userId = userId
         }
 
         public init() { }
@@ -188,7 +196,9 @@ public struct PrivateMessage: MessageWithBadges {
         )
         self.replyThreadParent = .init(
             userLogin: parser.string(for: "reply-thread-parent-user-login"),
-            messageId: parser.string(for: "reply-thread-parent-msg-id")
+            messageId: parser.string(for: "reply-thread-parent-msg-id"),
+            displayName: parser.string(for: "reply-thread-parent-display-name"),
+            userId: parser.string(for: "reply-thread-parent-user-id")
         )
         self.pinnedChat = .init(
             amount: parser.uint(for: "pinned-chat-paid-amount"),
@@ -200,7 +210,7 @@ public struct PrivateMessage: MessageWithBadges {
         )
         
         let deprecatedKeys = ["turbo", "mod", "vip", "subscriber", "user-type"]
-        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"], ["pinned-chat-paid-amount", "pinned-chat-paid-canonical-amount", "pinned-chat-paid-currency", "pinned-chat-paid-exponent"], ["pinned-chat-paid-is-system-message", "pinned-chat-paid-level"], ["reply-thread-parent-user-login", "reply-thread-parent-msg-id"]]
+        let occasionalKeys = [["crowd-chant-parent-msg-id"], ["bits"], ["emote-only"], ["msg-id"], ["custom-reward-id"], ["client-nonce"], ["flags"], ["first-msg"], ["reply-parent-display-name", "reply-parent-user-login", "reply-parent-msg-body", "reply-parent-msg-id", "reply-parent-user-id"], ["pinned-chat-paid-amount", "pinned-chat-paid-canonical-amount", "pinned-chat-paid-currency", "pinned-chat-paid-exponent"], ["pinned-chat-paid-is-system-message", "pinned-chat-paid-level"], ["reply-thread-parent-user-login", "reply-thread-parent-msg-id"], ["reply-thread-parent-display-name", "reply-thread-parent-user-id"]]
 
         self.parsingLeftOvers = parser.getLeftOvers(
             excludedUnusedKeys: deprecatedKeys,
