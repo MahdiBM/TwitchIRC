@@ -7,12 +7,14 @@ let package = Package(
     products: [
         .library(
             name: "TwitchIRC",
-            targets: ["TwitchIRC"]),
+            targets: ["TwitchIRC"]
+        ),
     ],
     targets: [
         .target(name: "TwitchIRC"),
         .testTarget(
             name: "TwitchIRCTests",
-            dependencies: ["TwitchIRC"]),
+            dependencies: ["TwitchIRC"]
+        ),
     ]
 )

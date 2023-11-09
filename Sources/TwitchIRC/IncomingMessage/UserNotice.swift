@@ -169,7 +169,8 @@ public struct UserNotice: MessageWithBadges {
             public var goalDescription: String
             public var goalTargetContributions: String
             public var goalUserContributions: String
-            
+            public var communityGiftId: String
+
             internal init(
                 months: UInt,
                 recipientDisplayName: String,
@@ -186,7 +187,8 @@ public struct UserNotice: MessageWithBadges {
                 goalCurrentContributions: String,
                 goalDescription: String,
                 goalTargetContributions: String,
-                goalUserContributions: String
+                goalUserContributions: String,
+                communityGiftId: String
             ) {
                 self.months = months
                 self.recipientDisplayName = recipientDisplayName
@@ -204,6 +206,7 @@ public struct UserNotice: MessageWithBadges {
                 self.goalDescription = goalDescription
                 self.goalTargetContributions = goalTargetContributions
                 self.goalUserContributions = goalUserContributions
+                self.communityGiftId = communityGiftId
             }
             
             public init() {
@@ -223,7 +226,8 @@ public struct UserNotice: MessageWithBadges {
                     goalCurrentContributions: String(),
                     goalDescription: String(),
                     goalTargetContributions: String(),
-                    goalUserContributions: String()
+                    goalUserContributions: String(),
+                    communityGiftId: String()
                 )
             }
         }
@@ -662,9 +666,10 @@ public struct UserNotice: MessageWithBadges {
                 goalCurrentContributions: parser.string(for: "msg-param-goal-current-contributions"),
                 goalDescription: parser.string(for: "msg-param-goal-description"),
                 goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
-                goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
+                goalUserContributions: parser.string(for: "msg-param-goal-user-contributions"),
+                communityGiftId: parser.string(for: "msg-param-community-gift-id")
             ))
-            occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-goal-description"], ["msg-param-gift-theme"], ["msg-param-fun-string"], ["msg-param-gift-months", "msg-param-origin-id"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
+            occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-goal-description"], ["msg-param-gift-theme"], ["msg-param-fun-string"], ["msg-param-gift-months", "msg-param-origin-id"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-community-gift-id"]]
         case "anonsubgift":
             self.messageId = .anonSubGift(.init(
                 months: parser.uint(for: "msg-param-months"),
@@ -682,9 +687,10 @@ public struct UserNotice: MessageWithBadges {
                 goalCurrentContributions: parser.string(for: "msg-param-goal-current-contributions"),
                 goalDescription: parser.string(for: "msg-param-goal-description"),
                 goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
-                goalUserContributions: parser.string(for: "msg-param-goal-user-contributions")
+                goalUserContributions: parser.string(for: "msg-param-goal-user-contributions"),
+                communityGiftId: parser.string(for: "msg-param-community-gift-id")
             ))
-            occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-fun-string"], ["msg-param-gift-theme"], ["msg-param-gift-months", "msg-param-origin-id"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"]]
+            occasionalSubDependentKeyGroups = [["msg-param-sender-count"], ["msg-param-fun-string"], ["msg-param-gift-theme"], ["msg-param-gift-months", "msg-param-origin-id"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-community-gift-id"]]
         case "submysterygift":
             self.messageId = .subMysteryGift(.init(
                 massGiftCount: parser.uint(for: "msg-param-mass-gift-count"),
