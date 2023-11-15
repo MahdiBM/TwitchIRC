@@ -283,7 +283,8 @@ public struct UserNotice: MessageWithBadges {
             public var goalTargetContributions: String
             public var goalUserContributions: String
             public var giftTheme: String
-            
+            public var communityGiftId: String
+
             internal init(
                 massGiftCount: UInt,
                 originId: String,
@@ -294,7 +295,8 @@ public struct UserNotice: MessageWithBadges {
                 goalDescription: String,
                 goalTargetContributions: String,
                 goalUserContributions: String,
-                giftTheme: String
+                giftTheme: String,
+                communityGiftId: String
             ) {
                 self.massGiftCount = massGiftCount
                 self.originId = originId
@@ -306,6 +308,7 @@ public struct UserNotice: MessageWithBadges {
                 self.goalTargetContributions = goalTargetContributions
                 self.goalUserContributions = goalUserContributions
                 self.giftTheme = giftTheme
+                self.communityGiftId = communityGiftId
             }
             
             public init() {
@@ -319,7 +322,8 @@ public struct UserNotice: MessageWithBadges {
                     goalDescription: String(),
                     goalTargetContributions: String(),
                     goalUserContributions: String(),
-                    giftTheme: String()
+                    giftTheme: String(),
+                    communityGiftId: String()
                 )
             }
         }
@@ -702,7 +706,8 @@ public struct UserNotice: MessageWithBadges {
                 goalDescription: parser.string(for: "msg-param-goal-description"),
                 goalTargetContributions: parser.string(for: "msg-param-goal-target-contributions"),
                 goalUserContributions: parser.string(for: "msg-param-goal-user-contributions"),
-                giftTheme: parser.string(for: "msg-param-gift-theme")
+                giftTheme: parser.string(for: "msg-param-gift-theme"),
+                communityGiftId: parser.string(for: "msg-param-community-gift-id")
             ))
             occasionalSubDependentKeyGroups = [["msg-param-goal-description"], ["msg-param-sender-count"], ["msg-param-goal-contribution-type", "msg-param-goal-current-contributions", "msg-param-goal-description", "msg-param-goal-target-contributions", "msg-param-goal-user-contributions"], ["msg-param-gift-theme"]]
         case "primepaidupgrade":
