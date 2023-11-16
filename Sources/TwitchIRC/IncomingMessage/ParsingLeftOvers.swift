@@ -7,15 +7,15 @@ public struct ParsingLeftOvers {
     
     /// A pair of key-value that was not used during parsing.
     public struct UnusedPair {
-        let key: String
-        let value: String
+        public let key: String
+        public let value: String
     }
     
     /// An unsuccessful parsing attempt for a key
     public struct UnparsedKey {
-        let key: String
-        let value: String
-        let type: String
+        public let key: String
+        public let value: String
+        public let type: String
     }
     
     /// Key-Value pairs that were unused.
