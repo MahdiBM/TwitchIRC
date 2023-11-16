@@ -455,8 +455,8 @@ final class UserNoticeTests: XCTestCase {
     }
     
     func testParsedValues14() throws {
-        let string = #"@badge-info=founder/12;badges=moderator/1,founder/0,hype-train/1;color=#0000FF;display-name=metalkiller354;emotes=;flags=;id=aa1d37a5-e0d0-40b2-b374-ae779896a6f9;login=metalkiller354;mod=1;msg-id=viewermilestone;msg-param-category=watch-streak;msg-param-id=f05b2393-3bee-451c-bcb2-d12ea06781d7;msg-param-value=3;room-id=442187430;subscriber=1;system-msg=metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!;tmi-sent-ts=1678130127599;user-id=224637183;vip=1;user-type=mod :tmi.twitch.tv USERNOTICE #tryaz"#
-        
+        let string = #"@badge-info=founder/12;badges=moderator/1,founder/0,hype-train/1;color=#0000FF;display-name=metalkiller354;emotes=;flags=;id=aa1d37a5-e0d0-40b2-b374-ae779896a6f9;login=metalkiller354;mod=1;msg-id=viewermilestone;msg-param-category=watch-streak;msg-param-id=f05b2393-3bee-451c-bcb2-d12ea06781d7;msg-param-value=3;room-id=442187430;msg-param-copoReward=450;subscriber=1;system-msg=metalkiller354\\swatched\\s3\\sconsecutive\\sstreams\\sthis\\smonth\\sand\\ssparked\\sa\\swatch\\sstreak!;tmi-sent-ts=1678130127599;user-id=224637183;vip=1;user-type=mod :tmi.twitch.tv USERNOTICE #tryaz"#
+
         let un: UserNotice = try TestUtils.parseAndUnwrap(string: string)
         
         XCTAssertEqual(un.channel, "tryaz")
@@ -483,6 +483,7 @@ final class UserNoticeTests: XCTestCase {
         XCTAssertEqual(info.category, "watch-streak")
         XCTAssertEqual(info.id, "f05b2393-3bee-451c-bcb2-d12ea06781d7")
         XCTAssertEqual(info.value, 3)
+        XCTAssertEqual(info.copoReward, 450)
     }
 
     func testParsedValues15() throws {
