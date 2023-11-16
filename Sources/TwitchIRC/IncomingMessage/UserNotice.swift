@@ -512,22 +512,26 @@ public struct UserNotice: MessageWithBadges {
             public var category: String
             public var id: String
             public var value: UInt
-            
+            public var copoReward: UInt
+
             internal init(
                 category: String,
                 id: String,
-                value: UInt
+                value: UInt,
+                copoReward: UInt
             ) {
                 self.category = category
                 self.id = id
                 self.value = value
+                self.copoReward = copoReward
             }
             
             public init() {
                 self.init(
                     category: String(),
                     id: String(),
-                    value: UInt()
+                    value: UInt(),
+                    copoReward: UInt()
                 )
             }
         }
@@ -797,7 +801,8 @@ public struct UserNotice: MessageWithBadges {
             self.messageId = .viewerMilestone(.init(
                 category: parser.string(for: "msg-param-category"),
                 id: parser.string(for: "msg-param-id"),
-                value: parser.uint(for: "msg-param-value")
+                value: parser.uint(for: "msg-param-value"),
+                copoReward: parser.uint(for: "msg-param-copoReward")
             ))
             occasionalSubDependentKeyGroups = []
         default: return nil
