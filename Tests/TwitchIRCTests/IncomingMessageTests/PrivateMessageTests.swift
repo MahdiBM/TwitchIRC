@@ -350,6 +350,40 @@ final class PrivateMessageTests: XCTestCase {
         XCTAssertTrue(msg.pinnedChat == .init())
         XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
     }
+
+    /// Test message without initial colon
+    func testParsedValues11() throws {
+        let string = #"@badge-info=;badges=rplace-2023/1;client-nonce=115b634f5401db203a9b2d920d51a2a1;color=#FF0000;display-name=SoyWasha;emotes=;first-msg=0;flags=;id=6cdf9fed-253e-4b16-9878-dd69719a867f;mod=0;reply-parent-display-name=PF_josegamer;reply-parent-msg-body=por\\sque\\sverayork??;reply-parent-msg-id=b6543543-798c-4260-a84e-5495af2b1c32;reply-parent-user-id=545021421;reply-parent-user-login=pf_josegamer;reply-thread-parent-display-name=PF_josegamer;reply-thread-parent-msg-id=b6543543-798c-4260-a84e-5495af2b1c32;reply-thread-parent-user-id=545021421;reply-thread-parent-user-login=pf_josegamer;returning-chatter=0;room-id=204708397;subscriber=0;tmi-sent-ts=1699075686188;turbo=0;user-id=708631959;user-type= :soywasha!soywasha@soywasha.tmi.twitch.tv PRIVMSG #yosoyricklive @PF_josegamer es la mezcla de veracruz y nueva york xd"#
+
+        let msg: PrivateMessage = try TestUtils.parseAndUnwrap(string: string)
+
+        XCTAssertEqual(msg.channel, "yosoyricklive")
+        XCTAssertEqual(msg.message, "@PF_josegamer es la mezcla de veracruz y nueva york xd")
+        XCTAssertEqual(msg.badgeInfo, [])
+        XCTAssertEqual(msg.badges, ["rplace-2023/1"])
+        XCTAssertEqual(msg.bits, "")
+        XCTAssertEqual(msg.color, "#FF0000")
+        XCTAssertEqual(msg.displayName, "SoyWasha")
+        XCTAssertEqual(msg.userLogin, "soywasha")
+        XCTAssertEqual(msg.emotes, "")
+        XCTAssertEqual(msg.emoteOnly, false)
+        XCTAssertEqual(msg.flags, [])
+        XCTAssertEqual(msg.firstMessage, false)
+        XCTAssertEqual(msg.returningChatter, false)
+        XCTAssertEqual(msg.messageId, "")
+        XCTAssertEqual(msg.id, "6cdf9fed-253e-4b16-9878-dd69719a867f")
+        XCTAssertEqual(msg.crowdChantParentMessageId, "")
+        XCTAssertEqual(msg.customRewardId, "")
+        XCTAssertEqual(msg.roomId, "204708397")
+        XCTAssertEqual(msg.tmiSentTs, 1699075686188)
+        XCTAssertEqual(msg.clientNonce, "115b634f5401db203a9b2d920d51a2a1")
+        XCTAssertEqual(msg.userId, "708631959")
+        XCTAssertTrue(msg.replyParent == .init(displayName: "PF_josegamer", userLogin: "pf_josegamer", message: "por\\\\sque\\\\sverayork??", id: "b6543543-798c-4260-a84e-5495af2b1c32", userId: "545021421"), "\(msg.replyParent)"
+        )
+        XCTAssertTrue(msg.replyThreadParent == .init(userLogin: "pf_josegamer", messageId: "b6543543-798c-4260-a84e-5495af2b1c32", displayName: "PF_josegamer", userId: "545021421"), "\(msg.replyThreadParent)")
+        XCTAssertTrue(msg.pinnedChat == .init())
+        XCTAssertTrue(msg.parsingLeftOvers.isEmpty, "Non-empty parsing left-overs: \(msg.parsingLeftOvers)")
+    }
 }
 
 // MARK: - Emote Equatable
