@@ -151,11 +151,17 @@ public struct PrivateMessage: MessageWithBadges {
             return nil
         } /// separating with " ", then lhs contains channel name and rhs is the actual message
         self.channel = channel
-        /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
-        /// and other normal methods like a simple `.dropFirst()` fail in rare cases.
-        /// Remove `.unicodeScalars` and run tests to find out.
-        self.message = String(message.unicodeScalars.dropFirst())
-        
+
+        /// Remove colon prefix if present
+        if message.unicodeScalars.first == ":" {
+            /// `.unicodeScalars.dropFirst()` to remove ":", `componentsOneSplit(separatedBy: " :")`
+            /// and other normal methods like a simple `.dropFirst()` fail in rare cases.
+            /// Remove `.unicodeScalars` and run tests to find out.
+            self.message = String(message.unicodeScalars.dropFirst())
+        } else {
+            self.message = message
+        }
+
         guard let (infoPart, userLoginPart) = contentLhs.componentsOneSplit(separatedBy: " :") else {
             return nil
         } /// separates "senderName!senderName@senderName." from what is behind it.
