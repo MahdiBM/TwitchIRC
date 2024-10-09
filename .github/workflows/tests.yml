@@ -13,21 +13,21 @@ jobs:
       fail-fast: false
       matrix:
         container:
-          - swift:5.2-bionic
-          - swift:5.3-bionic
-          - swift:5.4-bionic
           - swift:5.5-focal
           - swift:5.6-focal
           - swift:5.7-jammy
           - swift:5.8-jammy
+          - swift:5.9-jammy
+          - swift:5.10-jammy
+          - swift:6.0-jammy
           - swiftlang/swift:nightly-main-jammy
     container: ${{ matrix.container }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out package
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run tests
-        run: swift test --enable-test-discovery
+        run: swift test
 
   macos-all:
     strategy:
@@ -45,9 +45,9 @@ jobs:
         with:
           xcode-version: ${{ matrix.xcode }}
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run tests
         run: |
-          swift test --enable-test-discovery \
+          swift test \
             -Xlinker -rpath \
             -Xlinker $(xcode-select -p)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.5/macosx
